@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-</script>
+import PlayerSheet from '../components/PlayerSheet.vue';</script>
 
 <template>
-  <div class="">
-    <p>Home</p>
+  <div class="flex m-auto">
+    <PlayerSheet/>
   </div>
 </template>
 
