@@ -255,6 +255,7 @@ import ArmorRow from "./ArmorRow.vue";
 import HeaderPlayerSheet from "./HeaderPlayerSheet.vue";
 
 import {Hobbit} from "@/utils/Hobbit";
+import {MapModificator} from "@/utils/MapModificator";
 
 export default {
     name: "PlayerSheet",
@@ -415,7 +416,10 @@ export default {
         }
     },
     mounted() {
-
+        const mapModificator = new MapModificator('strenght', 2);
+        mapModificator.addModificator({priority: 1, fMod: (val) => val + 1});
+        mapModificator.addModificator({priority: 1, fMod: (val) => val + 3});
+        mapModificator.addModificator({priority: 1000, fMod: (val) => val/2});
     },
     methods: {
         getWeight() {
@@ -433,7 +437,7 @@ export default {
         getParade() {
             return this.raceType[this.player.race].derivedCharacteristics.fParade(this.player.attributes.wits);
         },
-    }
+    },
 }
 </script>
 
