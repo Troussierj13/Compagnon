@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const charactersSchema = mongoose.Schema(
 	{
-		title: { type: String, required: true },
+		name: { type: mongoose.Schema.Types.String, required: true, default: "Nom du personnage" },
 	},
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model("Character", charactersSchema);
+export default mongoose.model("Character", charactersSchema);
