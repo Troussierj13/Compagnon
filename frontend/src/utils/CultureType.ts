@@ -3,7 +3,7 @@ export type CulturalAdvantage = 'intrepid';
 
 export type QualityLife = 'poor' | 'modest' | 'common' | 'prosperous' | 'rich';
 
-export type CombatSkill = 'all' | 'bows' | 'axes' | 'spears' | 'swords';
+export type CombatSkill = 'bows' | 'axes' | 'spears' | 'swords';
 
 export type DefaultCombatSkill = {
     defaultRank: number;
