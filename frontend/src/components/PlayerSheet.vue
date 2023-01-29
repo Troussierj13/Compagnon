@@ -3,7 +3,7 @@
       class="flex double-border mx-auto relative min-w-[90rem] h-auto bg-sheet bg-cover bg-center aspect-video">
     <div class="flex flex-col w-3/4 h-full">
       <div class="h-24 w-full">
-        <HeaderPlayerSheet/>
+        <HeaderPlayerSheet />
       </div>
       <div class="grow flex flex-col w-full double-line-right mb-2">
         <div class="flex flex-col w-full h-full px-1">
@@ -27,20 +27,30 @@
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
-                <SkillRow :favorisable="true" :skill="state.player.skills.awe"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.athletics"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.awareness"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.hunting"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.song"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.craft"/>
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.awe" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.athletics" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.awareness" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.hunting" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.song" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.craft" />
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
                 <span class="text-red">Compétences de combats</span>
                 <div class="flex flex-col justify-center gap-1 my-auto">
-                  <SkillRow :favorisable="false" :skill="state.player.combats.bows"/>
-                  <SkillRow :favorisable="false" :skill="state.player.combats.swords"/>
-                  <SkillRow :favorisable="false" :skill="state.player.combats.axes"/>
-                  <SkillRow :favorisable="false" :skill="state.player.combats.spears"/>
+                  <SkillRow :favorisable="false"
+                            :skill="state.player.combats.bows" />
+                  <SkillRow :favorisable="false"
+                            :skill="state.player.combats.swords" />
+                  <SkillRow :favorisable="false"
+                            :skill="state.player.combats.axes" />
+                  <SkillRow :favorisable="false"
+                            :skill="state.player.combats.spears" />
                 </div>
               </div>
             </div>
@@ -61,12 +71,18 @@
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
-                <SkillRow :favorisable="true" :skill="state.player.skills.enhearten"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.travel"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.insight"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.healing"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.courtesy"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.battle"/>
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.enhearten" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.travel" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.insight" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.healing" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.courtesy" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.battle" />
               </div>
               <div class="h-1/3 w-full line-top p-2">
                 <div class="h-4 w-full flex justify-between">
@@ -95,12 +111,18 @@
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
-                <SkillRow :favorisable="true" :skill="state.player.skills.persuade"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.stealth"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.scan"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.explore"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.riddle"/>
-                <SkillRow :favorisable="true" :skill="state.player.skills.lore"/>
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.persuade" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.stealth" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.scan" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.explore" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.riddle" />
+                <SkillRow :favorisable="true"
+                          :skill="state.player.skills.lore" />
               </div>
               <div class="h-1/3 w-full line-top p-2">
                 <div class="h-4 w-full flex justify-between">
@@ -124,10 +146,10 @@
                 <span class="w-4/12 h-2.5 my-auto">Notes</span>
               </div>
               <div class="flex flex-col grow justify-center">
-                <WeaponRow :weapon="state.player.weapon"/>
-                <WeaponRow/>
-                <WeaponRow/>
-                <WeaponRow/>
+                <WeaponRow :weapon="state.player.weapon" />
+                <WeaponRow />
+                <WeaponRow />
+                <WeaponRow />
               </div>
             </div>
             <div class="flex flex-col justify-between grow h-full p-2">
@@ -137,11 +159,11 @@
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Protection</span>
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Charge</span>
                 </div>
-                <ArmorRow :armor="state.player.armor"/>
+                <ArmorRow :armor="state.player.armor" />
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
                   <span class="grow font-sansserif font-bold">Casque</span>
                 </div>
-                <ArmorRow :armor="state.player.helm"/>
+                <ArmorRow :armor="state.player.helm" />
               </div>
               <div>
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem] mb-1">
@@ -149,7 +171,7 @@
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Parade</span>
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Charge</span>
                 </div>
-                <ArmorRow :armor="state.player.shield"/>
+                <ArmorRow :armor="state.player.shield" />
               </div>
             </div>
           </div>
@@ -249,18 +271,18 @@
 </template>
 
 <script lang="ts" setup>
-import {reactive, onMounted} from "vue"
-import SkillRow from "./SkillRow.vue";
-import WeaponRow from "./WeaponRow.vue";
-import ArmorRow from "./ArmorRow.vue";
-import HeaderPlayerSheet from "./HeaderPlayerSheet.vue";
+import {onMounted, reactive} from "vue"
+import SkillRow from "./SkillRow.vue"
+import WeaponRow from "./WeaponRow.vue"
+import ArmorRow from "./ArmorRow.vue"
+import HeaderPlayerSheet from "./HeaderPlayerSheet.vue"
 
-import {Hobbit} from "@/utils/Hobbit";
-import {MapModificator} from "@/utils/MapModificator";
+import {Hobbit} from "@/utils/Hobbit"
+import {MapModificator} from "@/utils/MapModificator"
 
 const state = reactive({
   raceType: {
-    'hobbit': Hobbit,
+    hobbit: Hobbit,
   },
   player: {
     race: "hobbit",
@@ -405,30 +427,35 @@ const state = reactive({
       weight: 2
     },
   },
-});
-onMounted(() => {
-        const mapModificator = new MapModificator('strenght', 2);
-        mapModificator.addModificator({priority: 1, fMod: (val: number) => val + 1});
-        mapModificator.addModificator({priority: 1, fMod: (val: number) => val + 3});
-        mapModificator.addModificator({priority: 1000, fMod: (val: number) => val/2});
-});
+})
 
-        function getWeight() {
-            return state.player.weapon.weight + state.player.armor.weight + state.player.helm.weight + state.player.shield.weight
-        }
-        function getSR(attr: number) {
-            return 20 - attr;
-        }
-        function getEndure() {
-            return state.raceType[state.player.race].derivedCharacteristics.fEndurance(state.player.attributes.strength);
-        }
-        function getHope() {
-            return state.raceType[state.player.race].derivedCharacteristics.fHope(state.player.attributes.heart);
-        }
-        function getParade() {
-            return state.raceType[state.player.race].derivedCharacteristics.fParade(state.player.attributes.wits);
-        }
-    
+onMounted(() => {
+  const mapModificator = new MapModificator('strenght', 2)
+  mapModificator.addModificator({priority: '1', fMod: (val) => val + 1})
+  mapModificator.addModificator({priority: '1', fMod: (val) => val + 3})
+  mapModificator.addModificator({priority: '1000', fMod: (val) => val / 2})
+})
+
+function getWeight() {
+  return state.player.weapon.weight + state.player.armor.weight + state.player.helm.weight + state.player.shield.weight
+}
+
+function getSR(attr: number) {
+  return 20 - attr
+}
+
+function getEndure() {
+  return state.raceType[state.player.race].derivedCharacteristics.fEndurance(state.player.attributes.strength)
+}
+
+function getHope() {
+  return state.raceType[state.player.race].derivedCharacteristics.fHope(state.player.attributes.heart)
+}
+
+function getParade() {
+  return state.raceType[state.player.race].derivedCharacteristics.fParade(state.player.attributes.wits)
+}
+
 // }
 </script>
 
