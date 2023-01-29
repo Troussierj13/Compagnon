@@ -278,6 +278,7 @@ import ArmorRow from "./ArmorRow.vue"
 import HeaderPlayerSheet from "./HeaderPlayerSheet.vue"
 
 import {Hobbit} from "@/utils/Hobbit"
+import {CultureTypeEnum} from "@/utils/CultureType"
 import {MapModificator} from "@/utils/MapModificator"
 
 const state = reactive({
@@ -445,15 +446,15 @@ function getSR(attr: number) {
 }
 
 function getEndure() {
-  return state.raceType[state.player.race].derivedCharacteristics.fEndurance(state.player.attributes.strength)
+  return state.raceType[state.player.race as CultureTypeEnum].derivedCharacteristics.fEndurance(state.player.attributes.strength)
 }
 
 function getHope() {
-  return state.raceType[state.player.race].derivedCharacteristics.fHope(state.player.attributes.heart)
+  return state.raceType[state.player.race as CultureTypeEnum].derivedCharacteristics.fHope(state.player.attributes.heart)
 }
 
 function getParade() {
-  return state.raceType[state.player.race].derivedCharacteristics.fParade(state.player.attributes.wits)
+  return state.raceType[state.player.race as CultureTypeEnum].derivedCharacteristics.fParade(state.player.attributes.wits)
 }
 
 // }

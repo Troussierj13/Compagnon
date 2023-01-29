@@ -43,6 +43,8 @@ module.exports = {
         'semi': [
             2,
             'never'
-        ]
+        ],
+        "no-shadow": "error",
+        "no-unused-vars": ["warn", {"args": "after-used", "ignoreRestSiblings": true}],
     }
 }
