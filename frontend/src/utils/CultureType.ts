@@ -24,15 +24,15 @@ export type Attributes = {
 };
 
 export class CultureType {
-    public name: string;
-    public culturalAdvantage: CulturalAdvantage;
-    public qualityLife: QualityLife;
-    public attributesMaxValue: number;
-    public attributesSample: Array<Attributes>;
-    public derivedCharacteristics: DerivedCharacteristics;
-    public commonSkills: Array<number>;
-    public favoredSkills: Array<number>;
-    public combatSkills: DefaultCombatSkill;
+    private name: string;
+    private culturalAdvantage: CulturalAdvantage;
+    private qualityLife: QualityLife;
+    private attributesMaxValue: number;
+    private attributesSample: Array<Attributes>;
+    private derivedCharacteristics: DerivedCharacteristics;
+    private commonSkills: Array<number>;
+    private favoredSkills: Array<number>;
+    private combatSkills: DefaultCombatSkill;
 
     constructor(name: string, culturalAdvantage: CulturalAdvantage, qualityLife: QualityLife, attributesMaxValue: number, attributesSample: Array<Attributes>, derivedCharacteristics: DerivedCharacteristics, commonSkills: Array<number>, favoredSkills: Array<number>, combatSkills: DefaultCombatSkill) {
         this.name = name;

@@ -6,12 +6,8 @@ type Modificator = {
 }
 
 export class MapModificator {
-    get modifiedValue(): number {
-        return this._modifiedValue;
-    }
     private id: string;
     private value: number;
-    private _modifiedValue: number;
     private modificators: object;
 
     constructor(id: string, value: number) {
@@ -26,13 +22,19 @@ export class MapModificator {
         };
     }
 
-    private calculate() {
-        this._modifiedValue = 0;
+    private _modifiedValue: number;
+
+    get modifiedValue(): number {
+        return this._modifiedValue;
     }
 
     public addModificator(mod: Modificator) {
-        this.modificators[mod.priority].push(mod.fMod);
+        //this.modificators[mod.priority].push(mod.fMod);
 
         console.log(this.modificators);
+    }
+
+    private calculate() {
+        this._modifiedValue = 0;
     }
 }
