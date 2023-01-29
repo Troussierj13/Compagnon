@@ -60,11 +60,7 @@
   </div>
 </template>
 
-<script>
-export default {
-    name: "HeaderPlayerSheet",
-    props: {}
-}
+<script lang="ts" setup>
 </script>
 
 <style scoped>

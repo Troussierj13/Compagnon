@@ -14,11 +14,11 @@
               <div class="h-1/3 w-full flex flex-col justify-center">
                 <span class="text-red text-lg mx-auto">Corps</span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto top-3.5">
-                  <span>{{ player.attributes.strength }}</span>
+                  <span>{{ state.player.attributes.strength }}</span>
                   <span class="absolute text-xs -top-8 left-0">Valeur</span>
                 </span>
                 <span class="diamond diamond-double diamond-xl mx-auto">
-                  <span>{{ getSR(player.attributes.strength) }}</span>
+                  <span>{{ getSR(state.player.attributes.strength) }}</span>
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
@@ -27,20 +27,20 @@
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
-                <SkillRow :favorisable="true" :skill="player.skills.awe"/>
-                <SkillRow :favorisable="true" :skill="player.skills.athletics"/>
-                <SkillRow :favorisable="true" :skill="player.skills.awareness"/>
-                <SkillRow :favorisable="true" :skill="player.skills.hunting"/>
-                <SkillRow :favorisable="true" :skill="player.skills.song"/>
-                <SkillRow :favorisable="true" :skill="player.skills.craft"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.awe"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.athletics"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.awareness"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.hunting"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.song"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.craft"/>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
                 <span class="text-red">Compétences de combats</span>
                 <div class="flex flex-col justify-center gap-1 my-auto">
-                  <SkillRow :favorisable="false" :skill="player.combats.bows"/>
-                  <SkillRow :favorisable="false" :skill="player.combats.swords"/>
-                  <SkillRow :favorisable="false" :skill="player.combats.axes"/>
-                  <SkillRow :favorisable="false" :skill="player.combats.spears"/>
+                  <SkillRow :favorisable="false" :skill="state.player.combats.bows"/>
+                  <SkillRow :favorisable="false" :skill="state.player.combats.swords"/>
+                  <SkillRow :favorisable="false" :skill="state.player.combats.axes"/>
+                  <SkillRow :favorisable="false" :skill="state.player.combats.spears"/>
                 </div>
               </div>
             </div>
@@ -48,11 +48,11 @@
               <div class="h-1/3 w-full flex flex-col justify-center">
                 <span class="text-red text-lg mx-auto">C&oelig;ur</span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto top-3.5">
-                  <span>{{ player.attributes.heart }}</span>
+                  <span>{{ state.player.attributes.heart }}</span>
                   <span class="absolute text-xs -top-8 left-0">Valeur</span>
                 </span>
                 <span class="diamond diamond-double diamond-xl mx-auto">
-                  <span>{{ getSR(player.attributes.heart) }}</span>
+                  <span>{{ getSR(state.player.attributes.heart) }}</span>
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
@@ -61,12 +61,12 @@
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
-                <SkillRow :favorisable="true" :skill="player.skills.enhearten"/>
-                <SkillRow :favorisable="true" :skill="player.skills.travel"/>
-                <SkillRow :favorisable="true" :skill="player.skills.insight"/>
-                <SkillRow :favorisable="true" :skill="player.skills.healing"/>
-                <SkillRow :favorisable="true" :skill="player.skills.courtesy"/>
-                <SkillRow :favorisable="true" :skill="player.skills.battle"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.enhearten"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.travel"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.insight"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.healing"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.courtesy"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.battle"/>
               </div>
               <div class="h-1/3 w-full line-top p-2">
                 <div class="h-4 w-full flex justify-between">
@@ -82,11 +82,11 @@
               <div class="h-1/3 w-full flex flex-col justify-center">
                 <span class="text-red text-lg mx-auto">Esprit</span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto top-3.5">
-                  <span>{{ player.attributes.wits }}</span>
+                  <span>{{ state.player.attributes.wits }}</span>
                   <span class="absolute text-xs -top-8 left-0">Valeur</span>
                 </span>
                 <span class="diamond diamond-double diamond-xl mx-auto">
-                  <span>{{ getSR(player.attributes.wits) }}</span>
+                  <span>{{ getSR(state.player.attributes.wits) }}</span>
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
@@ -95,12 +95,12 @@
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
-                <SkillRow :favorisable="true" :skill="player.skills.persuade"/>
-                <SkillRow :favorisable="true" :skill="player.skills.stealth"/>
-                <SkillRow :favorisable="true" :skill="player.skills.scan"/>
-                <SkillRow :favorisable="true" :skill="player.skills.explore"/>
-                <SkillRow :favorisable="true" :skill="player.skills.riddle"/>
-                <SkillRow :favorisable="true" :skill="player.skills.lore"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.persuade"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.stealth"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.scan"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.explore"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.riddle"/>
+                <SkillRow :favorisable="true" :skill="state.player.skills.lore"/>
               </div>
               <div class="h-1/3 w-full line-top p-2">
                 <div class="h-4 w-full flex justify-between">
@@ -124,7 +124,7 @@
                 <span class="w-4/12 h-2.5 my-auto">Notes</span>
               </div>
               <div class="flex flex-col grow justify-center">
-                <WeaponRow :weapon="player.weapon"/>
+                <WeaponRow :weapon="state.player.weapon"/>
                 <WeaponRow/>
                 <WeaponRow/>
                 <WeaponRow/>
@@ -137,11 +137,11 @@
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Protection</span>
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Charge</span>
                 </div>
-                <ArmorRow :armor="player.armor"/>
+                <ArmorRow :armor="state.player.armor"/>
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
                   <span class="grow font-sansserif font-bold">Casque</span>
                 </div>
-                <ArmorRow :armor="player.helm"/>
+                <ArmorRow :armor="state.player.helm"/>
               </div>
               <div>
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem] mb-1">
@@ -149,7 +149,7 @@
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Parade</span>
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Charge</span>
                 </div>
-                <ArmorRow :armor="player.shield"/>
+                <ArmorRow :armor="state.player.shield"/>
               </div>
             </div>
           </div>
@@ -248,7 +248,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import {reactive, onMounted} from "vue"
 import SkillRow from "./SkillRow.vue";
 import WeaponRow from "./WeaponRow.vue";
 import ArmorRow from "./ArmorRow.vue";
@@ -257,188 +258,178 @@ import HeaderPlayerSheet from "./HeaderPlayerSheet.vue";
 import {Hobbit} from "@/utils/Hobbit";
 import {MapModificator} from "@/utils/MapModificator";
 
-export default {
-    name: "PlayerSheet",
-    components: {
-        HeaderPlayerSheet,
-        SkillRow,
-        WeaponRow,
-        ArmorRow,
+const state = reactive({
+  raceType: {
+    'hobbit': Hobbit,
+  },
+  player: {
+    race: "hobbit",
+    attributes: {
+      strength: 2,
+      heart: 7,
+      wits: 5,
     },
-    data() {
-        return {
-            raceType: {
-                'hobbit': Hobbit,
-            },
-            player: {
-                "race": "hobbit",
-                "attributes": {
-                    "strength": 2,
-                    "heart": 7,
-                    "wits": 5,
-                },
-                "skills": {
-                    "awe": {
-                        "name": "Présence",
-                        "favored": false,
-                        "rank": 1
-                    },
-                    "athletics": {
-                        "name": "Athélisme",
-                        "favored": false,
-                        "rank": 1
-                    },
-                    "awareness": {
-                        "name": "Vigilance",
-                        "favored": false,
-                        "rank": 2
-                    },
-                    "hunting": {
-                        "name": "Chasse",
-                        "favored": false,
-                        "rank": 0
-                    },
-                    "song": {
-                        "name": "Chant",
-                        "favored": false,
-                        "rank": 2
-                    },
-                    "craft": {
-                        "name": "Artisanat",
-                        "favored": false,
-                        "rank": 1
-                    },
-                    "enhearten": {
-                        "name": "Inspiration",
-                        "favored": true,
-                        "rank": 2
-                    },
-                    "travel": {
-                        "name": "Voyage",
-                        "favored": false,
-                        "rank": 0
-                    },
-                    "insight": {
-                        "name": "Intuition",
-                        "favored": false,
-                        "rank": 2
-                    },
-                    "healing": {
-                        "name": "Soins",
-                        "favored": false,
-                        "rank": 1
-                    },
-                    "courtesy": {
-                        "name": "Courtoisie",
-                        "favored": true,
-                        "rank": 2
-                    },
-                    "battle": {
-                        "name": "Art de la guerre",
-                        "favored": false,
-                        "rank": 0
-                    },
-                    "persuade": {
-                        "name": "Persuasion",
-                        "favored": true,
-                        "rank": 2
-                    },
-                    "stealth": {
-                        "name": "Discrétion",
-                        "favored": false,
-                        "rank": 3
-                    },
-                    "scan": {
-                        "name": "Inspection",
-                        "favored": false,
-                        "rank": 0
-                    },
-                    "explore": {
-                        "name": "Exploration",
-                        "favored": false,
-                        "rank": 0
-                    },
-                    "riddle": {
-                        "name": "Enigmes",
-                        "favored": false,
-                        "rank": 3
-                    },
-                    "lore": {
-                        "name": "Connaissances",
-                        "favored": false,
-                        "rank": 0
-                    }
-                },
-                "combats": {
-                    "axes": {
-                        "name": "Haches",
-                        "rank": 0
-                    },
-                    "bows": {
-                        "name": "Arcs",
-                        "rank": 2
-                    },
-                    "spears": {
-                        "name": "Lances",
-                        "rank": 0
-                    },
-                    "swords": {
-                        "name": "Epées",
-                        "rank": 3
-                    }
-                },
-                weapon: {
-                    "name": "Epée longue",
-                    "dmg": 5,
-                    "injury": "16 / 18",
-                    "weight": 3,
-                    "note": "Peut se manier à une ou deux mains"
-                },
-                armor: {
-                    "name": "Chemise de cuir",
-                    "protection": "1d",
-                    "parade": 0,
-                    "weight": 3
-                },
-                helm: {
-                    "name": "Heaume",
-                    "protection": "+1d",
-                    "parade": 0,
-                    "weight": 4
-                },
-                shield: {
-                    "name": "Rondache",
-                    "protection": 0,
-                    "parade": "+1",
-                    "weight": 2
-                },
-            },
-        }
+    skills: {
+      awe: {
+        name: "Présence",
+        favored: false,
+        rank: 1
+      },
+      athletics: {
+        name: "Athélisme",
+        favored: false,
+        rank: 1
+      },
+      awareness: {
+        name: "Vigilance",
+        favored: false,
+        rank: 2
+      },
+      hunting: {
+        name: "Chasse",
+        favored: false,
+        rank: 0
+      },
+      song: {
+        name: "Chant",
+        favored: false,
+        rank: 2
+      },
+      craft: {
+        name: "Artisanat",
+        favored: false,
+        rank: 1
+      },
+      enhearten: {
+        name: "Inspiration",
+        favored: true,
+        rank: 2
+      },
+      travel: {
+        name: "Voyage",
+        favored: false,
+        rank: 0
+      },
+      insight: {
+        name: "Intuition",
+        favored: false,
+        rank: 2
+      },
+      healing: {
+        name: "Soins",
+        favored: false,
+        rank: 1
+      },
+      courtesy: {
+        name: "Courtoisie",
+        favored: true,
+        rank: 2
+      },
+      battle: {
+        name: "Art de la guerre",
+        favored: false,
+        rank: 0
+      },
+      persuade: {
+        name: "Persuasion",
+        favored: true,
+        rank: 2
+      },
+      stealth: {
+        name: "Discrétion",
+        favored: false,
+        rank: 3
+      },
+      scan: {
+        name: "Inspection",
+        favored: false,
+        rank: 0
+      },
+      explore: {
+        name: "Exploration",
+        favored: false,
+        rank: 0
+      },
+      riddle: {
+        name: "Enigmes",
+        favored: false,
+        rank: 3
+      },
+      lore: {
+        name: "Connaissances",
+        favored: false,
+        rank: 0
+      }
     },
-    mounted() {
+    combats: {
+      axes: {
+        name: "Haches",
+        rank: 0
+      },
+      bows: {
+        name: "Arcs",
+        rank: 2
+      },
+      spears: {
+        name: "Lances",
+        rank: 0
+      },
+      swords: {
+        name: "Epées",
+        rank: 3
+      }
+    },
+    weapon: {
+      name: "Epée longue",
+      dmg: 5,
+      injury: "16 / 18",
+      weight: 3,
+      note: "Peut se manier à une ou deux mains"
+    },
+    armor: {
+      name: "Chemise de cuir",
+      protection: "1d",
+      parade: 0,
+      weight: 3
+    },
+    helm: {
+      name: "Heaume",
+      protection: "+1d",
+      parade: 0,
+      weight: 4
+    },
+    shield: {
+      name: "Rondache",
+      protection: 0,
+      parade: "+1",
+      weight: 2
+    },
+  },
+});
+onMounted(() => {
         const mapModificator = new MapModificator('strenght', 2);
-        mapModificator.addModificator({priority: 1, fMod: (val) => val + 1});
-        mapModificator.addModificator({priority: 1, fMod: (val) => val + 3});
-        mapModificator.addModificator({priority: 1000, fMod: (val) => val/2});
-    },
-    methods: {
-        getWeight() {
-            return this.player.weapon.weight + this.player.armor.weight + this.player.helm.weight + this.player.shield.weight
-        },
-        getSR(attr) {
+        mapModificator.addModificator({priority: 1, fMod: (val: number) => val + 1});
+        mapModificator.addModificator({priority: 1, fMod: (val: number) => val + 3});
+        mapModificator.addModificator({priority: 1000, fMod: (val: number) => val/2});
+});
+
+        function getWeight() {
+            return state.player.weapon.weight + state.player.armor.weight + state.player.helm.weight + state.player.shield.weight
+        }
+        function getSR(attr: number) {
             return 20 - attr;
-        },
-        getEndure() {
-            return this.raceType[this.player.race].derivedCharacteristics.fEndurance(this.player.attributes.strength);
-        },
-        getHope() {
-            return this.raceType[this.player.race].derivedCharacteristics.fHope(this.player.attributes.heart);
-        },
-        getParade() {
-            return this.raceType[this.player.race].derivedCharacteristics.fParade(this.player.attributes.wits);
-        },
-    },
-}
+        }
+        function getEndure() {
+            return state.raceType[state.player.race].derivedCharacteristics.fEndurance(state.player.attributes.strength);
+        }
+        function getHope() {
+            return state.raceType[state.player.race].derivedCharacteristics.fHope(state.player.attributes.heart);
+        }
+        function getParade() {
+            return state.raceType[state.player.race].derivedCharacteristics.fParade(state.player.attributes.wits);
+        }
+    
+// }
 </script>
 
 <style scoped>

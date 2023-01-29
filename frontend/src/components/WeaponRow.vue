@@ -1,32 +1,29 @@
 <template>
   <div class="flex w-full gap-1 grayscale font-sansserif font-bold text-[0.6rem] leading-[0.8rem]">
     <span class="grow line-bottom-sm h-[1.125rem] my-auto">{{
-        weapon.name
+        props.weapon.name
       }}</span>
     <span
         class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        weapon.dmg
+        props.weapon.dmg
       }}</span>
     <span
         class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        weapon.injury
+        props.weapon.injury
       }}</span>
     <span
         class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        weapon.weight
+        props.weapon.weight
       }}</span>
     <span class="w-4/12 line-bottom-sm h-[1.125rem] my-auto">{{
-        weapon.note
+        props.weapon.note
       }}</span>
   </div>
 </template>
 
-<script>
-
-export default {
-    name: "WeaponRow",
-    props: {
-        weapon: {
+<script lang="ts" setup>
+const props = defineProps({
+  weapon: {
             type: Object,
             default() {
                 return {
@@ -37,9 +34,8 @@ export default {
                     "note": ""
                 }
             },
-        },
-    },
-}
+        }
+})
 </script>
 
 <style scoped>
