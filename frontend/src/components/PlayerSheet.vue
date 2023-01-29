@@ -279,7 +279,6 @@ import HeaderPlayerSheet from "./HeaderPlayerSheet.vue"
 
 import {Hobbit} from "@/utils/Hobbit"
 import {CultureTypeEnum} from "@/utils/CultureType"
-import {MapModificator} from "@/utils/MapModificator"
 
 const state = reactive({
   raceType: {
@@ -431,10 +430,7 @@ const state = reactive({
 })
 
 onMounted(() => {
-  const mapModificator = new MapModificator('strenght', 2)
-  mapModificator.addModificator({priority: '1', fMod: (val) => val + 1})
-  mapModificator.addModificator({priority: '1', fMod: (val) => val + 3})
-  mapModificator.addModificator({priority: '1000', fMod: (val) => val / 2})
+
 })
 
 function getWeight() {
