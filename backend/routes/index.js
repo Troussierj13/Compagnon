@@ -1,11 +1,11 @@
 import express from "express";
-var router = express.Router();
+import character from "../character.js";
+
+const router = express.Router();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-	res.status(200).json({
-		message: "Hello World!",
-	});
+	res.status(200).json({ character });
 });
 
 export { router as indexRouter };
