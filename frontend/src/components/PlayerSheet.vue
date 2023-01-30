@@ -14,43 +14,43 @@
               <div class="h-1/3 w-full flex flex-col justify-center">
                 <span class="text-red text-lg mx-auto">Corps</span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto top-3.5">
-                  <span>{{ state.player.attributes.strength }}</span>
+                  <span>{{ props.player.attributes.values.strength }}</span>
                   <span class="absolute text-xs -top-8 left-0">Valeur</span>
                 </span>
                 <span class="diamond diamond-double diamond-xl mx-auto">
-                  <span>{{ getSR(state.player.attributes.strength) }}</span>
+                  <span>{{ props.player.attributes.sr.strength }}</span>
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
-                  <span :key="getEndure()">{{ getEndure() }}</span>
+                  <span>{{ props.player.attributes.secondary.endurance }}</span>
                   <span class="absolute text-xs -top-2 left-9">Endurance</span>
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.awe" />
+                          :skill="props.player.strengthSkills.awe" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.athletics" />
+                          :skill="props.player.strengthSkills.athletics" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.awareness" />
+                          :skill="props.player.strengthSkills.awareness" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.hunting" />
+                          :skill="props.player.strengthSkills.hunting" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.song" />
+                          :skill="props.player.strengthSkills.song" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.craft" />
+                          :skill="props.player.strengthSkills.craft" />
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
                 <span class="text-red">Compétences de combats</span>
                 <div class="flex flex-col justify-center gap-1 my-auto">
                   <SkillRow :favorisable="false"
-                            :skill="state.player.combats.bows" />
+                            :skill="props.player.combatSkills.bows" />
                   <SkillRow :favorisable="false"
-                            :skill="state.player.combats.swords" />
+                            :skill="props.player.combatSkills.swords" />
                   <SkillRow :favorisable="false"
-                            :skill="state.player.combats.axes" />
+                            :skill="props.player.combatSkills.axes" />
                   <SkillRow :favorisable="false"
-                            :skill="state.player.combats.spears" />
+                            :skill="props.player.combatSkills.spears" />
                 </div>
               </div>
             </div>
@@ -58,31 +58,31 @@
               <div class="h-1/3 w-full flex flex-col justify-center">
                 <span class="text-red text-lg mx-auto">C&oelig;ur</span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto top-3.5">
-                  <span>{{ state.player.attributes.heart }}</span>
+                  <span>{{ props.player.attributes.values.heart }}</span>
                   <span class="absolute text-xs -top-8 left-0">Valeur</span>
                 </span>
                 <span class="diamond diamond-double diamond-xl mx-auto">
-                  <span>{{ getSR(state.player.attributes.heart) }}</span>
+                  <span>{{ props.player.attributes.sr.heart }}</span>
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
-                  <span>{{ getHope() }}</span>
+                  <span>{{ props.player.attributes.secondary.hope }}</span>
                   <span class="absolute text-xs top-0 left-10">Espoir</span>
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.enhearten" />
+                          :skill="props.player.heartSkills.enhearten" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.travel" />
+                          :skill="props.player.heartSkills.travel" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.insight" />
+                          :skill="props.player.heartSkills.insight" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.healing" />
+                          :skill="props.player.heartSkills.healing" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.courtesy" />
+                          :skill="props.player.heartSkills.courtesy" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.battle" />
+                          :skill="props.player.heartSkills.battle" />
               </div>
               <div class="h-1/3 w-full line-top p-2">
                 <div class="h-4 w-full flex justify-between">
@@ -98,31 +98,31 @@
               <div class="h-1/3 w-full flex flex-col justify-center">
                 <span class="text-red text-lg mx-auto">Esprit</span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto top-3.5">
-                  <span>{{ state.player.attributes.wits }}</span>
+                  <span>{{ props.player.attributes.values.mind }}</span>
                   <span class="absolute text-xs -top-8 left-0">Valeur</span>
                 </span>
                 <span class="diamond diamond-double diamond-xl mx-auto">
-                  <span>{{ getSR(state.player.attributes.wits) }}</span>
+                  <span>{{ props.player.attributes.sr.mind }}</span>
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
-                  <span>{{ getParade() }}</span>
+                  <span>{{ props.player.attributes.secondary.parade }}</span>
                   <span class="absolute text-xs -top-0 left-10">Parade</span>
                 </span>
               </div>
               <div class="h-1/3 flex flex-col justify-between w-full line-top p-2">
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.persuade" />
+                          :skill="props.player.mindSkills.persuade" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.stealth" />
+                          :skill="props.player.mindSkills.stealth" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.scan" />
+                          :skill="props.player.mindSkills.scan" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.explore" />
+                          :skill="props.player.mindSkills.explore" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.riddle" />
+                          :skill="props.player.mindSkills.riddle" />
                 <SkillRow :favorisable="true"
-                          :skill="state.player.skills.lore" />
+                          :skill="props.player.mindSkills.lore" />
               </div>
               <div class="h-1/3 w-full line-top p-2">
                 <div class="h-4 w-full flex justify-between">
@@ -146,7 +146,7 @@
                 <span class="w-4/12 h-2.5 my-auto">Notes</span>
               </div>
               <div class="flex flex-col grow justify-center">
-                <WeaponRow :weapon="state.player.weapon" />
+                <WeaponRow :weapon="props.player.weapons" />
                 <WeaponRow />
                 <WeaponRow />
                 <WeaponRow />
@@ -159,11 +159,11 @@
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Protection</span>
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Charge</span>
                 </div>
-                <ArmorRow :armor="state.player.armor" />
+                <ArmorRow :armor="props.player.armor" />
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
                   <span class="grow font-sansserif font-bold">Casque</span>
                 </div>
-                <ArmorRow :armor="state.player.helm" />
+                <ArmorRow :armor="props.player.helm" />
               </div>
               <div>
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem] mb-1">
@@ -171,7 +171,7 @@
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Parade</span>
                   <span class="w-1/5 font-sansserif font-bold text-center h-2.5 my-auto">Charge</span>
                 </div>
-                <ArmorRow :armor="state.player.shield" />
+                <ArmorRow :armor="props.player.shield" />
               </div>
             </div>
           </div>
@@ -271,186 +271,19 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue"
+import {reactive} from "vue"
 import SkillRow from "./SkillRow.vue"
 import WeaponRow from "./WeaponRow.vue"
 import ArmorRow from "./ArmorRow.vue"
 import HeaderPlayerSheet from "./HeaderPlayerSheet.vue"
+import {PlayerType} from "@/utils/Types/PlayerType"
 
-import {Hobbit} from "@/utils/Hobbit"
-import {CultureTypeEnum} from "@/utils/CultureType"
-
-const state = reactive({
-  raceType: {
-    hobbit: Hobbit,
-  },
-  player: {
-    race: "hobbit",
-    attributes: {
-      strength: 2,
-      heart: 7,
-      wits: 5,
-    },
-    skills: {
-      awe: {
-        name: "Présence",
-        favored: false,
-        rank: 1
-      },
-      athletics: {
-        name: "Athélisme",
-        favored: false,
-        rank: 1
-      },
-      awareness: {
-        name: "Vigilance",
-        favored: false,
-        rank: 2
-      },
-      hunting: {
-        name: "Chasse",
-        favored: false,
-        rank: 0
-      },
-      song: {
-        name: "Chant",
-        favored: false,
-        rank: 2
-      },
-      craft: {
-        name: "Artisanat",
-        favored: false,
-        rank: 1
-      },
-      enhearten: {
-        name: "Inspiration",
-        favored: true,
-        rank: 2
-      },
-      travel: {
-        name: "Voyage",
-        favored: false,
-        rank: 0
-      },
-      insight: {
-        name: "Intuition",
-        favored: false,
-        rank: 2
-      },
-      healing: {
-        name: "Soins",
-        favored: false,
-        rank: 1
-      },
-      courtesy: {
-        name: "Courtoisie",
-        favored: true,
-        rank: 2
-      },
-      battle: {
-        name: "Art de la guerre",
-        favored: false,
-        rank: 0
-      },
-      persuade: {
-        name: "Persuasion",
-        favored: true,
-        rank: 2
-      },
-      stealth: {
-        name: "Discrétion",
-        favored: false,
-        rank: 3
-      },
-      scan: {
-        name: "Inspection",
-        favored: false,
-        rank: 0
-      },
-      explore: {
-        name: "Exploration",
-        favored: false,
-        rank: 0
-      },
-      riddle: {
-        name: "Enigmes",
-        favored: false,
-        rank: 3
-      },
-      lore: {
-        name: "Connaissances",
-        favored: false,
-        rank: 0
-      }
-    },
-    combats: {
-      axes: {
-        name: "Haches",
-        rank: 0
-      },
-      bows: {
-        name: "Arcs",
-        rank: 2
-      },
-      spears: {
-        name: "Lances",
-        rank: 0
-      },
-      swords: {
-        name: "Epées",
-        rank: 3
-      }
-    },
-    weapon: {
-      name: "Epée longue",
-      dmg: 5,
-      injury: "16 / 18",
-      weight: 3,
-      note: "Peut se manier à une ou deux mains"
-    },
-    armor: {
-      name: "Chemise de cuir",
-      protection: "1d",
-      parade: 0,
-      weight: 3
-    },
-    helm: {
-      name: "Heaume",
-      protection: "+1d",
-      parade: 0,
-      weight: 4
-    },
-    shield: {
-      name: "Rondache",
-      protection: 0,
-      parade: "+1",
-      weight: 2
-    },
-  },
-})
-
-onMounted(() => {
-
+const props = reactive({
+  player: new PlayerType('Timide', 'hobbit')
 })
 
 function getWeight() {
-  return state.player.weapon.weight + state.player.armor.weight + state.player.helm.weight + state.player.shield.weight
-}
-
-function getSR(attr: number) {
-  return 20 - attr
-}
-
-function getEndure() {
-  return state.raceType[state.player.race as CultureTypeEnum].derivedCharacteristics.fEndurance(state.player.attributes.strength)
-}
-
-function getHope() {
-  return state.raceType[state.player.race as CultureTypeEnum].derivedCharacteristics.fHope(state.player.attributes.heart)
-}
-
-function getParade() {
-  return state.raceType[state.player.race as CultureTypeEnum].derivedCharacteristics.fParade(state.player.attributes.wits)
+  return props.player.weapons.map(a => a.weight).reduce((a, b) => a + b) + props.player.armor.weight + props.player.helm.weight + props.player.shield.weight
 }
 
 // }

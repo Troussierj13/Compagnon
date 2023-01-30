@@ -1,12 +1,11 @@
-<script lang="ts" setup>
-import PlayerSheet from '../components/PlayerSheet.vue';</script>
-
 <template>
   <div class="flex m-auto">
-    <PlayerSheet/>
+    <PlayerSheet />
   </div>
 </template>
 
-<style scoped>
+<script lang="ts" setup>
+import PlayerSheet from '../components/PlayerSheet.vue'</script>
 
+<style scoped>
 </style>

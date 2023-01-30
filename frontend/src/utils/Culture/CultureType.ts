@@ -1,3 +1,6 @@
+import {ModificatorParam} from "@/utils/MapModificator"
+import {AttributesValuesType} from "@/utils/Types/CharacterTypes"
+
 export type CultureTypeEnum = 'hobbit';
 
 //TODO change it to type with modificator on statistique or other
@@ -14,20 +17,13 @@ export type DefaultCombatSkill = {
 }
 
 export type DerivedCharacteristics = {
-    fEndurance: (attr: number) => number;
-    fHope: (attr: number) => number;
-    fParade: (attr: number) => number;
-};
-
-export type Attributes = {
-    strength: number;
-    heart: number;
-    mind: number;
+    modEndurance: ModificatorParam;
+    modHope: ModificatorParam;
+    modParade: ModificatorParam;
 };
 
 export class CultureType {
-    constructor(name: string, culturalAdvantage: CulturalAdvantage, qualityLife: QualityLife, attributesMaxValue: number, attributesSample: Array<Attributes>, derivedCharacteristics: DerivedCharacteristics, commonSkills: Array<number>, favoredSkills: Array<number>, combatSkills: DefaultCombatSkill) {
-        this._name = name
+    constructor(culturalAdvantage: CulturalAdvantage, qualityLife: QualityLife, attributesMaxValue: number, attributesSample: Array<AttributesValuesType>, derivedCharacteristics: DerivedCharacteristics, commonSkills: Array<number>, favoredSkills: Array<number>, combatSkills: DefaultCombatSkill) {
         this._culturalAdvantage = culturalAdvantage
         this._qualityLife = qualityLife
         this._attributesMaxValue = attributesMaxValue
@@ -36,12 +32,6 @@ export class CultureType {
         this._commonSkills = commonSkills
         this._favoredSkills = favoredSkills
         this._combatSkills = combatSkills
-    }
-
-    private _name: string
-
-    get name(): string {
-        return this._name
     }
 
     private _culturalAdvantage: CulturalAdvantage
@@ -62,9 +52,9 @@ export class CultureType {
         return this._attributesMaxValue
     }
 
-    private _attributesSample: Array<Attributes>
+    private _attributesSample: Array<AttributesValuesType>
 
-    get attributesSample(): Array<Attributes> {
+    get attributesSample(): Array<AttributesValuesType> {
         return this._attributesSample
     }
 

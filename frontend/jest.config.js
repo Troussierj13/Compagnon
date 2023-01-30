@@ -5,4 +5,7 @@ module.exports = {
         '^.+\\.ts?$': 'ts-jest',
     },
     transformIgnorePatterns: ['./node_modules/'],
+    moduleNameMapper: {
+        "^@/(.*)$": "<rootDir>/src/$1",
+    },
 }
