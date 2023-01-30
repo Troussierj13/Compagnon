@@ -4,8 +4,7 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { indexRouter } from "./routes/index.js";
-import { usersRouter } from "./routes/users.js";
+import { routerAPI } from "./routes/routerAPI.js";
 
 dotenv.config();
 
@@ -22,7 +21,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.dirname("public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/api", routerAPI);
+app.use("*", (req, res) => {
+	res.send("Page not found");
+});
 
 export default app;
