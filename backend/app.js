@@ -23,6 +23,7 @@ app.use(express.static(path.dirname("public")));
 
 app.use("/api", routerAPI);
 app.use("*", (req, res) => {
+	// TODO : Send front end page
 	res.send("Page not found");
 });
 
