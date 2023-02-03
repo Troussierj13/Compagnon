@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const gameSchema = mongoose.Schema(
 	{
+		gameMaster: { type: mongoose.Schema.Types.ObjectId, ref: "Player" },
 		players: [
 			{
 				player: {

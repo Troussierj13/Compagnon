@@ -14,6 +14,7 @@ const playerSchema = mongoose.Schema(
 				ref: "Game",
 			},
 		],
+		gameMaster: { type: mongoose.Schema.Types.Boolean, default: false },
 	},
 	{ timestamps: true }
 );
