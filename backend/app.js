@@ -20,6 +20,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.dirname("public")));
+app.use((req, res, next) => {
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
+	res.setHeader("Access-Control-Allow-Methods", "GET,HEAD, POST, PUT, DELETE, PATCH, OPTIONS");
+	res.setHeader("Access-Control-Allow-Credentials", "true");
+	next();
+});
 
 app.use("/api", routerAPI);
 app.use("*", (req, res) => {
