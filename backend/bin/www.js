@@ -6,6 +6,7 @@
 
 import app from "../app.js";
 import http from "http";
+import { Server } from "socket.io";
 
 /**
  * Get port from environment and store in Express.
@@ -19,6 +20,7 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+export const io = new Server(server, { cors: { origin: "*" } });
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -83,3 +85,5 @@ function onListening() {
 	const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
 	console.log("Listening on " + bind);
 }
+
+export { server as expressServer };
