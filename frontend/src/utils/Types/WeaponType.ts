@@ -9,6 +9,7 @@ export class WeaponType {
     injury: InjuriesType
     weight: number
     note: string
+    rewardsMod: Array<string>
 
     constructor(payload: Partial<WeaponType>) {
         this.name = payload?.name || ''
@@ -16,5 +17,6 @@ export class WeaponType {
         this.injury = payload?.injury || {oneHand: 0, twoHand: 0}
         this.weight = payload?.weight || 0
         this.note = payload?.note || ''
+        this.rewardsMod = payload?.rewardsMod || []
     }
 }
