@@ -1,23 +1,22 @@
-import {ObjectImportable} from "@/utils/helpers"
-
 export type InjuriesType = {
     oneHand: number
     twoHand: number
 }
 
-export class WeaponType extends ObjectImportable {
+export class WeaponType {
     name: string
     dmg: number
-    injury: number | InjuriesType
+    injury: InjuriesType
     weight: number
     note: string
+    rewardsMod: Array<string>
 
-    constructor(name: string = "", dmg: number = 0, injury: number | InjuriesType = 0, weight: number = 0, note = "") {
-        super()
-        this.name = name
-        this.dmg = dmg
-        this.injury = injury
-        this.weight = weight
-        this.note = note
+    constructor(payload: Partial<WeaponType>) {
+        this.name = payload?.name || ''
+        this.dmg = payload?.dmg || 0
+        this.injury = payload?.injury || {oneHand: 0, twoHand: 0}
+        this.weight = payload?.weight || 0
+        this.note = payload?.note || ''
+        this.rewardsMod = payload?.rewardsMod || []
     }
 }

@@ -1,4 +1,4 @@
-import {ModificatorParam} from "@/utils/MapModificator"
+import {ModifierParam} from "@/utils/MapModifiers"
 import {AttributesValuesType} from "@/utils/Types/CharacterTypes"
 
 export type CultureTypeEnum = 'hobbit';
@@ -17,21 +17,24 @@ export type DefaultCombatSkill = {
 }
 
 export type DerivedCharacteristics = {
-    modEndurance: ModificatorParam;
-    modHope: ModificatorParam;
-    modParade: ModificatorParam;
+    modEndurance: ModifierParam;
+    modHope: ModifierParam;
+    modParade: ModifierParam;
 };
 
 export class CultureType {
+    readonly derivedCharacteristics: DerivedCharacteristics
+    readonly combatSkills: DefaultCombatSkill
+
     constructor(culturalAdvantage: CulturalAdvantage, qualityLife: QualityLife, attributesMaxValue: number, attributesSample: Array<AttributesValuesType>, derivedCharacteristics: DerivedCharacteristics, commonSkills: Array<number>, favoredSkills: Array<number>, combatSkills: DefaultCombatSkill) {
         this._culturalAdvantage = culturalAdvantage
         this._qualityLife = qualityLife
         this._attributesMaxValue = attributesMaxValue
         this._attributesSample = attributesSample
-        this._derivedCharacteristics = derivedCharacteristics
+        this.derivedCharacteristics = derivedCharacteristics
         this._commonSkills = commonSkills
         this._favoredSkills = favoredSkills
-        this._combatSkills = combatSkills
+        this.combatSkills = combatSkills
     }
 
     private _culturalAdvantage: CulturalAdvantage
@@ -58,12 +61,6 @@ export class CultureType {
         return this._attributesSample
     }
 
-    private _derivedCharacteristics: DerivedCharacteristics
-
-    get derivedCharacteristics(): DerivedCharacteristics {
-        return this._derivedCharacteristics
-    }
-
     private _commonSkills: Array<number>
 
     get commonSkills(): Array<number> {
@@ -74,11 +71,5 @@ export class CultureType {
 
     get favoredSkills(): Array<number> {
         return this._favoredSkills
-    }
-
-    private _combatSkills: DefaultCombatSkill
-
-    get combatSkills(): DefaultCombatSkill {
-        return this._combatSkills
     }
 }
