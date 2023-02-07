@@ -1,16 +1,13 @@
-import {ObjectImportable} from "@/utils/helpers"
-
-export class ArmorType extends ObjectImportable {
+export class ArmorType {
     name: string
     protection: string
     parade: string
     weight: number
 
-    constructor(name: string = "", protection: string = "", parade: string = "", weight: number = 0) {
-        super()
-        this.name = name
-        this.protection = protection
-        this.parade = parade
-        this.weight = weight
+    constructor(payload?: Partial<ArmorType>) {
+        this.name = payload?.name || ''
+        this.protection = payload?.protection || ''
+        this.parade = payload?.parade || ''
+        this.weight = payload?.weight || 0
     }
 }

@@ -1,40 +1,43 @@
-import {ObjectImportable} from "@/utils/helpers"
-
-export class AttributesValuesType extends ObjectImportable {
+export class AttributesValuesType {
     strength: number
     heart: number
     mind: number
 
-    constructor(strength: number = 0, heart: number = 0, mind: number = 0) {
-        super()
-        this.strength = strength
-        this.heart = heart
-        this.mind = mind
+    constructor(payload?: Partial<AttributesValuesType>) {
+        this.strength = payload?.strength || 0
+        this.heart = payload?.heart || 0
+        this.mind = payload?.mind || 0
     }
 }
 
-export class AttributesSecondaryType extends ObjectImportable {
+export class AttributesSecondaryType {
     endurance: number
     hope: number
     parade: number
 
-    constructor(endurance: number = 0, hope: number = 0, parade: number = 0) {
-        super()
-        this.endurance = endurance
-        this.hope = hope
-        this.parade = parade
+    constructor(payload?: AttributesSecondaryType) {
+        this.endurance = payload?.endurance || 0
+        this.hope = payload?.hope || 0
+        this.parade = payload?.parade || 0
     }
 }
 
-export class Attributes extends ObjectImportable {
+export class Attributes {
     values: AttributesValuesType
     sr: AttributesValuesType
     secondary: AttributesSecondaryType
 
-    constructor(values?: AttributesValuesType, sr?: AttributesValuesType, secondary?: AttributesSecondaryType) {
-        super()
-        this.values = values ? values : new AttributesValuesType()
-        this.sr = sr ? sr : new AttributesValuesType()
-        this.secondary = secondary ? secondary : new AttributesSecondaryType()
+    constructor(payload?: Partial<AttributesValuesType>) {
+        this.values = new AttributesValuesType(payload)
+        this.sr = new AttributesValuesType({
+            strength: (payload?.strength ? 20 - payload?.strength : 0),
+            heart: (payload?.heart ? 20 - payload?.heart : 0),
+            mind: (payload?.mind ? 20 - payload?.mind : 0),
+        })
+        this.secondary = new AttributesSecondaryType({
+            endurance: payload?.strength || 0,
+            hope: payload?.heart || 0,
+            parade: payload?.mind || 0
+        })
     }
 }
