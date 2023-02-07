@@ -1,9 +1,13 @@
 <template>
   <div
-      class="flex double-border mx-auto relative min-w-[90rem] h-auto bg-sheet bg-cover bg-center aspect-video">
-    <div class="flex flex-col w-3/4 h-full">
+      class="relative flex mx-auto relative min-w-[90rem] bg-clip-border bg-origin-border bg-sheet bg-cover bg-center border-t-80 border-b-56 border-red/0">
+    <div
+        class="absolute w-full -top-20 h-20 bg-topSheet bg-center bg-contain saturate-150 contrast-125 brightness-75"></div>
+    <div
+        class="absolute w-full -bottom-14 h-16 bg-bottomSheet bg-clip-border bg-origin-border bg-cover bg-center"></div>
+    <div class="flex flex-col w-[75.3%] border-l-18 border-red/0 h-full">
       <div class="h-24 w-full">
-        <HeaderPlayerSheet />
+        <HeaderPlayerSheet :data="state.player.getHeaderValues()" />
       </div>
       <div class="grow flex flex-col w-full double-line-right mb-2">
         <div class="flex flex-col w-full h-full px-1">
@@ -22,7 +26,7 @@
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
-                  <span>{{ state.player.modifiers.attributes.secondary.endurance.modifiedValue }}</span>
+                  <span>{{ state.player.attributes.secondary.endurance }}</span>
                   <span class="absolute text-xs -top-2 left-9">Endurance</span>
                 </span>
               </div>
@@ -66,7 +70,7 @@
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
-                  <span>{{ state.player.modifiers.attributes.secondary.hope.modifiedValue }}</span>
+                  <span>{{ state.player.attributes.secondary.hope }}</span>
                   <span class="absolute text-xs top-0 left-10">Espoir</span>
                 </span>
               </div>
@@ -84,13 +88,18 @@
                 <SkillRow :favorisable="true"
                           :skill="state.player.heartSkills.battle" />
               </div>
-              <div class="h-1/3 w-full line-top p-2">
+              <div class="h-1/3 w-full line-top p-2 space-y-2">
                 <div class="h-4 w-full flex justify-between">
                   <span class="text-red">Récompenses</span>
                   <span class="relative diamond diamond-md">
-                    <span>0</span>
+                    <span>{{ state.player.valiance.rank }}</span>
                     <span class="absolute text-[0.65rem] font-serif top-5 -left-16">VAILLANCE</span>
                   </span>
+                </div>
+                <div v-for="reward in state.player.valiance.rewards"
+                     :key="reward.identifier"
+                     class="w-11/12 text-xs whitespace-normal">
+                  <span class="break-words w-full"> {{ reward.name }} ( {{ reward.description }} )</span>
                 </div>
               </div>
             </div>
@@ -106,7 +115,7 @@
                   <span class="absolute text-xs right-3 -bottom-7">SR</span>
                 </span>
                 <span class="relative diamond diamond-lg ml-[55.5%] mr-auto -top-3.5">
-                  <span>{{ state.player.modifiers.attributes.secondary.parade.modifiedValue }}</span>
+                  <span>{{ state.player.attributes.secondary.parade }}</span>
                   <span class="absolute text-xs -top-0 left-10">Parade</span>
                 </span>
               </div>
@@ -128,9 +137,14 @@
                 <div class="h-4 w-full flex justify-between">
                   <span class="text-red">Vertus</span>
                   <span class="relative diamond diamond-md">
-                    <span>0</span>
+                    <span> {{ state.player.wisdom.rank }} </span>
                     <span class="absolute text-[0.65rem] font-serif top-3 -left-[3.25rem]">SAGESSE</span>
                   </span>
+                </div>
+                <div v-for="virtue in state.player.wisdom.virtues"
+                     :key="virtue.identifier"
+                     class="w-11/12 text-xs whitespace-normal">
+                  <span class="break-words w-full"> {{ virtue.name }} ( {{ virtue.description }} )</span>
                 </div>
               </div>
             </div>
@@ -145,11 +159,10 @@
                 <span class="w-1/12 text-center h-2.5 my-auto">Charge</span>
                 <span class="w-4/12 h-2.5 my-auto">Notes</span>
               </div>
-              <div class="flex flex-col grow justify-center">
-                <WeaponRow :weapon="state.player.weapons" />
-                <WeaponRow />
-                <WeaponRow />
-                <WeaponRow />
+              <div v-for="n in 4"
+                   :key="n"
+                   class="flex flex-col grow justify-center">
+                <WeaponRow :weapon="state.player.weapons[n]" />
               </div>
             </div>
             <div class="flex flex-col justify-between grow h-full p-2">
@@ -178,7 +191,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-col w-1/4 h-full px-1">
+    <div class="flex flex-col w-[24.7%] border-r-18 border-red/0 h-full px-1">
       <div class="flex flex-col h-1/3 p-3">
         <div class="h-full w-full simple-border"></div>
       </div>
@@ -213,10 +226,11 @@
                 <span class="absolute text-xs -top-4 right-2">Charge</span>
               </span>
               <span class="diamond diamond-lg mx-auto">
-                <span>20</span>
+                <span>{{ state.player.currentEndurance.value }}</span>
               </span>
               <span class="relative diamond diamond-md ml-[55.5%] mr-auto -top-3.5 -right-2">
-                <span>-</span>
+                <span v-if="state.player.fatigue.value <= 0">-</span>
+                <span v-if="state.player.fatigue.value > 0">{{ state.player.fatigue.value }}</span>
                 <span class="absolute text-xs top-5 left-1.5">Fatigue</span>
               </span>
             </div>
@@ -225,14 +239,16 @@
             <span class="text-red text-md mx-auto mb-2 whitespace-pre-line text-center">Espoir actuel</span>
             <div class="flex flex-col mr-6 mt-2">
               <span class="relative diamond diamond-md ml-[55.5%] mr-auto top-3.5 -right-2">
-                <span>-</span>
+                <span v-if="state.player.shadows.value <= 0">-</span>
+                <span v-if="state.player.shadows.value > 0">{{ state.player.shadows.value }}</span>
                 <span class="absolute text-xs -top-4 right-2">Ombres</span>
               </span>
               <span class="diamond diamond-lg mx-auto">
-                <span>17</span>
+                <span>{{ state.player.currentHope.value }}</span>
               </span>
               <span class="relative diamond diamond-md ml-[55.5%] mr-auto -top-3.5 -right-2">
-                <span>-</span>
+                <span v-if="state.player.sequels.value <= 0">-</span>
+                <span v-if="state.player.sequels.value > 0">{{ state.player.sequels.value }}</span>
                 <span class="absolute text-xs top-5 left-1.5">Séquelles</span>
               </span>
             </div>
@@ -242,29 +258,47 @@
       </div>
       <div class="flex flex-col h-1/6 line-top">
         <span class="text-red text-md mx-auto mb-2 text-center">Etats</span>
-        <div class="flex p-2">
+        <div class="flex px-2">
           <div class="w-1/2 h-full flex flex-col gap-1">
             <div class="flex">
-              <span class="square mr-2"></span>
+              <span class="square mr-2">
+                <span v-if="state.player.states.exhaust"
+                      class="absolute rotate-45 bg-check w-3 h-3 bg-cover bg-center bg-no-repeat"></span>
+              </span>
               <span class="font-serif text-xs my-auto leading-3 font-semibold">Epuisé</span>
             </div>
             <div class="flex">
-              <span class="square mr-2"></span>
+              <span class="square mr-2">
+                <span v-if="state.player.states.melancholic"
+                      class="absolute rotate-45 bg-check w-3 h-3 bg-cover bg-center bg-no-repeat"></span>
+              </span>
               <span class="font-serif text-xs my-auto leading-3 font-semibold">Mélancolique</span>
             </div>
             <div class="flex">
-              <span class="square mr-2"></span>
+              <span class="square mr-2">
+                <span v-if="state.player.states.hurt"
+                      class="absolute rotate-45 bg-check w-3 h-3 bg-cover bg-center bg-no-repeat"></span>
+              </span>
               <span class="font-serif text-xs my-auto leading-3 font-semibold">Blessé</span>
             </div>
           </div>
           <div class="w-1/2 h-full flex flex-col">
             <span class="font-serif text-xs my-auto leading-3 font-semibold italic">Blessure</span>
-            <span class="rect w-24"></span>
+            <span class="rect w-24 text-sm">
+              <span v-if="state.player.states.injuries.value > 0">
+                {{ state.player.states.injuries.value + ' ' + state.player.states.injuries.unit }}
+              </span>
+            </span>
           </div>
         </div>
       </div>
       <div class="flex flex-col h-1/5 line-top">
         <span class="text-red text-md mx-auto mb-2 text-center">Equipement de voyage</span>
+        <div v-for="(equip, index) in state.player.travelEquipment"
+             :key="index"
+             class="flex flex-col text-xs overflow-auto scroll-bar-red">
+          <span>{{ equip.name }} ( {{ equip.skillRef }} )</span>
+        </div>
       </div>
     </div>
   </div>

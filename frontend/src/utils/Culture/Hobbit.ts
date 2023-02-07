@@ -24,7 +24,7 @@ class HobbitType extends CultureType {
             new AttributesValuesType({strength: 2, heart: 6, mind: 6}),
         ]
 
-        super('intrepid', 'common', 14, hobbitAttributesSample, hobbitDerived, hobbitSkills, hobbitFavoredSkills, hobbitCombatSkills)
+        super('hobbit', 'intrepid', 'common', 14, hobbitAttributesSample, hobbitDerived, hobbitSkills, hobbitFavoredSkills, hobbitCombatSkills)
     }
 }
 

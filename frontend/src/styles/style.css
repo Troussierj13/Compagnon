@@ -147,3 +147,25 @@ span.diamond-double {
 span.diamond > span {
     transform: rotate(-45deg);
 }
+
+/* Firefox */
+.scroll-bar-red {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.lightRed') rgba(0, 0, 0, 0.1);
+}
+
+/* Chrome, Edge, and Safari */
+.scroll-bar-red::-webkit-scrollbar {
+    width: 15px;
+}
+
+.scroll-bar-red::-webkit-scrollbar-track {
+    background: theme('colors.lightRed');
+    border-radius: 5px;
+}
+
+.scroll-bar-red::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 14px;
+    border: 3px solid theme('colors.lightRed');
+}

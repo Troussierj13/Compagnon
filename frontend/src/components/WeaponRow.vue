@@ -9,14 +9,14 @@
       }}</span>
     <span
         class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        props.weapon.injury
+        (props.weapon.injury.oneHand === props.weapon.injury.twoHand ? props.weapon.injury.oneHand : props.weapon.injury.oneHand + ' / ' + props.weapon.injury.twoHand)
       }}</span>
     <span
         class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
         props.weapon.weight
       }}</span>
     <span class="w-4/12 line-bottom-sm h-[1.125rem] my-auto">{{
-        props.weapon.note
+        props.weapon.note + props.weapon?.rewardsMod.join(', ')
       }}</span>
   </div>
 </template>
@@ -24,17 +24,21 @@
 <script lang="ts" setup>
 const props = defineProps({
   weapon: {
-            type: Object,
-            default() {
-                return {
-                    "name": "",
-                    "dmg": "",
-                    "injury": "",
-                    "weight": "",
-                    "note": ""
-                }
-            },
-        }
+    type: Object,
+    default() {
+      return {
+        "name": "",
+        "dmg": null,
+        "injury": {
+          "oneHand": null,
+          "twoHand": null
+        },
+        "weight": null,
+        "note": "",
+        "rewardsMod": []
+      }
+    },
+  }
 })
 </script>
 

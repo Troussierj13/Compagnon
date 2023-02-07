@@ -1,13 +1,19 @@
 import {IntRange} from "@/utils/helpers"
-import {CultureType, QualityLife} from "@/utils/Culture/CultureType"
+import {
+    CultureType,
+    nameCultureAdvantage,
+    nameCultureType,
+    nameQualityLife,
+    nameVocationType,
+    QualityLife,
+    VocationType
+} from "@/utils/Culture/CultureType"
 import {Attributes} from "@/utils/Types/CharacterTypes"
 import {WeaponType} from "@/utils/Types/WeaponType"
 import {ArmorType} from "@/utils/Types/ArmorType"
 import {Hobbit} from "@/utils/Culture/Hobbit"
 import {MapModifier} from "@/utils/MapModifiers"
 import {SetModifiers} from "@/utils/Rules/Rules"
-
-type VocationType = 'Captain' | 'Champion' | 'TreasureHunter' | 'Messenger' | 'Protector' | 'Savant'
 
 const CultureEnumToInstance = {
     "hobbit": Hobbit
@@ -131,21 +137,21 @@ type RewardVirtue = {
 
 class Wisdom {
     rank: number
-    rewards: Array<RewardVirtue>
+    virtues: Array<RewardVirtue>
 
     constructor(payload?: Partial<Wisdom>) {
         this.rank = payload?.rank || 0
-        this.rewards = payload?.rewards || []
+        this.virtues = payload?.virtues || []
     }
 }
 
 class Valiance {
     rank: number
-    virtues: Array<RewardVirtue>
+    rewards: Array<RewardVirtue>
 
     constructor(payload?: Partial<Valiance>) {
         this.rank = payload?.rank || 0
-        this.virtues = payload?.virtues || []
+        this.rewards = payload?.rewards || []
     }
 }
 
@@ -168,6 +174,19 @@ type TravelEquipment = {
     skillRef?: SkillIdentifier
 }
 
+type HeaderValues = {
+    heroicCulture: string
+    culturalAdvantage: string
+    vocation: string
+    age: number
+    qualityLife: string
+    garant: string
+    shadowPath: string
+    treasure: number
+    particularities: Array<string>
+    faults: Array<string>
+}
+
 export class PlayerType {
     name: string
     vocation: VocationType
@@ -176,7 +195,7 @@ export class PlayerType {
     garant: string
     shadowPath: string
     particularities: Array<string>
-    faults: Array<String>
+    faults: Array<string>
     race: CultureType
     treasure: number
     attributes: Attributes
@@ -206,7 +225,7 @@ export class PlayerType {
 
     constructor(payload?: Partial<PlayerType>) {
         this.name = payload?.name || ''
-        this.vocation = payload?.vocation || 'Captain'
+        this.vocation = payload?.vocation || 'captain'
         this.age = payload?.age || 0
         this.qualityLife = payload?.qualityLife || 'poor'
         this.garant = payload?.garant || ''
@@ -239,11 +258,11 @@ export class PlayerType {
         this.sequels = {identifier: payload?.sequels?.identifier || "sequels", value: payload?.sequels?.value || 0}
         this.currentEndurance = {
             identifier: payload?.currentEndurance?.identifier || "currentEndurance",
-            value: payload?.currentEndurance?.value || 0
+            value: payload?.currentEndurance?.value || this.attributes.secondary.endurance
         }
         this.currentHope = {
             identifier: payload?.currentHope?.identifier || "currentHope",
-            value: payload?.currentHope?.value || 0
+            value: payload?.currentHope?.value || this.attributes.secondary.hope
         }
         this.states = {
             exhaust: payload?.states?.exhaust || false,
@@ -259,5 +278,20 @@ export class PlayerType {
         console.log(this)
 
         this.modifiers = SetModifiers(this)
+    }
+
+    getHeaderValues(): HeaderValues {
+        return {
+            heroicCulture: nameCultureType[this.race.culture],
+            culturalAdvantage: nameCultureAdvantage[this.race.culturalAdvantage],
+            vocation: nameVocationType[this.vocation],
+            qualityLife: nameQualityLife[this.qualityLife],
+            age: this.age,
+            garant: this.garant,
+            shadowPath: this.shadowPath,
+            treasure: this.treasure,
+            particularities: this.particularities,
+            faults: this.faults,
+        }
     }
 }
