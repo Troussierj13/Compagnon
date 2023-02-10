@@ -1,10 +1,10 @@
 {
-    "attribute": 5,
-    "endurance": 20,
-    "power": 2,
-    "hate": 5,
-    "parade": 1,
-    "protection": 2,
-    "skills": [],
-    "capacities": []
+  "attribute": 5,
+  "endurance": 20,
+  "power": 2,
+  "hate": 5,
+  "parade": 1,
+  "protection": 2,
+  "skills": [],
+  "capacities": []
 }

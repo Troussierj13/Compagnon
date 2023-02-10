@@ -1,11 +1,11 @@
 module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'node',
-    transform: {
-        '^.+\\.ts?$': 'ts-jest',
-    },
-    transformIgnorePatterns: ['./node_modules/'],
-    moduleNameMapper: {
-        "^@/(.*)$": "<rootDir>/src/$1",
-    },
-}
+  preset: "ts-jest",
+  testEnvironment: "node",
+  transform: {
+    "^.+\\.ts?$": "ts-jest",
+  },
+  transformIgnorePatterns: ["./node_modules/"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
+};

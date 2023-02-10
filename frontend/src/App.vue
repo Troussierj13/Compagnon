@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import Home from "./views/Home.vue";</script>
+import Home from "./views/Home.vue";
+</script>
 
 <template>
-  <Suspense>
-    <Home />
-  </Suspense>
+    <Suspense>
+        <Home />
+    </Suspense>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

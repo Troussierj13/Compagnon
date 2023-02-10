@@ -1,22 +1,20 @@
 <template>
-  <div class="flex m-auto">
-    <Socket />
-    <PlayerSheet :player-json="state.players[0]" />
-  </div>
+    <div class="m-auto flex">
+        <Socket />
+        <PlayerSheet :player-json="data.players[0]" />
+    </div>
 </template>
 
 <script lang="ts" setup>
-import PlayerSheet from '../components/PlayerSheet.vue'
+import { data } from '@/utils/data';
+import { reactive } from 'vue';
+import PlayerSheet from '../components/PlayerSheet.vue';
 import Socket from '../components/Socket.vue';
-import {reactive} from "vue"
-import {APIRequests} from "@/utils/apiurls"
 
 const state = reactive({
-  players: []
-})
+    players: [],
+});
 
-state.players = await APIRequests.getAllCharacters()
-
+//state.players = await APIRequests.getAllCharacters()
 </script>
-<style scoped>
-</style>
+<style scoped></style>

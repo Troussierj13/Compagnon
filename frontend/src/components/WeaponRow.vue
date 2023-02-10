@@ -1,47 +1,51 @@
 <template>
-  <div class="flex w-full gap-1 grayscale font-sansserif font-bold text-[0.6rem] leading-[0.8rem]">
-    <span class="grow line-bottom-sm h-[1.125rem] my-auto">{{
-        props.weapon.name
-      }}</span>
-    <span
-        class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        props.weapon.dmg
-      }}</span>
-    <span
-        class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        (props.weapon.injury.oneHand === props.weapon.injury.twoHand ? props.weapon.injury.oneHand : props.weapon.injury.oneHand + ' / ' + props.weapon.injury.twoHand)
-      }}</span>
-    <span
-        class="w-1/12 line-bottom-sm text-center h-[1.125rem] my-auto">{{
-        props.weapon.weight
-      }}</span>
-    <span class="w-4/12 line-bottom-sm h-[1.125rem] my-auto">{{
-        props.weapon.note + props.weapon?.rewardsMod.join(', ')
-      }}</span>
-  </div>
+    <div
+        class="flex w-full gap-1 font-sansserif text-[0.6rem] font-bold leading-[0.8rem] grayscale"
+    >
+        <span class="line-bottom-sm my-auto h-[1.125rem] grow">{{
+            props.weapon.name +
+                (props.weapon?.rewardsMod.length > 0
+                    ? ' ( ' + props.weapon?.rewardsMod.join(', ') + ' )'
+                    : '')
+        }}</span>
+        <span class="line-bottom-sm my-auto h-[1.125rem] w-1/12 text-center">{{
+            props.weapon.dmg
+        }}</span>
+        <span class="line-bottom-sm my-auto h-[1.125rem] w-1/12 text-center">{{
+            props.weapon.injury.oneHand === props.weapon.injury.twoHand
+                ? props.weapon.injury.oneHand
+                : props.weapon.injury.oneHand +
+                    ' / ' +
+                    props.weapon.injury.twoHand
+        }}</span>
+        <span class="line-bottom-sm my-auto h-[1.125rem] w-1/12 text-center">{{
+            props.weapon.weight
+        }}</span>
+        <span class="line-bottom-sm my-auto h-[1.125rem] w-4/12">{{
+            props.weapon.note
+        }}</span>
+    </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
-  weapon: {
-    type: Object,
-    default() {
-      return {
-        "name": "",
-        "dmg": null,
-        "injury": {
-          "oneHand": null,
-          "twoHand": null
+    weapon: {
+        type: Object,
+        default() {
+            return {
+                name: '',
+                dmg: null,
+                injury: {
+                    oneHand: null,
+                    twoHand: null,
+                },
+                weight: null,
+                note: '',
+                rewardsMod: [],
+            };
         },
-        "weight": null,
-        "note": "",
-        "rewardsMod": []
-      }
     },
-  }
-})
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
