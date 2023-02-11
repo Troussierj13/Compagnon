@@ -725,7 +725,7 @@
                     <span>
                         {{ equip.name }} (
                         <span class="font-semibold">{{
-                            state.player.getSkillName(equip.skillRef)
+                            state.player.getSkill(equip.skillRef).name
                         }}</span>
                         )
                     </span>
@@ -736,13 +736,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Vector2Rect } from '@/utils/helpers';
-import {
-    Identifier,
-    IdentifierModifiableAttr,
-} from '@/utils/Types/IdentifiedType';
-import { PlayerType } from '@/utils/Types/PlayerType';
-import { reactive } from 'vue';
+import {Vector2Rect} from '@/utils/helpers';
+import {Identifier, IdentifierModifiableAttr,} from '@/utils/Types/IdentifiedType';
+import {PlayerType} from '@/utils/Types/PlayerType';
+import {reactive} from 'vue';
 import ArmorRow from './ArmorRow.vue';
 import HeaderPlayerSheet from './HeaderPlayerSheet.vue';
 import SkillRow from './SkillRow.vue';
@@ -767,7 +764,7 @@ interface State {
 const state = reactive<State>({
     player: new PlayerType(props.playerJson),
     stateClick: 'unknown' as StateClick,
-    tooltipPosition: { top: '0px', left: '0px' },
+    tooltipPosition: {top: '0px', left: '0px'},
     showTooltips: false,
     modifAttr: 'currentEndurance',
 });

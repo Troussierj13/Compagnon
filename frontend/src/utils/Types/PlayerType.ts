@@ -1,23 +1,44 @@
 import {
+    CulturalAdvantageType,
     CultureType,
-    nameCultureAdvantage,
     nameCultureType,
     nameQualityLife,
     nameVocationType,
     QualityLife,
+    qualityLifeByTreasure,
+    QualityLifeType,
+    Vocation,
     VocationType,
 } from '@/utils/Culture/CultureType';
-import {Hobbit} from '@/utils/Culture/Hobbit';
 import {IDictionary, IntRange} from '@/utils/helpers';
 import {Modifiers} from '@/utils/MapModifiers';
 import {SetModifiers} from '@/utils/Rules/Rules';
 import {ArmorType} from '@/utils/Types/ArmorType';
 import {Attributes} from '@/utils/Types/CharacterTypes';
-import {IdentifiedValue, Identifier, IdentifierModifiableAttr, SkillIdentifier,} from '@/utils/Types/IdentifiedType';
+import {
+    HeartSkillIdentifier,
+    IdentifiedValue,
+    Identifier,
+    IdentifierModifiableAttr,
+    MindSkillIdentifier,
+    SkillIdentifier,
+    StrengthSkillIdentifier,
+} from '@/utils/Types/IdentifiedType';
 import {WeaponType} from '@/utils/Types/WeaponType';
+import {Bardide} from "@/utils/Culture/Bardide";
+import {Hobbit} from '@/utils/Culture/Hobbit';
+import {LindonElf} from "@/utils/Culture/LindonElf";
+import {BreeHuman} from "@/utils/Culture/BreeHuman";
+import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
+import {NorthRanger} from "@/utils/Culture/NorthRanger";
 
 const CultureEnumToInstance = {
+    bardide: Bardide,
+    lindonElf: LindonElf,
     hobbit: Hobbit,
+    breeHuman: BreeHuman,
+    durinDwarf: DurinDwarf,
+    northRanger: NorthRanger
 };
 
 export class SkillType {
@@ -229,13 +250,12 @@ type TravelEquipment = {
 
 type HeaderValues = {
     heroicCulture: string;
-    culturalAdvantage: string;
-    vocation: string;
+    culturalAdvantage: Array<CulturalAdvantageType>;
+    vocation: VocationType;
     name: string;
     age: number;
-    qualityLife: string;
+    qualityLife: QualityLifeType;
     garant: string;
-    shadowPath: string;
     treasure: number;
     particularities: Array<string>;
     faults: Array<string>;
@@ -243,13 +263,13 @@ type HeaderValues = {
 
 export class PlayerType {
     name: string;
-    vocation: VocationType;
+    vocation: Vocation;
     age: number;
     qualityLife: QualityLife;
     garant: string;
     particularities: Array<string>;
     faults: Array<string>;
-    race: CultureType;
+    culture: CultureType;
     treasure: number;
     attributes: Attributes;
     strengthSkills: StrengthSkillsType;
@@ -283,7 +303,7 @@ export class PlayerType {
         this.garant = payload?.garant || '';
         this.particularities = payload?.particularities || [];
         this.faults = payload?.faults || [];
-        this.race = CultureEnumToInstance['hobbit'];
+        this.culture = payload?.culture ? CultureEnumToInstance[payload.culture.culture] : CultureEnumToInstance['hobbit'];
         this.treasure = payload?.treasure || 0;
         this.attributes = new Attributes(payload?.attributes?.values);
         this.strengthSkills = new StrengthSkillsType(payload?.strengthSkills);
@@ -430,21 +450,15 @@ export class PlayerType {
         }
     }
 
-    getSkillName(identifier: SkillIdentifier): string {
-        return 'Nom Compétence';
-    }
-
     getHeaderValues(): HeaderValues {
         return {
-            heroicCulture: nameCultureType[this.race.culture],
-            culturalAdvantage:
-                nameCultureAdvantage[this.race.culturalAdvantage],
-            vocation: nameVocationType[this.vocation].name,
-            qualityLife: nameQualityLife[this.qualityLife],
+            heroicCulture: nameCultureType[this.culture.culture],
+            culturalAdvantage: this.culture.culturalAdvantages,
+            vocation: nameVocationType[this.vocation],
+            qualityLife: nameQualityLife[qualityLifeByTreasure(this.treasure)],
             name: this.name,
             age: this.age,
             garant: this.garant,
-            shadowPath: nameVocationType[this.vocation].shadowPath,
             treasure: this.treasure,
             particularities: this.particularities,
             faults: this.faults,
@@ -497,6 +511,47 @@ export class PlayerType {
         let modified = this.getModifiedValue('currentEndurance');
 
         this.states.exhaust = modified < this.getModifiedValue('weight') + this.getModifiedValue('fatigue');
+    }
+
+    getSkill(identifier: StrengthSkillIdentifier | HeartSkillIdentifier | MindSkillIdentifier): SkillType {
+        switch (identifier) {
+            case "awe":
+                return this.strengthSkills.awe;
+            case "athletics":
+                return this.strengthSkills.athletics;
+            case "awareness":
+                return this.strengthSkills.awareness;
+            case "hunting":
+                return this.strengthSkills.hunting;
+            case "song":
+                return this.strengthSkills.song;
+            case "craft":
+                return this.strengthSkills.craft;
+            case "enhearten":
+                return this.heartSkills.enhearten;
+            case "travel":
+                return this.heartSkills.travel;
+            case "insight":
+                return this.heartSkills.insight;
+            case "healing":
+                return this.heartSkills.healing;
+            case "courtesy":
+                return this.heartSkills.courtesy;
+            case "battle":
+                return this.heartSkills.battle;
+            case "persuade":
+                return this.mindSkills.persuade;
+            case "stealth":
+                return this.mindSkills.stealth;
+            case "scan":
+                return this.mindSkills.scan;
+            case "explore":
+                return this.mindSkills.explore;
+            case "riddle":
+                return this.mindSkills.riddle;
+            case "lore":
+                return this.mindSkills.lore;
+        }
     }
 
     private setCurrentHope(value: number) {

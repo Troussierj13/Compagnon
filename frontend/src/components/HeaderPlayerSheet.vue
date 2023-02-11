@@ -21,13 +21,13 @@
                 >Avantage culturel</span
                 >
                 <span class="font-UncialAntiqua font-medium">{{
-                    props.data.culturalAdvantage
+                    props.data.culturalAdvantage.map((advantage) => advantage.name).join(', ')
                 }}</span>
             </span>
             <span class="grayscale line-bottom-sm h-5 flex gap-3">
                 <span class="text-[0.5rem] leading-[0.7rem] mb-auto">Vocation</span>
                 <span class="font-UncialAntiqua font-medium">{{
-                    props.data.vocation
+                    props.data.vocation.name
                 }}</span>
             </span>
         </div>
@@ -46,7 +46,7 @@
                             >Niveau de vie</span
                             >
                             <span class="font-UncialAntiqua font-medium">{{
-                                props.data.qualityLife
+                                props.data.qualityLife.name
                             }}</span>
                         </span>
                     </div>
@@ -69,7 +69,7 @@
                 >Voie de l'ombre</span
                 >
                 <span class="font-UncialAntiqua font-medium">{{
-                    props.data.shadowPath
+                    props.data.vocation.shadowPath
                 }}</span>
             </span>
         </div>
@@ -104,12 +104,17 @@ const props = defineProps({
         default() {
             return {
                 heroicCulture: "",
-                culturalAdvantage: "",
-                vocation: "",
+                culturalAdvantage: [],
+                vocation: {
+                    name: "",
+                    shadowPath: ""
+                },
                 age: 0,
-                qualityLife: "",
+                qualityLife: {
+                    name: "",
+                    treasure: 0
+                },
                 garant: "",
-                shadowPath: "",
                 treasure: 0,
                 particularities: [],
                 faults: [],
