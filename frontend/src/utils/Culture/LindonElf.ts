@@ -30,6 +30,8 @@ class LindonElfType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 2, mind: 6}),
         ];
 
+        const possibleParticularities = [""];
+
         super(
             "lindonElf",
             ["elvenPrecision", "longDefeat"],
@@ -39,7 +41,8 @@ class LindonElfType extends CultureType {
             derived,
             skills,
             favoredSkills,
-            combatSkills
+            combatSkills,
+            possibleParticularities
         );
     }
 }

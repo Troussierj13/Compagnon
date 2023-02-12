@@ -30,6 +30,8 @@ class BreeHumanType extends CultureType {
             new SimpleAttributesValuesType({strength: 2, heart: 6, mind: 6}),
         ];
 
+        const possibleParticularities = [""];
+
         super(
             "breeHuman",
             ["fromBree"],
@@ -39,7 +41,8 @@ class BreeHumanType extends CultureType {
             derived,
             skills,
             favoredSkills,
-            combatSkills
+            combatSkills,
+            possibleParticularities
         );
     }
 }

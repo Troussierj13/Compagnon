@@ -30,6 +30,8 @@ class DurinDwarfType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 2, mind: 6}),
         ];
 
+        const possibleParticularities = [""];
+
         super(
             "durinDwarf",
             ["tireless", "naugrim"],
@@ -39,7 +41,8 @@ class DurinDwarfType extends CultureType {
             derived,
             skills,
             favoredSkills,
-            combatSkills
+            combatSkills,
+            possibleParticularities
         );
     }
 }

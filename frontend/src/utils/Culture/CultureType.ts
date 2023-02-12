@@ -190,7 +190,8 @@ export class CultureType {
     readonly attributesMaxValue: number;
     readonly attributesSample: Array<SimpleAttributesValuesType>;
     readonly commonSkills: Array<number>;
-    readonly _favoredSkills: Array<number>;
+    readonly favoredSkills: Array<number>;
+    readonly possibleParticularities: Array<string>;
 
     constructor(
         culture: CultureTypeEnum,
@@ -201,7 +202,8 @@ export class CultureType {
         derivedCharacteristics: DerivedCharacteristics,
         commonSkills: Array<number>,
         favoredSkills: Array<number>,
-        combatSkills: DefaultCombatSkill
+        combatSkills: DefaultCombatSkill,
+        possibleParticularities: Array<string>
     ) {
         this.culture = culture;
         this.culturalAdvantages = culturalAdvantages.map(x => nameCultureAdvantage[x]);
@@ -210,7 +212,8 @@ export class CultureType {
         this.attributesSample = attributesSample;
         this.derivedCharacteristics = derivedCharacteristics;
         this.commonSkills = commonSkills;
-        this._favoredSkills = favoredSkills;
+        this.favoredSkills = favoredSkills;
         this.combatSkills = combatSkills;
+        this.possibleParticularities = possibleParticularities;
     }
 }

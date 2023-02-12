@@ -31,6 +31,7 @@ import {LindonElf} from "@/utils/Culture/LindonElf";
 import {BreeHuman} from "@/utils/Culture/BreeHuman";
 import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
+import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 
 const CultureEnumToInstance = {
     bardide: Bardide,
@@ -200,32 +201,6 @@ export class MindSkillsType {
             payload?.lore?.favored,
             payload?.lore?.rank
         );
-    }
-}
-
-type RewardVirtue = {
-    identifier: string;
-    name: string;
-    description: string;
-};
-
-class Wisdom {
-    rank: number;
-    virtues: Array<RewardVirtue>;
-
-    constructor(payload?: Partial<Wisdom>) {
-        this.rank = payload?.rank || 0;
-        this.virtues = payload?.virtues || [];
-    }
-}
-
-class Valiance {
-    rank: number;
-    rewards: Array<RewardVirtue>;
-
-    constructor(payload?: Partial<Valiance>) {
-        this.rank = payload?.rank || 0;
-        this.rewards = payload?.rewards || [];
     }
 }
 

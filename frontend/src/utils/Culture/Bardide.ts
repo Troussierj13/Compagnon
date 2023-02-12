@@ -30,6 +30,8 @@ class BardideType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 6, mind: 2}),
         ];
 
+        const possibleParticularities = [""];
+
         super(
             "bardide",
             ["intrepid"],
@@ -39,7 +41,8 @@ class BardideType extends CultureType {
             derived,
             skills,
             favoredSkills,
-            combatSkills
+            combatSkills,
+            possibleParticularities
         );
     }
 }

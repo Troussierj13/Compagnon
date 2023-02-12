@@ -30,6 +30,8 @@ class NorthRangerType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 6, mind: 2}),
         ];
 
+        const possibleParticularities = [""];
+
         super(
             "northRanger",
             ['kingOfMen', 'dunedainAllegiance'],
@@ -39,7 +41,8 @@ class NorthRangerType extends CultureType {
             derived,
             skills,
             favoredSkills,
-            combatSkills
+            combatSkills,
+            possibleParticularities
         );
     }
 }
