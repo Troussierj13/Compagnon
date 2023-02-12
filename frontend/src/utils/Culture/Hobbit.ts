@@ -30,8 +30,7 @@ class HobbitType extends CultureType {
             new SimpleAttributesValuesType({strength: 2, heart: 6, mind: 6}),
         ];
 
-        const possibleParticularities = [""];
-
+        const possibleParticularities = ["Affable", "Curieux", "Honorable", "Jovial", "Loyal", "Passionné", "Rustre", "Vue perçante"];
         super(
             "hobbit",
             ["goodSense", "semiMan"],

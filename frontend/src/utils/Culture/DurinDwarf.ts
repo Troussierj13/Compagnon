@@ -30,7 +30,7 @@ class DurinDwarfType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 2, mind: 6}),
         ];
 
-        const possibleParticularities = [""];
+        const possibleParticularities = ["Circonspect", "Entêté", "Fier", "Impétueux", "Majestueux", "Malin", "Secret", "Sévère"];
 
         super(
             "durinDwarf",

@@ -30,7 +30,8 @@ class BreeHumanType extends CultureType {
             new SimpleAttributesValuesType({strength: 2, heart: 6, mind: 6}),
         ];
 
-        const possibleParticularities = [""];
+        const possibleParticularities = ["Affable", "Curieux", "Généreux", "Loyal", "Malin", "Patient", "Rustre", "Sincère"];
+
 
         super(
             "breeHuman",

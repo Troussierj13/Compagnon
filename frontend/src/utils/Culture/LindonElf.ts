@@ -30,7 +30,7 @@ class LindonElfType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 2, mind: 6}),
         ];
 
-        const possibleParticularities = [""];
+        const possibleParticularities = ["Beau", "Circonspect", "Jovial", "Majestueux", "Patient", "Rapide", "Subtil", "Vue perçante"];
 
         super(
             "lindonElf",

@@ -30,7 +30,7 @@ class NorthRangerType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 6, mind: 2}),
         ];
 
-        const possibleParticularities = [""];
+        const possibleParticularities = ["Courageux", "Grand", "Honorable", "Rapide", "Secret", "Sévère", "Sincère", "Subtil"];
 
         super(
             "northRanger",
