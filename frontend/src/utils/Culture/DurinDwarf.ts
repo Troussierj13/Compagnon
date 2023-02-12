@@ -4,6 +4,7 @@ import {
     DerivedCharacteristics,
     SimpleAttributesValuesType,
 } from "@/utils/Culture/CultureType";
+import {PossibleChoose} from "@/utils/helpers";
 
 class DurinDwarfType extends CultureType {
     constructor() {
@@ -30,7 +31,7 @@ class DurinDwarfType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 2, mind: 6}),
         ];
 
-        const possibleParticularities = ["Circonspect", "Entêté", "Fier", "Impétueux", "Majestueux", "Malin", "Secret", "Sévère"];
+        const possibleParticularities = new PossibleChoose<string>(2, ["Circonspect", "Entêté", "Fier", "Impétueux", "Majestueux", "Malin", "Secret", "Sévère"]);
 
         super(
             "durinDwarf",

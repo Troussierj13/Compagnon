@@ -4,6 +4,7 @@ import {
     DerivedCharacteristics,
     SimpleAttributesValuesType,
 } from "@/utils/Culture/CultureType";
+import {PossibleChoose} from "@/utils/helpers";
 
 class LindonElfType extends CultureType {
     constructor() {
@@ -30,7 +31,7 @@ class LindonElfType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 2, mind: 6}),
         ];
 
-        const possibleParticularities = ["Beau", "Circonspect", "Jovial", "Majestueux", "Patient", "Rapide", "Subtil", "Vue perçante"];
+        const possibleParticularities = new PossibleChoose<string>(2, ["Beau", "Circonspect", "Jovial", "Majestueux", "Patient", "Rapide", "Subtil", "Vue perçante"]);
 
         super(
             "lindonElf",

@@ -4,6 +4,7 @@ import {
     DerivedCharacteristics,
     SimpleAttributesValuesType,
 } from "@/utils/Culture/CultureType";
+import {PossibleChoose} from "@/utils/helpers";
 
 class NorthRangerType extends CultureType {
     constructor() {
@@ -30,7 +31,7 @@ class NorthRangerType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 6, mind: 2}),
         ];
 
-        const possibleParticularities = ["Courageux", "Grand", "Honorable", "Rapide", "Secret", "Sévère", "Sincère", "Subtil"];
+        const possibleParticularities = new PossibleChoose<string>(2, ["Courageux", "Grand", "Honorable", "Rapide", "Secret", "Sévère", "Sincère", "Subtil"]);
 
         super(
             "northRanger",

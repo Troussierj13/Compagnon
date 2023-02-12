@@ -1,43 +1,5 @@
 import {ModifierParam} from "@/utils/MapModifiers";
-
-export type VocationType = {
-    name: string,
-    shadowPath: string,
-}
-export type Vocation =
-    | "captain"
-    | "champion"
-    | "treasureHunter"
-    | "messenger"
-    | "protector"
-    | "savant";
-
-export const nameVocationType = {
-    captain: {
-        name: "Capitaine",
-        shadowPath: "Attrait du pouvoir",
-    },
-    champion: {
-        name: "Champion",
-        shadowPath: "Malédiction de la vengeance",
-    },
-    treasureHunter: {
-        name: "Chasseur de trésors",
-        shadowPath: "Mal du dragon",
-    },
-    messenger: {
-        name: "Messager",
-        shadowPath: "Folie itinérante",
-    },
-    protector: {
-        name: "Protecteur",
-        shadowPath: "Voie du désespoir",
-    },
-    savant: {
-        name: "Erudit",
-        shadowPath: "Attrait des secret",
-    },
-};
+import {PossibleChoose} from "@/utils/helpers";
 
 export type CultureTypeEnum =
     "bardide"
@@ -191,7 +153,7 @@ export class CultureType {
     readonly attributesSample: Array<SimpleAttributesValuesType>;
     readonly commonSkills: Array<number>;
     readonly favoredSkills: Array<number>;
-    readonly possibleParticularities: Array<string>;
+    readonly possibleParticularities: PossibleChoose<string>;
 
     constructor(
         culture: CultureTypeEnum,
@@ -203,7 +165,7 @@ export class CultureType {
         commonSkills: Array<number>,
         favoredSkills: Array<number>,
         combatSkills: DefaultCombatSkill,
-        possibleParticularities: Array<string>
+        possibleParticularities: PossibleChoose<string>
     ) {
         this.culture = culture;
         this.culturalAdvantages = culturalAdvantages.map(x => nameCultureAdvantage[x]);

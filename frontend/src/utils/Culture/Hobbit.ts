@@ -4,6 +4,7 @@ import {
     DerivedCharacteristics,
     SimpleAttributesValuesType,
 } from "@/utils/Culture/CultureType";
+import {PossibleChoose} from "@/utils/helpers";
 
 class HobbitType extends CultureType {
     constructor() {
@@ -30,7 +31,7 @@ class HobbitType extends CultureType {
             new SimpleAttributesValuesType({strength: 2, heart: 6, mind: 6}),
         ];
 
-        const possibleParticularities = ["Affable", "Curieux", "Honorable", "Jovial", "Loyal", "Passionné", "Rustre", "Vue perçante"];
+        const possibleParticularities = new PossibleChoose<string>(2, ["Affable", "Curieux", "Honorable", "Jovial", "Loyal", "Passionné", "Rustre", "Vue perçante"]);
         super(
             "hobbit",
             ["goodSense", "semiMan"],

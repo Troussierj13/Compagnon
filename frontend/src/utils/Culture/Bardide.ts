@@ -4,6 +4,7 @@ import {
     DerivedCharacteristics,
     SimpleAttributesValuesType,
 } from "@/utils/Culture/CultureType";
+import {PossibleChoose} from "@/utils/helpers";
 
 class BardideType extends CultureType {
     constructor() {
@@ -30,7 +31,7 @@ class BardideType extends CultureType {
             new SimpleAttributesValuesType({strength: 6, heart: 6, mind: 2}),
         ];
 
-        const possibleParticularities = ["Beau", "Courageux", "Entêté", "Fier", "Généreux", "Grand", "Impétueux", "Passioné"];
+        const possibleParticularities = new PossibleChoose<string>(2, ["Beau", "Courageux", "Entêté", "Fier", "Généreux", "Grand", "Impétueux", "Passioné"]);
 
         super(
             "bardide",
