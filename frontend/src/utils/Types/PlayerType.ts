@@ -3,13 +3,11 @@ import {
     CultureType,
     nameCultureType,
     nameQualityLife,
-    nameVocationType,
     QualityLife,
     qualityLifeByTreasure,
     QualityLifeType,
-    Vocation,
-    VocationType,
 } from '@/utils/Culture/CultureType';
+import {Vocation, VocationType, VocationTypeToInstance,} from '@/utils/Vocations/Vocations';
 import {IDictionary, IntRange} from '@/utils/helpers';
 import {Modifiers} from '@/utils/MapModifiers';
 import {SetModifiers} from '@/utils/Rules/Rules';
@@ -33,7 +31,7 @@ import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 
-const CultureEnumToInstance = {
+const CultureTypeToInstance = {
     bardide: Bardide,
     lindonElf: LindonElf,
     hobbit: Hobbit,
@@ -278,7 +276,7 @@ export class PlayerType {
         this.garant = payload?.garant || '';
         this.particularities = payload?.particularities || [];
         this.faults = payload?.faults || [];
-        this.culture = payload?.culture ? CultureEnumToInstance[payload.culture.culture] : CultureEnumToInstance['hobbit'];
+        this.culture = payload?.culture ? CultureTypeToInstance[payload.culture.culture] : CultureTypeToInstance['hobbit'];
         this.treasure = payload?.treasure || 0;
         this.attributes = new Attributes(payload?.attributes?.values);
         this.strengthSkills = new StrengthSkillsType(payload?.strengthSkills);
@@ -429,7 +427,7 @@ export class PlayerType {
         return {
             heroicCulture: nameCultureType[this.culture.culture],
             culturalAdvantage: this.culture.culturalAdvantages,
-            vocation: nameVocationType[this.vocation],
+            vocation: VocationTypeToInstance[this.vocation],
             qualityLife: nameQualityLife[qualityLifeByTreasure(this.treasure)],
             name: this.name,
             age: this.age,
