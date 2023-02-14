@@ -33,27 +33,16 @@
                             <div class="mb-2 flex h-1/3 w-full flex-col justify-center">
                                 <span class="mx-auto text-lg text-red">Corps</span>
                                 <span class="diamond diamond-lg relative top-3.5 ml-[55.5%] mr-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue(
-                                            'strength'
-                                        )
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('strength') }}</span>
                                     <span class="absolute -top-8 left-0 text-xs">Valeur</span>
                                 </span>
                                 <span class="diamond diamond-double diamond-xl mx-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue(
-                                            'strengthSR'
-                                        )
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('strengthSR') }}</span>
                                     <span class="absolute right-3 -bottom-7 text-xs">SR</span>
                                 </span>
                                 <span class="diamond diamond-lg relative -top-2.5 ml-[56.7%] mr-auto">
-                                    <span :key="state.player.currentEndurance.value">{{
-                                        state.player.getModifiedValue(
-                                            'enduranceMax'
-                                        )
-                                    }}</span>
+                                    <span :key="state.player.currentEndurance.value">
+                                        {{ state.player.getModifiedValue('enduranceMax') }}</span>
                                     <span class="absolute -top-3 left-9 text-xs">Endurance</span>
                                 </span>
                             </div>
@@ -83,21 +72,15 @@
                             <div class="mb-2 flex h-1/3 w-full flex-col justify-center pr-1">
                                 <span class="mx-auto text-lg text-red">C&oelig;ur</span>
                                 <span class="diamond diamond-lg relative top-3.5 ml-[55.5%] mr-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue('heart')
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('heart') }}</span>
                                     <span class="absolute -top-8 left-0 text-xs">Valeur</span>
                                 </span>
                                 <span class="diamond diamond-double diamond-xl mx-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue('heartSR')
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('heartSR') }}</span>
                                     <span class="absolute right-3 -bottom-7 text-xs">SR</span>
                                 </span>
                                 <span class="diamond diamond-lg relative -top-2.5 ml-[56.7%] mr-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue('hopeMax')
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('hopeMax') }}</span>
                                     <span class="absolute -top-1 left-10 text-xs">Espoir</span>
                                 </span>
                             </div>
@@ -117,9 +100,7 @@
                                 <div class="flex h-4 w-full justify-between mb-3 mt-4">
                                     <span class="text-red">Récompenses</span>
                                     <span class="diamond diamond-md relative">
-                                        <span>{{
-                                            state.player.valiance.rank
-                                        }}</span>
+                                        <span>{{ state.player.valiance.rank }}</span>
                                         <span class="absolute top-5 -left-16 font-serif text-[0.65rem]">
                                             VAILLANCE
                                         </span>
@@ -140,21 +121,15 @@
                             <div class="mb-2 flex h-1/3 w-full flex-col justify-center">
                                 <span class="mx-auto text-lg text-red">Esprit</span>
                                 <span class="diamond diamond-lg relative top-3.5 ml-[55.5%] mr-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue('mind')
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('mind') }}</span>
                                     <span class="absolute -top-8 left-0 text-xs">Valeur</span>
                                 </span>
                                 <span class="diamond diamond-double diamond-xl mx-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue('mindSR')
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('mindSR') }}</span>
                                     <span class="absolute right-3 -bottom-7 text-xs">SR</span>
                                 </span>
                                 <span class="diamond diamond-lg relative -top-2.5 ml-[56.7%] mr-auto">
-                                    <span>{{
-                                        state.player.getModifiedValue('parade')
-                                    }}</span>
+                                    <span>{{ state.player.getModifiedValue('parade') }}</span>
                                     <span class="absolute -top-2 left-10 text-xs">Parade</span>
                                 </span>
                             </div>
@@ -291,9 +266,7 @@
                         <span class="text-md mx-auto mb-2 whitespace-pre-line text-center text-red">Endurance actuelle</span>
                         <div class="mr-6 mt-2 flex flex-col">
                             <span class="diamond diamond-md relative top-3.5 -right-2 ml-[55.5%] mr-auto select-none">
-                                <span>{{
-                                    state.player.getModifiedValue('weight')
-                                }}</span>
+                                <span>{{ state.player.getModifiedValue('weight') }}</span>
                                 <span class="absolute -top-4 right-2 text-xs">Charge</span>
                             </span>
                             <span
@@ -304,11 +277,7 @@
                                     -1
                                 )">
                                 <span>
-                                    {{
-                                        state.player.getModifiedValue(
-                                            'currentEndurance'
-                                        )
-                                    }}
+                                    {{ state.player.getModifiedValue('currentEndurance') }}
                                 </span>
                             </span>
                             <span
@@ -323,9 +292,7 @@
                                 >-</span>
                                 <span
                                     v-if="state.player.getModifiedValue('fatigue') > 0"
-                                >{{
-                                    state.player.getModifiedValue('fatigue')
-                                }}</span>
+                                >{{ state.player.getModifiedValue('fatigue') }}</span>
                                 <span class="absolute top-5 left-1.5 text-xs">Fatigue</span>
                             </span>
                         </div>
@@ -343,10 +310,9 @@
                                 <span
                                     v-if="state.player.getModifiedValue('shadows') <= 0"
                                 >-</span>
-                                <span
-                                    v-if="state.player.getModifiedValue('shadows') > 0">{{
-                                    state.player.getModifiedValue('shadows')
-                                }}</span>
+                                <span v-if="state.player.getModifiedValue('shadows') > 0">
+                                    {{ state.player.getModifiedValue('shadows') }}
+                                </span>
                                 <span class="absolute -top-4 right-2 text-xs">Ombres</span>
                             </span>
                             <span
@@ -355,9 +321,7 @@
                                     { top: 427, left: 1195 },
                                     'currentHope',
                                     -1)">
-                                <span>{{
-                                    state.player.getModifiedValue('currentHope')
-                                }}</span>
+                                <span>{{ state.player.getModifiedValue('currentHope') }}</span>
                             </span>
                             <span
                                 class="diamond diamond-md relative -top-3.5 -right-2 ml-[55.5%] mr-auto cursor-pointer select-none"
@@ -366,9 +330,9 @@
                                     'sequels',
                                     1)">
                                 <span v-if="state.player.sequels <= 0">-</span>
-                                <span v-if="state.player.sequels > 0">{{
-                                    state.player.sequels
-                                }}</span>
+                                <span v-if="state.player.sequels > 0">
+                                    {{ state.player.sequels }}
+                                </span>
                                 <span class="absolute top-5 left-1.5 text-xs">Séquelles</span>
                             </span>
                         </div>
@@ -412,11 +376,7 @@
                         <span class="my-auto font-serif text-xs font-semibold italic leading-3">Blessure</span>
                         <span class="rect w-24 text-sm">
                             <span v-if="state.player.states.injuries.value > 0">
-                                {{
-                                    state.player.states.injuries.value +
-                                        ' ' +
-                                        state.player.states.injuries.unit
-                                }}
+                                {{ state.player.states.injuries.value + ' ' + state.player.states.injuries.unit }}
                             </span>
                         </span>
                     </div>
@@ -430,11 +390,9 @@
                     class="scroll-bar-red flex flex-col overflow-auto text-xs"
                 >
                     <span>
-                        {{ equip.name }} (
-                        <span class="font-semibold">{{
+                        {{ equip.name }} (<span class="font-semibold">{{
                             state.player.getSkill(equip.skillRef).name
-                        }}</span>
-                        )
+                        }}</span>)
                     </span>
                 </div>
             </div>
