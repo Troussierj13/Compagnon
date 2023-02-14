@@ -9,7 +9,7 @@ export const data = {
             age: 42,
             qualityLife: "modest",
             garant: "Bilbo Saquet",
-            particularities: ["Subtile", "Rapide", "Folklore"],
+            particularities: ["Subtile", "Rapide"],
             faults: [],
             treasure: 50,
             attributes: {
@@ -159,11 +159,24 @@ export const data = {
             },
             wisdom: {
                 rank: 1,
-                rewards: [],
+                virtues: [
+                    {identifier: 'assuranceVirtue'},
+                    {identifier: 'empoweredVirtue'},
+                    {identifier: 'steadyVirtue'},
+                    {identifier: 'masteryVirtue'},
+                    {identifier: 'resistanceVirtue'},
+                    {identifier: 'livenessVirtue'}],
             },
             valiance: {
                 rank: 1,
-                virtues: [],
+                rewards: [
+                    {identifier: 'sharpReward'},
+                    {identifier: 'adjustedReward'},
+                    {identifier: 'cleverReward'},
+                    {identifier: 'devastatingReward'},
+                    {identifier: 'ferociousReward'},
+                    {identifier: 'reinforcedReward'}
+                ],
             },
             adventurePoints: 0,
             progressPoints: 0,

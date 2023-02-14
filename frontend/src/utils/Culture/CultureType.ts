@@ -1,5 +1,6 @@
 import {ModifierParam} from "@/utils/MapModifiers";
-import {PossibleChoose} from "@/utils/helpers";
+import {DescribableName, PossibleChoose} from "@/utils/helpers";
+import {CulturalAdvantage, CulturalAdvantageToInstance} from "@/utils/Culture/CulturalAdvantage";
 
 export type CultureTypeEnum =
     "bardide"
@@ -15,64 +16,6 @@ export const nameCultureType = {
     breeHuman: "Homme de Bree",
     durinDwarf: "Nain du peuple de Durin",
     northRanger: "Rodeur du nord",
-};
-
-export type CulturalAdvantageType = {
-    name: string
-    bonus: string
-}
-export type CulturalAdvantage =
-    "intrepid"
-    | "elvenPrecision"
-    | "longDefeat"
-    | "goodSense"
-    | "semiMan"
-    | "fromBree"
-    | "tireless"
-    | "naugrim"
-    | "kingOfMen"
-    | "dunedainAllegiance"
-export const nameCultureAdvantage = {
-    intrepid: {
-        name: "Intrepide",
-        bonus: "Vos tests de VAILIANCE sont favorisés"
-    },
-    elvenPrecision: {
-        name: "Précision elfique",
-        bonus: "Tant que votre Héros n'est pas Mélancolique, vous pouvez dépenser 1 point d'Espoir pour obtenir une Réussite magique lors d'un jet de Compétence"
-    },
-    longDefeat: {
-        name: "",
-        bonus: "Durant la Phase de Communauté, lors de l'étape destinée à réduire les points d'Ombre cumulés par les Héros, vous ne pouvez perdre que 1 point d'Ombre"
-    },
-    goodSense: {
-        name: "Bon sens Hobbit",
-        bonus: "Vos tests de SAGESSE sont favorisés, et vous gagnez (1d) à vos tests d'Ombre lorsque vous tentez de résister à la Cupidité"
-    },
-    semiMan: {
-        name: "Semi-Hommes",
-        bonus: "Ne peut utiliser que : Arc, dague, épée courte, gourdin, hache, lance, lance courte, massue. De plus, les Semi-Hommes ne peuvent pas utiliser de grand bouclier."
-    },
-    fromBree: {
-        name: "Originaire de Bree",
-        bonus: "Chaque Homme de Bree de la Compagnie augmente la valeur de Communauté de 1 point"
-    },
-    tireless: {
-        name: "Infatigable",
-        bonus: "Divisez par deux la valeur de Charge de l'armure du Héros quelle qu'elle soit, casque inclus, mais sans prendre en compte son bouclier (arrondir au supérieur)"
-    },
-    naugrim: {
-        name: "Naugrim",
-        bonus: "Un aventurier nain ne peut pas utiliser l'Attirail de guerre suivant : grand arc, grande lance, grand bouclier"
-    },
-    kingOfMen: {
-        name: "Rois des Hommes",
-        bonus: "Ajouter 1 points à un Attribut de votre choix"
-    },
-    dunedainAllegiance: {
-        name: "Allégeance des Dünedain",
-        bonus: "Durant la Phase de Communauté (hormis Yule), le nombre maximal de points d'Espoir que vous pouvez récupérer est égal à la moitié de votre valeur de CŒUR (arrondir au supérieur)"
-    }
 };
 
 export type QualityLifeType = {
@@ -147,7 +90,7 @@ export class CultureType {
     readonly culture: CultureTypeEnum;
     readonly derivedCharacteristics: DerivedCharacteristics;
     readonly combatSkills: DefaultCombatSkill;
-    readonly culturalAdvantages: Array<CulturalAdvantageType>;
+    readonly culturalAdvantages: Array<DescribableName>;
     readonly qualityLife: QualityLifeType;
     readonly attributesMaxValue: number;
     readonly attributesSample: Array<SimpleAttributesValuesType>;
@@ -168,7 +111,7 @@ export class CultureType {
         possibleParticularities: PossibleChoose<string>
     ) {
         this.culture = culture;
-        this.culturalAdvantages = culturalAdvantages.map(x => nameCultureAdvantage[x]);
+        this.culturalAdvantages = culturalAdvantages.map(x => CulturalAdvantageToInstance[x]);
         this.qualityLife = nameQualityLife[qualityLife];
         this.attributesMaxValue = attributesMaxValue;
         this.attributesSample = attributesSample;

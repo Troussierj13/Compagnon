@@ -10,18 +10,16 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    Identifier,
-    IdentifierModifiableAttr,
-} from '@/utils/Types/IdentifiedType';
-import { PlayerType } from '@/utils/Types/PlayerType';
-import { reactive } from 'vue';
+import {Identifier, IdentifierModifiableAttr,} from '@/utils/Types/IdentifiedType';
+import {PlayerType} from '@/utils/Types/PlayerType';
+import {reactive} from 'vue';
+import {Vector2Rect} from "@/utils/helpers";
 
 interface Props {
     children: Object;
     player: PlayerType;
     identifierAttr: Identifier | IdentifierModifiableAttr;
-    position: Object;
+    position: Vector2Rect<string>;
 }
 
 interface State {
@@ -43,16 +41,16 @@ const model = reactive<State>({
 @import 'tailwindcss/utilities';
 
 .simple-border {
-    border: 10px solid;
-    border-image-repeat: stretch;
-    border-image-slice: 18 18 18 18;
-    z-index: 0;
-    border-image-source: theme('backgroundImage.redBorderSimple');
+  border: 10px solid;
+  border-image-repeat: stretch;
+  border-image-slice: 18 18 18 18;
+  z-index: 0;
+  border-image-source: theme('backgroundImage.redBorderSimple');
 }
 
 .position-tooltips {
-    top: v-bind('props.position.top');
-    @apply -translate-y-[50%];
-    left: v-bind('props.position.left');
+  top: v-bind('props.position.top');
+  @apply -translate-y-[50%];
+  left: v-bind('props.position.left');
 }
 </style>

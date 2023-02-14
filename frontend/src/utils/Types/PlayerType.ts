@@ -1,5 +1,4 @@
 import {
-    CulturalAdvantageType,
     CultureType,
     nameCultureType,
     nameQualityLife,
@@ -7,8 +6,9 @@ import {
     qualityLifeByTreasure,
     QualityLifeType,
 } from '@/utils/Culture/CultureType';
-import {Vocation, VocationType, VocationTypeToInstance,} from '@/utils/Vocations/Vocations';
-import {IDictionary, IntRange} from '@/utils/helpers';
+import {Vocation, VocationType} from '@/utils/Vocations/Vocations';
+import {VocationTypeToInstance} from '@/utils/Vocations/VocationsInstances';
+import {DescribableName, IDictionary, IntRange} from '@/utils/helpers';
 import {Modifiers} from '@/utils/MapModifiers';
 import {SetModifiers} from '@/utils/Rules/Rules';
 import {ArmorType} from '@/utils/Types/ArmorType';
@@ -221,9 +221,9 @@ type TravelEquipment = {
     skillRef?: SkillIdentifier;
 };
 
-type HeaderValues = {
+export type HeaderValues = {
     heroicCulture: string;
-    culturalAdvantage: Array<CulturalAdvantageType>;
+    culturalAdvantage: Array<DescribableName>;
     vocation: VocationType;
     name: string;
     age: number;
@@ -232,7 +232,7 @@ type HeaderValues = {
     treasure: number;
     particularities: Array<string>;
     faults: Array<string>;
-};
+}
 
 export class PlayerType {
     name: string;
@@ -351,6 +351,9 @@ export class PlayerType {
 
         this.modifiers = {};
         SetModifiers(this);
+
+        console.log(this.wisdom);
+        console.log(this.valiance);
     }
 
     getValue(identifier: Identifier | IdentifierModifiableAttr): number {
