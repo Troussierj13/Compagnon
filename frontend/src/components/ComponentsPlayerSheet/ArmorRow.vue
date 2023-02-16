@@ -24,7 +24,12 @@ const props = defineProps({
             };
         },
     },
-    weight: Number,
+    weight: {
+        type: Number,
+        default() {
+            return 0;
+        },
+    },
 });
 </script>
 
