@@ -6,9 +6,9 @@
 </template>
 
 <script lang="ts" setup>
-import { data } from '@/utils/data';
-import { reactive } from 'vue';
-import PlayerSheet from '../components/PlayerSheet.vue';
+import {data} from '@/utils/data';
+import {reactive} from 'vue';
+import PlayerSheet from '../components/ComponentsPlayerSheet/PlayerSheet.vue';
 import Socket from '../components/Socket.vue';
 
 const state = reactive({

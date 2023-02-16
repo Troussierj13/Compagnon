@@ -1,5 +1,5 @@
 <template>
-    <div class="flex">
+    <div class="flex mx-3">
         <span v-if="props.favorisable" class="square relative mr-2 flex">
             <span
                 v-if="skill.favored"

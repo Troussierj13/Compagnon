@@ -204,7 +204,7 @@ export class MindSkillsType {
 
 type UnitInjuries = 'hours' | 'days';
 
-type Injuries = {
+export type Injuries = {
     value: number;
     unit: UnitInjuries;
 };
@@ -528,6 +528,18 @@ export class PlayerType {
             case "lore":
                 return this.mindSkills.lore;
         }
+    }
+
+    public addInjury(injury: Injuries) {
+        if (injury.value > 0) {
+            this.states.injuries = injury;
+            this.states.hurt = true;
+        }
+    }
+
+    public removeInjury() {
+        this.states.injuries = {value: 0, unit: 'hours'};
+        this.states.hurt = false;
     }
 
     private setCurrentHope(value: number) {

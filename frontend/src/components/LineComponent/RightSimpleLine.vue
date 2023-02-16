@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute h-full w-full double-line-right left-1"></div>
+    <div class="absolute h-full w-full line-right left-0.5"></div>
 </template>
 
 <script lang="ts" setup>

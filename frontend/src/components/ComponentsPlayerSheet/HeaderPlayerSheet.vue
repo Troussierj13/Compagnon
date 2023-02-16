@@ -100,8 +100,8 @@
 <script lang="ts" setup>
 
 import {HeaderValues} from "@/utils/Types/PlayerType";
-import BottomGrayLine from "./LineComponent/BottomGrayLine.vue";
-import DescribableName from "./DescribableName.vue";
+import BottomGrayLine from "../LineComponent/BottomGrayLine.vue";
+import DescribableName from "../DescribableName.vue";
 import {DescribableName as DescribableNameType} from "@/utils/helpers";
 import {reactive} from "vue";
 
