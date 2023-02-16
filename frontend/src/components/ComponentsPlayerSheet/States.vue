@@ -2,7 +2,7 @@
     <div class="relative flex flex-col h-full w-full">
         <TopSimpleLine class="-top-2 left-2" />
         <div class="relative flex flex-col">
-            <span class="text-md mx-auto mb-2 text-center text-red">Etats</span>
+            <span class="text-sm mx-auto mb-2 text-center text-red">ETATS</span>
             <div class="flex pl-4">
                 <div class="flex h-full w-1/2 flex-col gap-1">
                     <div class="flex">

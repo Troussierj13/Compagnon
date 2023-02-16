@@ -2,7 +2,7 @@
     <div class="relative h-full">
         <TopSimpleLine class="left-2 -top-1" />
         <div class="flex flex-col h-full pt-1">
-            <span class="text-md mx-auto mb-2 text-center text-red">Equipement de voyage</span>
+            <span class="text-sm mx-auto mb-2 text-center text-red">EQUIPEMENT DE VOYAGE</span>
             <div
                 v-for="(equip, index) in props.player.travelEquipment"
                 :key="index"

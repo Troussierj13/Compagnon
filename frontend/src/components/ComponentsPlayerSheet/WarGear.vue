@@ -3,7 +3,7 @@
     <div class="relative flex flex-col h-full w-2/3 pt-2 pr-2">
         <RightSimpleLine class="h-[80%] mt-1" />
         <div class="flex w-full gap-1 font-sansserif text-[0.6rem] font-bold leading-[0.8rem]">
-            <span class="grow font-UncialAntiqua text-base font-normal text-red">Attirail de guerre</span>
+            <span class="grow font-UncialAntiqua text-sm font-normal text-red">ATTIRAIL DE GUERRE</span>
             <span class="my-auto h-2.5 w-1/12 text-center">Dégats</span>
             <span class="my-auto h-2.5 w-1/12 text-center">Blessure</span>
             <span class="my-auto h-2.5 w-1/12 text-center">Charge</span>
@@ -29,7 +29,7 @@
                 :weight="props.player.getModifiedValue('armorWeight')"
             />
             <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
-                <span class="grow font-sansserif font-bold">Casque</span>
+                <span class="grow font-serif font-bold">CASQUE</span>
             </div>
             <ArmorRow
                 :armor="props.player.helm"
