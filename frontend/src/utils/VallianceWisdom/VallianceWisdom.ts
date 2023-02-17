@@ -1,5 +1,6 @@
 import {Virtue, VirtuesToInstance} from "@/utils/VallianceWisdom/Virtues";
 import {Reward, RewardsToInstance} from "@/utils/VallianceWisdom/Rewards";
+import {ModifierParam} from "@/utils/MapModifiers";
 
 export class Wisdom {
     rank: number;
@@ -17,6 +18,10 @@ export class Wisdom {
                 this.virtues.push(vir);
             });
         }
+    }
+
+    public getModifiers(): Array<ModifierParam> {
+        return this.virtues.filter((vir) => vir.info.isChosen()).map(vFiltered => vFiltered.info.getChosen()).flatMap(f => f).map(el => el.modifiers).flatMap(el => el);
     }
 }
 

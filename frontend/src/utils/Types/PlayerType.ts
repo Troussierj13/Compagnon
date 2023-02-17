@@ -358,8 +358,11 @@ export class PlayerType {
             });
         });
 
+
         this.modifiers = {};
         SetModifiers(this);
+
+        this.addModifiers(this.wisdom.getModifiers());
     }
 
     getValue(identifier: Identifier | IdentifierModifiableAttr): number {
@@ -558,16 +561,16 @@ export class PlayerType {
         filtered[0].info.setChosen(filtered[0].chosen);
 
         const modChosen = filtered[0].info.getChosen();
-        modChosen[0].modifiers.map((mod) => {
-            this.addModifiers(mod);
-        });
+        this.addModifiers(modChosen[0].modifiers);
     }
 
-    public addModifiers(mod: ModifierParam) {
-        if (!this.modifiers[mod.identifier]) {
-            this.modifiers[mod.identifier] = new Modifiers();
-        }
-        this.modifiers[mod.identifier].addModifiers([mod]);
+    public addModifiers(mods: Array<ModifierParam>) {
+        mods.map((mod) => {
+            if (!this.modifiers[mod.identifier]) {
+                this.modifiers[mod.identifier] = new Modifiers();
+            }
+            this.modifiers[mod.identifier].addModifiers([mod]);
+        });
     }
 
     private setCurrentHope(value: number) {

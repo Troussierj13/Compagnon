@@ -23,7 +23,7 @@ export const Assurance: Virtue = {
             new DescribableNameWithModifier(
                 "Assurance",
                 "Augmentez votre Espoir de 2",
-                [{identifier: 'mind', op: '+', mod: 2}]
+                [{identifier: 'hopeMax', op: '+', mod: 2}]
             )
         ]
     )

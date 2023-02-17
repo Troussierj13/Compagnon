@@ -161,7 +161,7 @@ export const data = {
                 rank: 1,
                 virtues: [
                     {identifier: 'assuranceVirtue'},
-                    {identifier: 'empoweredVirtue'},
+                    {identifier: 'empoweredVirtue', chosen: [2]},
                     {identifier: 'steadyVirtue'},
                     {identifier: 'masteryVirtue'},
                     {identifier: 'resistanceVirtue'},
