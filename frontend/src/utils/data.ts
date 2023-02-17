@@ -9,7 +9,7 @@ export const data = {
             age: 42,
             qualityLife: "modest",
             garant: "Bilbo Saquet",
-            particularities: ["Subtile", "Rapide"],
+            particularitiesId: [3, 7],
             faults: [],
             treasure: 50,
             attributes: {

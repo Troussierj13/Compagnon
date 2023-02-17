@@ -21,7 +21,7 @@ const getOperatorFunc = {
     },
     ">=": (l: any, r: any): boolean => {
         return l >= r;
-    },
+    }
 };
 
 const getConditionResult = (c?: Condition, player?: PlayerType) => {

@@ -46,8 +46,11 @@
                         :key="virtue.identifier"
                         class="whitespace-normal text-xs relative mb-0.5 ml-3"
                     >
-                        <span class="break-words relative">
-                            <DescribableName :values="virtue.info" />
+                        <span v-if="virtue.info.isChosen()" class="break-words relative">
+                            <DescribableName :values="virtue.info.getChosen()[0]" />
+                        </span>
+                        <span v-else class="break-words relative">
+                            <DescribableNameNotChosen :player="props.player" :virtue="virtue" />
                         </span>
                     </div>
                 </div>
@@ -61,6 +64,7 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
 import DescribableName from "../DescribableName.vue";
+import DescribableNameNotChosen from "../DescribableNameNotChosen.vue";
 
 interface Props {
     player: PlayerType

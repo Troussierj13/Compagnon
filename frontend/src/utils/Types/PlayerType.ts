@@ -9,7 +9,7 @@ import {
 import {Vocation, VocationType} from '@/utils/Vocations/Vocations';
 import {VocationTypeToInstance} from '@/utils/Vocations/VocationsInstances';
 import {DescribableName, IDictionary, IntRange} from '@/utils/helpers';
-import {Modifiers} from '@/utils/MapModifiers';
+import {ModifierParam, Modifiers} from '@/utils/MapModifiers';
 import {SetModifiers} from '@/utils/Rules/Rules';
 import {ArmorType} from '@/utils/Types/ArmorType';
 import {Attributes} from '@/utils/Types/CharacterTypes';
@@ -30,6 +30,7 @@ import {BreeHuman} from "@/utils/Culture/BreeHuman";
 import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
+import {VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
 
 const CultureTypeToInstance = {
     bardide: Bardide,
@@ -241,6 +242,7 @@ export class PlayerType {
     qualityLife: QualityLife;
     garant: string;
     particularities: Array<string>;
+    particularitiesId: Array<number>;
     faults: Array<string>;
     culture: CultureType;
     treasure: number;
@@ -275,6 +277,7 @@ export class PlayerType {
         this.qualityLife = payload?.qualityLife || 'poor';
         this.garant = payload?.garant || '';
         this.particularities = payload?.particularities || [];
+        this.particularitiesId = payload?.particularitiesId || [];
         this.faults = payload?.faults || [];
         this.culture = payload?.culture ? CultureTypeToInstance[payload.culture.culture] : CultureTypeToInstance['hobbit'];
         this.treasure = payload?.treasure || 0;
@@ -284,6 +287,12 @@ export class PlayerType {
         this.mindSkills = new MindSkillsType(payload?.mindSkills);
         this.combatSkills = new CombatSkillsType(payload?.combatSkills);
         this.weapons = [];
+        try {
+            this.culture.possibleParticularities.setChosen(this.particularitiesId);
+            this.particularities = this.culture.possibleParticularities.getChosen();
+        } catch (e) {
+            console.log('particularitiesId on PlayerType constructor: ', e);
+        }
         payload?.weapons?.map((w) => {
             this.weapons.push(new WeaponType(w));
         });
@@ -351,9 +360,6 @@ export class PlayerType {
 
         this.modifiers = {};
         SetModifiers(this);
-
-        console.log(this.wisdom);
-        console.log(this.valiance);
     }
 
     getValue(identifier: Identifier | IdentifierModifiableAttr): number {
@@ -540,6 +546,28 @@ export class PlayerType {
     public removeInjury() {
         this.states.injuries = {value: 0, unit: 'hours'};
         this.states.hurt = false;
+    }
+
+    public setVirtueChoice(identifier: VirtueIdentifier, index: number) {
+        let filtered = this.wisdom.virtues.filter((vir) => vir.identifier === identifier);
+        if (filtered.length !== 1) {
+            throw new Error("Not find virtue with identifier: " + identifier);
+        }
+
+        filtered[0].chosen = [index];
+        filtered[0].info.setChosen(filtered[0].chosen);
+
+        const modChosen = filtered[0].info.getChosen();
+        modChosen[0].modifiers.map((mod) => {
+            this.addModifiers(mod);
+        });
+    }
+
+    public addModifiers(mod: ModifierParam) {
+        if (!this.modifiers[mod.identifier]) {
+            this.modifiers[mod.identifier] = new Modifiers();
+        }
+        this.modifiers[mod.identifier].addModifiers([mod]);
     }
 
     private setCurrentHope(value: number) {

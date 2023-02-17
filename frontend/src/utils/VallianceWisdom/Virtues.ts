@@ -1,6 +1,5 @@
 //Virtues
-import {DescribableName} from "@/utils/helpers";
-import {ModifierParam} from "@/utils/MapModifiers";
+import {DescribableName, DescribableNameWithModifier, PossibleChoose} from "@/utils/helpers";
 
 export type VirtueIdentifier = 'assuranceVirtue'
     | 'empoweredVirtue'
@@ -11,61 +10,106 @@ export type VirtueIdentifier = 'assuranceVirtue'
 
 export type Virtue = {
     identifier: VirtueIdentifier;
-    info: DescribableName;
-    modifiers: Array<ModifierParam>
+    info: PossibleChoose<DescribableNameWithModifier>;
+    defaultInfo?: DescribableName;
+    chosen?: Array<number>;
 };
 
 export const Assurance: Virtue = {
     identifier: "assuranceVirtue",
-    info: new DescribableName(
-        "Assurance",
-        "Augmentez votre Espoir de 2"
-    ),
-    modifiers: []
+    info: new PossibleChoose<DescribableNameWithModifier>(
+        1,
+        [
+            new DescribableNameWithModifier(
+                "Assurance",
+                "Augmentez votre Espoir de 2",
+                [{identifier: 'mind', op: '+', mod: 2}]
+            )
+        ]
+    )
 };
 
 export const Empowered: Virtue = {
     identifier: "empoweredVirtue",
-    info: new DescribableName(
+    info: new PossibleChoose<DescribableNameWithModifier>(
+        1,
+        [
+            new DescribableNameWithModifier(
+                "Habilité",
+                "Réduisez le SR de CORPS de 1",
+                [{identifier: 'strengthSR', op: '+', mod: -1}]
+            ),
+            new DescribableNameWithModifier(
+                "Habilité",
+                "Réduisez le SR de COEUR de 1",
+                [{identifier: 'heartSR', op: '+', mod: -1}]
+            ),
+            new DescribableNameWithModifier(
+                "Habilité",
+                "Réduisez le SR de ESPRIT de 1",
+                [{identifier: 'mindSR', op: '+', mod: -1}]
+            )
+        ]
+    ),
+    defaultInfo: new DescribableName(
         "Habilité",
         "Réduisez le SR d'un Attribut de 1"
     ),
-    modifiers: []
 };
 export const SteadyHand: Virtue = {
     identifier: "steadyVirtue",
-    info: new DescribableName(
-        "Main sûre",
-        "Ajoutez 1 à votre valeur de CORPS pour un Coup puissant, et +1 au résultat du dé du Destin pour un Coup perforant"
-    ),
-    modifiers: []
+    info: new PossibleChoose<DescribableNameWithModifier>(
+        1,
+        [
+            new DescribableNameWithModifier(
+                "Main sûre",
+                "Ajoutez 1 à votre valeur de CORPS pour un Coup puissant, et +1 au résultat du dé du Destin pour un Coup perforant",
+                []
+            )
+        ]
+    )
 };
 
 export const Mastery: Virtue = {
     identifier: "masteryVirtue",
-    info: new DescribableName(
-        "Maîtrise",
-        "Choisissez deux nouvelles Compétences communes favorites"
-    ),
-    modifiers: []
+    info: new PossibleChoose<DescribableNameWithModifier>(
+        1,
+        [
+            new DescribableNameWithModifier(
+                "Maîtrise",
+                "Choisissez deux nouvelles Compétences communes favorites",
+                []
+            )
+        ]
+    )
 };
 
 export const Resistance: Virtue = {
     identifier: "resistanceVirtue",
-    info: new DescribableName(
-        "Resistance",
-        "Augmentez votre Endurance de 2"
-    ),
-    modifiers: []
+    info: new PossibleChoose<DescribableNameWithModifier>(
+        1,
+        [
+            new DescribableNameWithModifier(
+                "Resistance",
+                "Augmentez votre Endurance de 2",
+                [{identifier: 'enduranceMax', op: '+', mod: 2}]
+            )
+        ]
+    )
 };
 
 export const Liveness: Virtue = {
     identifier: "livenessVirtue",
-    info: new DescribableName(
-        "Vivacité",
-        "Augmentez votre valeur de Parade de 1"
-    ),
-    modifiers: []
+    info: new PossibleChoose<DescribableNameWithModifier>(
+        1,
+        [
+            new DescribableNameWithModifier(
+                "Vivacité",
+                "Augmentez votre valeur de Parade de 1",
+                [{identifier: 'parade', op: '+', mod: 1}]
+            )
+        ]
+    )
 };
 
 export const VirtuesToInstance = {

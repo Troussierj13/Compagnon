@@ -1,3 +1,5 @@
+import {ModifierParam} from "@/utils/MapModifiers";
+
 type Enumerate<
     N extends number,
     Acc extends number[] = []
@@ -22,10 +24,57 @@ export interface IDictionary<TValue> {
 export class PossibleChoose<T> {
     readonly choice: Array<T>;
     readonly chooseInto: number;
+    private _chosen: Array<number>;
+    private _isChosen: boolean;
 
-    constructor(chooseInto: number, choice: Array<T>) {
+    constructor(chooseInto: number, choice: Array<T>, chosen?: Array<number>) {
+        if (choice.length <= 0) {
+            throw new RangeError("Need at least one choice in 'choice' array");
+        }
+
+        if (chooseInto <= 0 || chooseInto > choice.length) {
+            throw new RangeError("'chooseInto' parameter must be greeter than zero and smaller than the size of the choice array");
+        }
+
+        this._chosen = [];
+        this._isChosen = false;
         this.choice = choice;
         this.chooseInto = chooseInto;
+
+        if (chosen) { // use setter to throw error if not valable parameter
+            this.setChosen(chosen);
+        } else if (choice.length === chooseInto) {
+            this.setChosen(
+                choice.map((el, id) => {
+                    return id;
+                })
+            );
+        }
+    }
+
+    public setChosen(chosen: Array<number>) {
+        if (chosen.length !== this.chooseInto) {
+            throw new RangeError("'chosen' array must be same size of 'choosenInto' number");
+        }
+
+        const filtered = chosen.filter((x) => x >= 0 && x < this.choice.length);
+        if (filtered.length !== chosen.length) {
+            throw new RangeError("Chosen array must be same includes only valid index of choice array");
+        }
+        this._chosen = filtered;
+        this._isChosen = true;
+    }
+
+    public getChosen(): Array<T> {
+        if (!this._isChosen) {
+            throw new RangeError("Possible choice is not chosen, call setChosen(...) or call PossibleChoose<" + typeof <T>+"> constructor with chosen parameter");
+        }
+
+        return this.choice.filter((x, id) => this._chosen.includes(id));
+    }
+
+    public isChosen(): boolean {
+        return this._isChosen;
     }
 }
 
@@ -36,6 +85,15 @@ export class DescribableName {
     constructor(name: string, description: string) {
         this.name = name;
         this.description = description;
+    }
+}
+
+export class DescribableNameWithModifier extends DescribableName {
+    readonly modifiers: Array<ModifierParam>;
+
+    constructor(name: string, description: string, modifiers: Array<ModifierParam>) {
+        super(name, description);
+        this.modifiers = modifiers || [];
     }
 }
 

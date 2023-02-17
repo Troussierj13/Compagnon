@@ -6,7 +6,7 @@
             <div class="flex pl-4">
                 <div class="flex h-full w-1/2 flex-col gap-1">
                     <div class="flex">
-                        <span class="square mr-2">
+                        <span class="square mr-2 cursor-not-allowed">
                             <span
                                 v-if="props.player.states.exhaust"
                                 class="absolute h-3 w-3 rotate-45 bg-check bg-cover bg-center bg-no-repeat"
@@ -15,7 +15,7 @@
                         <span class="my-auto font-serif text-xs font-semibold leading-3">Epuisé</span>
                     </div>
                     <div class="flex">
-                        <span class="square mr-2">
+                        <span class="square mr-2 cursor-not-allowed">
                             <span
                                 v-if="props.player.states.melancholic"
                                 class="absolute h-3 w-3 rotate-45 bg-check bg-cover bg-center bg-no-repeat"
