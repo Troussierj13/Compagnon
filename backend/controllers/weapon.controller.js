@@ -45,7 +45,7 @@ export const updateWeapon = async (req, res) => {
 export const deleteWeapon = async (req, res) => {
   try {
     await Weapon.findByIdAndDelete(req.params.weaponId);
-    res.status(200).json({ message: "Character deleted successfully." });
+    res.status(200).json({ message: "Weapon deleted successfully." });
   } catch (error) {
     res.status(409).json({ message: error.message });
   }

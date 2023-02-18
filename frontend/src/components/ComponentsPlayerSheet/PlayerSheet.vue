@@ -58,10 +58,12 @@ import WarGear from "./WarGear.vue";
 import XpSecondaryPoints from "./XpSecondaryPoints.vue";
 import States from "./States.vue";
 import TravelEquipment from "./TravelEquipment.vue";
+import {WeaponType} from "@/utils/Types/WeaponType";
 
 
 const props = defineProps<{
-    playerJson?: Object;
+    playerJson: Object;
+    weapons: Array<WeaponType>
 }>();
 
 interface State {
@@ -69,7 +71,9 @@ interface State {
 }
 
 const state = reactive<State>({
-    player: new PlayerType(props.playerJson)
+    player: new PlayerType(props.playerJson),
 });
+
+console.log(props.weapons);
 </script>
 
