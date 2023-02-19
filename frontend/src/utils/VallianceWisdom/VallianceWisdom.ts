@@ -15,6 +15,9 @@ export class Wisdom {
                 if (!vir.info.isChosen() && virtues.chosen?.length) {
                     vir.info.setChosen(virtues.chosen);
                 }
+                if (vir.info.isChosen()) {
+                    vir.chosen = vir.info.getChosenId();
+                }
                 this.virtues.push(vir);
             });
         }

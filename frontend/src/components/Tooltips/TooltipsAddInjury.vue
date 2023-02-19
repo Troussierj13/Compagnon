@@ -52,6 +52,8 @@ const state = reactive<State>({
 const addInjury = () => {
     props.player.addInjury(state.injury);
 
+    props.player.saveOnDb();
+
     HoverSingleton.GetInstance().tryChangeHover(true, () => {
     });
 };

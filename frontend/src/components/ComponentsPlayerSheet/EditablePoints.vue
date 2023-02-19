@@ -52,31 +52,8 @@ const state = reactive<State>({
 const tryChangeHover = () => {
     state.hover = HoverSingleton.GetInstance().tryChangeHover(state.hover, () => {
         state.hover = false;
+        props.player.saveOnDb();
     });
 };
-
-/*const ClickModifiableAttr = (
-    identifierModif: Identifier | IdentifierModifiableAttr,
-    add: number
-) => {
-    props.player.setValue(
-        identifierModif,
-        props.player.getValue(identifierModif) + add
-    );
-
-    if (state.stateClick === 'simple') {
-        state.stateClick = 'double';
-        state.showTooltips = true;
-    } else {
-        state.stateClick = 'simple';
-        state.showTooltips = false;
-    }
-
-    setTimeout(() => {
-        if (state.stateClick === 'simple') {
-            state.stateClick = 'unknown';
-        }
-    }, 200);
-};*/
 
 </script>

@@ -73,6 +73,10 @@ export class PossibleChoose<T> {
         return this.choice.filter((x, id) => this._chosen.includes(id));
     }
 
+    public getChosenId(): Array<number> {
+        return this._chosen;
+    }
+
     public isChosen(): boolean {
         return this._isChosen;
     }

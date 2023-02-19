@@ -1,144 +1,213 @@
 import mongoose from "mongoose";
 
 const characterSchema = mongoose.Schema(
-	{
-		name: { type: mongoose.Schema.Types.String, required: true },
-		race: { type: mongoose.Schema.Types.String, required: true },
-		attributes: {
-			values: {
-				strength: { type: mongoose.Schema.Types.Number },
-				heart: { type: mongoose.Schema.Types.Number },
-				mind: { type: mongoose.Schema.Types.Number },
-			},
-		},
-		strengthSkills: {
-			athletics: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			awareness: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			awe: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			craft: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			hunting: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			song: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-		},
-		heartSkills: {
-			battle: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			courtesy: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			enhearten: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			healing: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			insight: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			travel: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-		},
-		mindSkills: {
-			explore: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			lore: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			persuade: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			riddle: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			scan: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			stealth: {
-				favored: { type: mongoose.Schema.Types.Boolean },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-		},
-		combatSkills: {
-			axes: {
-				name: { type: mongoose.Schema.Types.String },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			bows: {
-				name: { type: mongoose.Schema.Types.String },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			spears: {
-				name: { type: mongoose.Schema.Types.String },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-			swords: {
-				name: { type: mongoose.Schema.Types.String },
-				rank: { type: mongoose.Schema.Types.Number },
-			},
-		},
-		armor: {
-			name: { type: mongoose.Schema.Types.String },
-			parade: { type: mongoose.Schema.Types.String },
-			protection: { type: mongoose.Schema.Types.String },
-			weight: { type: mongoose.Schema.Types.Number },
-		},
-		helm: {
-			name: { type: mongoose.Schema.Types.String },
-			parade: { type: mongoose.Schema.Types.String },
-			protection: { type: mongoose.Schema.Types.String },
-			weight: { type: mongoose.Schema.Types.Number },
-		},
-		shield: {
-			name: { type: mongoose.Schema.Types.String },
-			parade: { type: mongoose.Schema.Types.String },
-			protection: { type: mongoose.Schema.Types.String },
-			weight: { type: mongoose.Schema.Types.Number },
-		},
-		weapons: [
-			{
-				name: { type: mongoose.Schema.Types.String },
-				dmg: { type: mongoose.Schema.Types.Number },
-				injury: {
-					oneHand: { type: mongoose.Schema.Types.Number },
-					twoHand: { type: mongoose.Schema.Types.Number },
-				},
-				weight: { type: mongoose.Schema.Types.Number },
-				note: { type: mongoose.Schema.Types.String },
-			},
-		],
-	},
-	{ timestamps: true }
+  {
+    name: { type: mongoose.Schema.Types.String, required: true },
+    culture: {
+      culture: { type: mongoose.Schema.Types.String, required: true },
+    },
+    vocation: String,
+    age: Number,
+    qualityLife: String,
+    garant: String,
+    particularitiesId: [Number],
+    faults: [String],
+    treasure: Number,
+    attributes: {
+      values: {
+        strength: {
+          value: Number,
+        },
+        heart: {
+          value: Number,
+        },
+        mind: {
+          value: Number,
+        },
+      },
+    },
+    strengthSkills: {
+      awe: {
+        favored: Boolean,
+        rank: Number,
+      },
+      athletics: {
+        favored: Boolean,
+        rank: Number,
+      },
+      awareness: {
+        favored: Boolean,
+        rank: Number,
+      },
+      hunting: {
+        favored: Boolean,
+        rank: Number,
+      },
+      song: {
+        favored: Boolean,
+        rank: Number,
+      },
+      craft: {
+        favored: Boolean,
+        rank: Number,
+      },
+    },
+    heartSkills: {
+      enhearten: {
+        favored: Boolean,
+        rank: Number,
+      },
+      travel: {
+        favored: Boolean,
+        rank: Number,
+      },
+      insight: {
+        favored: Boolean,
+        rank: Number,
+      },
+      healing: {
+        favored: Boolean,
+        rank: Number,
+      },
+      courtesy: {
+        favored: Boolean,
+        rank: Number,
+      },
+      battle: {
+        favored: Boolean,
+        rank: Number,
+      },
+    },
+    mindSkills: {
+      persuade: {
+        favored: Boolean,
+        rank: Number,
+      },
+      stealth: {
+        favored: Boolean,
+        rank: Number,
+      },
+      scan: {
+        favored: Boolean,
+        rank: Number,
+      },
+      explore: {
+        favored: Boolean,
+        rank: Number,
+      },
+      riddle: {
+        favored: Boolean,
+        rank: Number,
+      },
+      lore: {
+        favored: Boolean,
+        rank: Number,
+      },
+    },
+    combatSkills: {
+      axes: {
+        rank: Number,
+      },
+      bows: {
+        rank: Number,
+      },
+      spears: {
+        rank: Number,
+      },
+      swords: {
+        rank: Number,
+      },
+    },
+    weapons: [
+      {
+        name: String,
+        dmg: Number,
+        injury: {
+          oneHand: Number,
+          twoHand: Number,
+        },
+        weight: Number,
+        note: String,
+        rewardsMod: [String],
+      },
+    ],
+    armor: {
+      name: String,
+      protection: String,
+      parade: String,
+      weight: {
+        value: Number,
+      },
+      rewardsMod: [String],
+    },
+    helm: {
+      name: String,
+      protection: String,
+      parade: String,
+      weight: {
+        value: Number,
+      },
+      rewardsMod: [String],
+    },
+    shield: {
+      name: String,
+      protection: String,
+      parade: String,
+      weight: {
+        value: Number,
+      },
+      rewardsMod: [String],
+    },
+    wisdom: {
+      rank: Number,
+      virtues: [
+        {
+          identifier: String,
+          chosen: [Number],
+        },
+      ],
+    },
+    valiance: {
+      rank: Number,
+      rewards: [
+        {
+          identifier: String,
+        },
+      ],
+    },
+    adventurePoints: Number,
+    progressPoints: Number,
+    communityPoints: Number,
+    fatigue: {
+      value: Number,
+    },
+    shadows: {
+      value: Number,
+    },
+    sequels: Number,
+    currentEndurance: {
+      value: Number,
+    },
+    currentHope: {
+      value: Number,
+    },
+    states: {
+      exhaust: Boolean,
+      melancholic: Boolean,
+      hurt: Boolean,
+      injuries: {
+        value: Number,
+        unit: String,
+      },
+    },
+    travelEquipment: [
+      {
+        name: String,
+        skillRef: String,
+      },
+    ],
+  },
+  { timestamps: true }
 );
 
 export default mongoose.model("Character", characterSchema);

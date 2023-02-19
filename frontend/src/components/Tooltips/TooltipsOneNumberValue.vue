@@ -46,7 +46,7 @@ const getPlayerValue = (): number => {
 };
 
 const addToPlayerValue = (add: number) => {
-    return props.player.setValue(
+    props.player.setValue(
         props.identifierAttr,
         props.player.getModifiedValue(
             props.identifierAttr

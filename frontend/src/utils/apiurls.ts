@@ -5,33 +5,43 @@ export const APISettings = {
     token: "",
     headers: new Headers({
         Accept: "application/json",
+        "Content-Type": "application/json"
     }),
-    baseURL: "localhost:8000/api/",
+    baseURL: "http://localhost:8000/api/",
 };
 
 export const APIRequests = {
-    getAllCharacters: async () => {
-        const response = await fetch("http://localhost:8000/api/character", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        const json = await response.json();
-        return (json as Array<Object>).map(player => {
-            return new PlayerType(player);
-        });
+    Character: {
+        getAllCharacters: async () => {
+            const response = await fetch(APISettings.baseURL + "character", {
+                method: "GET",
+                headers: APISettings.headers,
+            });
+            const json = await response.json();
+            return (json as Array<PlayerType>).map(player => {
+                return new PlayerType(player);
+            });
+        },
+        update: async (idCharacter: string, player: Object) => {
+            console.log(JSON.stringify({states: player}));
+            const response = await fetch(APISettings.baseURL + "character/" + idCharacter, {
+                method: "PUT",
+                headers: APISettings.headers,
+                body: JSON.stringify(player)
+            });
+            return await response.json();
+        }
     },
-    getAllWeapons: async () => {
-        const response = await fetch("http://localhost:8000/api/weapon/", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        const json = await response.json();
-        return (json as Array<Object>).map(weapon => {
-            return new WeaponType(weapon);
-        });
-    },
+    Weapons: {
+        getAllWeapons: async () => {
+            const response = await fetch(APISettings.baseURL + "weapon/", {
+                method: "GET",
+                headers: APISettings.headers,
+            });
+            const json = await response.json();
+            return (json as Array<WeaponType>).map(weapon => {
+                return new WeaponType(weapon);
+            });
+        }
+    }
 };

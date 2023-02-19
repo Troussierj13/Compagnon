@@ -20,7 +20,7 @@
                     <span
                         v-for="(vir, index) in props.virtue.info.choice"
                         :key="index"
-                        @click="player.setVirtueChoice(props.virtue.identifier, index)">
+                        @click="changeChosenVirtue(index)">
                         {{ vir.description }}
                     </span>
                 </div>
@@ -58,6 +58,12 @@ const tryChangeHover = () => {
         state.hover = false;
         state.hoverChoice = false;
     });
+};
+
+const changeChosenVirtue = (index: number) => {
+    props.player.setVirtueChoice(props.virtue.identifier, index);
+    
+    props.player.saveOnDb();
 };
 
 </script>

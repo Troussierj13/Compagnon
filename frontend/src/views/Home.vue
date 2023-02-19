@@ -1,12 +1,14 @@
 <template>
     <div class="m-auto flex">
         <Socket />
-        <PlayerSheet :player-json="data.players[0]" :weapons="state.weapons" />
+        <PlayerSheet
+            v-if="state.players !== null && state.weapons !== null"
+            :player="state.players.at(0)"
+            :weapons="state.weapons" />
     </div>
 </template>
 
 <script lang="ts" setup>
-import {data} from '@/utils/data';
 import {reactive} from 'vue';
 import PlayerSheet from '../components/ComponentsPlayerSheet/PlayerSheet.vue';
 import Socket from '../components/Socket.vue';
@@ -15,15 +17,16 @@ import {APIRequests} from "@/utils/apiurls";
 import {WeaponType} from "@/utils/Types/WeaponType";
 
 interface State {
-    players: Array<PlayerType>;
-    weapons: Array<WeaponType>;
+    players: Array<PlayerType> | unknown;
+    weapons: Array<WeaponType> | unknown;
 }
 
 const state = reactive<State>({
-    players: [],
-    weapons: await APIRequests.getAllWeapons()
+    players: null,
+    weapons: null
 });
 
-//state.players = await APIRequests.getAllCharacters();
+state.players = await APIRequests.Character.getAllCharacters();
+state.weapons = await APIRequests.Weapons.getAllWeapons();
 </script>
 <style scoped></style>

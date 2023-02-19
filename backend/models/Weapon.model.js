@@ -10,7 +10,6 @@ const weaponSchema = mongoose.Schema(
     },
     weight: { type: mongoose.Schema.Types.Number },
     note: { type: mongoose.Schema.Types.String },
-    rewardsMod: [{ type: mongoose.Schema.Types.String }],
   },
   { timestamps: true }
 );

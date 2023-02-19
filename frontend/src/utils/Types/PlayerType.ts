@@ -31,6 +31,7 @@ import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 import {VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
+import {APIRequests} from "@/utils/apiurls";
 
 const CultureTypeToInstance = {
     bardide: Bardide,
@@ -210,7 +211,7 @@ export type Injuries = {
     unit: UnitInjuries;
 };
 
-type States = {
+export type States = {
     exhaust: boolean;
     melancholic: boolean;
     hurt: boolean;
@@ -236,6 +237,7 @@ export type HeaderValues = {
 }
 
 export class PlayerType {
+    readonly _id: string;
     name: string;
     vocation: Vocation;
     age: number;
@@ -271,6 +273,7 @@ export class PlayerType {
     modifiers: IDictionary<Modifiers>;
 
     constructor(payload?: Partial<PlayerType>) {
+        this._id = payload?._id || '';
         this.name = payload?.name || '';
         this.vocation = payload?.vocation || 'captain';
         this.age = payload?.age || 0;
@@ -319,28 +322,28 @@ export class PlayerType {
         this.adventurePoints = payload?.adventurePoints || 0;
         this.progressPoints = payload?.progressPoints || 0;
         this.communityPoints = payload?.communityPoints || 0;
-        this.fatigue = {
+        this.fatigue = new IdentifiedValue({
             identifier: payload?.fatigue?.identifier || 'fatigue',
             value: payload?.fatigue?.value || 0,
-        };
-        this.shadows = {
+        });
+        this.shadows = new IdentifiedValue({
             identifier: payload?.shadows?.identifier || 'shadows',
             value: payload?.shadows?.value || 0,
-        };
+        });
         this.sequels = payload?.sequels || 0;
-        this.currentEndurance = {
+        this.currentEndurance = new IdentifiedValue({
             identifier:
                 payload?.currentEndurance?.identifier || 'currentEndurance',
             value:
                 payload?.currentEndurance?.value ||
                 this.attributes.secondary.endurance.value,
-        };
-        this.currentHope = {
+        });
+        this.currentHope = new IdentifiedValue({
             identifier: payload?.currentHope?.identifier || 'currentHope',
             value:
                 payload?.currentHope?.value ||
                 this.attributes.secondary.hope.value,
-        };
+        });
         this.states = {
             exhaust: payload?.states?.exhaust || false,
             melancholic: payload?.states?.melancholic || false,
@@ -570,6 +573,12 @@ export class PlayerType {
                 this.modifiers[mod.identifier] = new Modifiers();
             }
             this.modifiers[mod.identifier].addModifiers([mod]);
+        });
+    }
+
+    public saveOnDb() {
+        APIRequests.Character.update(this._id, this).then((res) => {
+            console.log(res);
         });
     }
 

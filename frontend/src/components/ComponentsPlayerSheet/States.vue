@@ -74,6 +74,8 @@ const state = reactive<State>({
 const changeInjury = () => {
     if (props.player.states.injuries.value > 0) {
         props.player.removeInjury();
+        
+        props.player.saveOnDb();
     } else {
         tryChangeHover();
     }

@@ -7,24 +7,24 @@
             class="absolute -bottom-14 h-16 w-full bg-bottomSheet bg-cover bg-clip-border bg-center bg-origin-border"></div>
         <div class="flex h-full w-[74.2%] flex-col border-l-18 border-red/0">
             <div class="h-24 w-full">
-                <HeaderPlayerSheet :values="state.player.getHeaderValues()" />
+                <HeaderPlayerSheet :values="props.player.getHeaderValues()" />
             </div>
             <div class="relative flex flex-col w-full grow">
                 <RightDoubleLine />
                 <div class="flex flex-col h-full w-full">
                     <div class="relative flex grow">
                         <div class="flex flex-col h-full w-1/3">
-                            <StrengthColumn :player="state.player" />
+                            <StrengthColumn :player="props.player" />
                         </div>
                         <div class="flex flex-col h-full w-1/3">
-                            <HeartColumn :player="state.player" />
+                            <HeartColumn :player="props.player" />
                         </div>
                         <div class="flex flex-col h-full w-1/3">
-                            <MindColumn :player="state.player" />
+                            <MindColumn :player="props.player" />
                         </div>
                     </div>
                     <div class="relative flex h-1/5 w-full pt-1">
-                        <WarGear :player="state.player" />
+                        <WarGear :player="props.player" />
                     </div>
                 </div>
             </div>
@@ -34,13 +34,13 @@
                 <div class="simple-border h-full w-full" />
             </div>
             <div class="flex grow flex-col">
-                <XpSecondaryPoints :player="state.player" />
+                <XpSecondaryPoints :player="props.player" />
             </div>
             <div class="flex h-1/6">
-                <States :player="state.player" />
+                <States :player="props.player" />
             </div>
             <div class="relative flex h-1/5 flex-col">
-                <TravelEquipment :player="state.player" />
+                <TravelEquipment :player="props.player" />
             </div>
         </div>
     </div>
@@ -48,7 +48,6 @@
 
 <script lang="ts" setup>
 import {PlayerType} from '@/utils/Types/PlayerType';
-import {reactive} from 'vue';
 import HeaderPlayerSheet from './HeaderPlayerSheet.vue';
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import StrengthColumn from "./StrengthColumn.vue";
@@ -60,20 +59,10 @@ import States from "./States.vue";
 import TravelEquipment from "./TravelEquipment.vue";
 import {WeaponType} from "@/utils/Types/WeaponType";
 
-
 const props = defineProps<{
-    playerJson: Object;
+    player: PlayerType;
     weapons: Array<WeaponType>
 }>();
 
-interface State {
-    player: PlayerType;
-}
-
-const state = reactive<State>({
-    player: new PlayerType(props.playerJson),
-});
-
-console.log(props.weapons);
 </script>
 
