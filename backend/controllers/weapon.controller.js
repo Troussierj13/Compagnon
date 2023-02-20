@@ -1,5 +1,4 @@
 import Weapon from "../models/Weapon.model.js";
-// import { character as brutCharacter } from "../character.js";
 
 export const createWeapon = async (req, res) => {
   try {

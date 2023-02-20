@@ -101,14 +101,19 @@ export class DescribableNameWithModifier extends DescribableName {
     }
 }
 
-export interface CallbackVoid {
-    (): void
+export interface Callback<T> {
+    (): T
+}
+
+export interface FilterFunction<T> {
+    // eslint-disable-next-line no-unused-vars
+    (a: T): boolean
 }
 
 export class HoverSingleton {
     private static instance: HoverSingleton;
     public hover: boolean;
-    public calbackHover: CallbackVoid;
+    public calbackHover: Callback<void>;
 
     private constructor() {
         this.hover = false;
@@ -124,7 +129,7 @@ export class HoverSingleton {
         return HoverSingleton.instance;
     }
 
-    public tryChangeHover(val: boolean, callback: CallbackVoid) {
+    public tryChangeHover(val: boolean, callback: Callback<void>) {
         if (this.hover) {
             this.calbackHover();
         }

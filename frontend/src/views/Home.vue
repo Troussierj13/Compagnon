@@ -14,19 +14,15 @@ import PlayerSheet from '../components/ComponentsPlayerSheet/PlayerSheet.vue';
 import Socket from '../components/Socket.vue';
 import {PlayerType} from "@/utils/Types/PlayerType";
 import {APIRequests} from "@/utils/apiurls";
-import {WeaponType} from "@/utils/Types/WeaponType";
 
 interface State {
     players: Array<PlayerType> | unknown;
-    weapons: Array<WeaponType> | unknown;
 }
 
 const state = reactive<State>({
     players: null,
-    weapons: null
 });
 
 state.players = await APIRequests.Character.getAllCharacters();
-state.weapons = await APIRequests.Weapons.getAllWeapons();
 </script>
 <style scoped></style>

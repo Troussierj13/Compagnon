@@ -3,7 +3,12 @@
     <div class="relative flex flex-col h-full w-2/3 pt-2 pr-2">
         <RightSimpleLine class="h-[80%] mt-1" />
         <div class="flex w-full gap-1 font-sansserif text-[0.6rem] font-bold leading-[0.8rem]">
-            <span class="grow font-UncialAntiqua text-sm font-normal text-red">ATTIRAIL DE GUERRE</span>
+            <span class="relative grow flex justify-between font-UncialAntiqua text-sm font-normal text-red">
+                ATTIRAIL DE GUERRE
+                <AddWeapon
+                    v-if="props.player.weapons.length < 4"
+                    :player="props.player" />
+            </span>
             <span class="my-auto h-2.5 w-1/12 text-center">Dégats</span>
             <span class="my-auto h-2.5 w-1/12 text-center">Blessure</span>
             <span class="my-auto h-2.5 w-1/12 text-center">Charge</span>
@@ -14,29 +19,48 @@
             :key="n - 1"
             class="flex grow flex-col justify-center"
         >
-            <WeaponRow :weapon="props.player.weapons[n - 1]" />
+            <WeaponRow
+                :hide-note="false"
+                :player="props.player"
+                :weapon="props.player.weapons[n - 1]" />
         </div>
     </div>
     <div class="flex h-full grow flex-col justify-between pt-2 pl-2 pr-2">
-        <div class="mt-1">
-            <div class="mb-1 flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
-                <span class="grow font-serif font-bold">ARMURE</span>
-                <span class="my-auto h-2.5 w-1/5 text-center font-sansserif font-bold">Protection</span>
-                <span class="my-auto h-2.5 w-1/5 text-center font-sansserif font-bold">Charge</span>
+        <div
+            class="mt-1">
+            <div class="relative flex flex-col">
+                <div class="mb-1 flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
+                    <span class="grow font-serif font-bold">ARMURE</span>
+                    <span class="my-auto h-2.5 w-1/5 text-center font-sansserif font-bold">Protection</span>
+                    <span class="my-auto h-2.5 w-1/5 text-center font-sansserif font-bold">Charge</span>
+                </div>
+                <ArmorRow
+                    :armor="props.player.armor"
+                    :weight="props.player.getModifiedValue('armorWeight')"
+                    @click="tryHoverModifArmor"
+                />
+                <ModifArmor
+                    v-if="state.hover.armor"
+                    :armors="state.armors.filter(arm => arm.weight.identifier === 'armorWeight').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
+                    :change-identifier="'armor'"
+                    :player="props.player" />
             </div>
-            <ArmorRow
-                :armor="props.player.armor"
-                :weight="props.player.getModifiedValue('armorWeight')"
-            />
-            <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
-                <span class="grow font-serif font-bold">CASQUE</span>
+            <div class="relative flex flex-col">
+                <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
+                    <span class="grow font-serif font-bold">CASQUE</span>
+                </div>
+                <ArmorRow
+                    :armor="props.player.helm"
+                    :weight="props.player.getModifiedValue('helmWeight')"
+                    @click="tryHoverModifHelm" />
+                <ModifArmor
+                    v-if="state.hover.helm"
+                    :armors="state.armors.filter(arm => arm.weight.identifier === 'helmWeight').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
+                    :change-identifier="'helm'"
+                    :player="props.player" />
             </div>
-            <ArmorRow
-                :armor="props.player.helm"
-                :weight="props.player.getModifiedValue('helmWeight')"
-            />
         </div>
-        <div>
+        <div class="relative">
             <div class="mb-1 flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
                 <span class="grow font-serif font-bold">BOUCLIER</span>
                 <span class="my-auto h-2.5 w-1/5 text-center font-sansserif font-bold">Parade</span>
@@ -45,7 +69,12 @@
             <ArmorRow
                 :armor="props.player.shield"
                 :weight="props.player.getModifiedValue('shieldWeight')"
-            />
+                @click="tryHoverModifShield" />
+            <ModifArmor
+                v-if="state.hover.shield"
+                :armors="state.armors.filter(arm => arm.weight.identifier === 'shieldWeight').sort((a: ArmorType, b: ArmorType) => a.parade-b.parade)"
+                :change-identifier="'shield'"
+                :player="props.player" />
         </div>
     </div>
 </template>
@@ -55,11 +84,55 @@ import ArmorRow from "./ArmorRow.vue";
 import WeaponRow from "./WeaponRow.vue";
 import RightSimpleLine from "../LineComponent/RightSimpleLine.vue";
 import TopDoubleLine from "../LineComponent/TopDoubleLine.vue";
+import AddWeapon from "./AddWeapon.vue";
+import {reactive} from "vue";
+import {ArmorType} from "@/utils/Types/ArmorType";
+import {APIRequests} from "@/utils/apiurls";
+import ModifArmor from "./ModifArmor.vue";
+import {HoverSingleton} from "@/utils/helpers";
 
 interface Props {
     player: PlayerType
 }
 
+interface Hover {
+    armor: boolean;
+    helm: boolean;
+    shield: boolean;
+}
+
+interface State {
+    armors: Array<ArmorType>
+    hover: Hover
+}
+
 const props = defineProps<Props>();
+const state = reactive<State>({
+    armors: await APIRequests.Armors.getAllArmors(),
+    hover: {
+        armor: false,
+        helm: false,
+        shield: false
+    }
+});
+
+const tryHoverModifArmor = () => {
+    state.hover.armor = HoverSingleton.GetInstance().tryChangeHover(state.hover.armor, () => {
+        state.hover.armor = false;
+    });
+};
+
+const tryHoverModifHelm = () => {
+    state.hover.helm = HoverSingleton.GetInstance().tryChangeHover(state.hover.helm, () => {
+        state.hover.helm = false;
+    });
+};
+
+const tryHoverModifShield = () => {
+    state.hover.shield = HoverSingleton.GetInstance().tryChangeHover(state.hover.shield, () => {
+        state.hover.shield = false;
+    });
+};
+
 
 </script>

@@ -1,5 +1,6 @@
 import {WeaponType} from "@/utils/Types/WeaponType";
 import {PlayerType} from "@/utils/Types/PlayerType";
+import {ArmorType} from "@/utils/Types/ArmorType";
 
 export const APISettings = {
     token: "",
@@ -23,7 +24,6 @@ export const APIRequests = {
             });
         },
         update: async (idCharacter: string, player: Object) => {
-            console.log(JSON.stringify({states: player}));
             const response = await fetch(APISettings.baseURL + "character/" + idCharacter, {
                 method: "PUT",
                 headers: APISettings.headers,
@@ -41,6 +41,18 @@ export const APIRequests = {
             const json = await response.json();
             return (json as Array<WeaponType>).map(weapon => {
                 return new WeaponType(weapon);
+            });
+        }
+    },
+    Armors: {
+        getAllArmors: async () => {
+            const response = await fetch(APISettings.baseURL + "armor/", {
+                method: "GET",
+                headers: APISettings.headers,
+            });
+            const json = await response.json();
+            return (json as Array<ArmorType>).map(armor => {
+                return new ArmorType(armor);
             });
         }
     }

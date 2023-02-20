@@ -32,6 +32,7 @@ import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 import {VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
 import {APIRequests} from "@/utils/apiurls";
+import {IdentifierArmor} from "@/utils/Types/OtherTypes";
 
 const CultureTypeToInstance = {
     bardide: Bardide,
@@ -368,6 +369,28 @@ export class PlayerType {
         this.addModifiers(this.wisdom.getModifiers());
     }
 
+    addWeapon(weapon: WeaponType) {
+        this.weapons.push(weapon);
+    }
+
+    removeWeapon(weapon: WeaponType) {
+        this.weapons = this.weapons.filter(w => w !== weapon);
+    }
+
+    changeArmor(identifier: IdentifierArmor, armor: ArmorType) {
+        switch (identifier) {
+            case "armor":
+                this.armor = new ArmorType(armor, 'armorWeight');
+                break;
+            case "helm":
+                this.helm = new ArmorType(armor, 'armorWeight');
+                break;
+            case "shield":
+                this.shield = new ArmorType(armor, 'armorWeight');
+                break;
+        }
+    }
+
     getValue(identifier: Identifier | IdentifierModifiableAttr): number {
         switch (identifier) {
             case 'unknown':
@@ -577,9 +600,7 @@ export class PlayerType {
     }
 
     public saveOnDb() {
-        APIRequests.Character.update(this._id, this).then((res) => {
-            console.log(res);
-        });
+        APIRequests.Character.update(this._id, this).then();
     }
 
     private setCurrentHope(value: number) {
