@@ -48,10 +48,10 @@ export class SkillType {
     favored: boolean;
     rank: IntRange<0, 6>;
 
-    constructor(name: string = '', favored?: boolean, rank?: IntRange<0, 6>) {
-        this.name = name;
-        this.favored = favored || false;
-        this.rank = rank || 0;
+    constructor(payload?: Partial<SkillType>) {
+        this.name = payload?.name || '';
+        this.favored = payload?.favored || false;
+        this.rank = payload?.rank || 0;
     }
 }
 
@@ -59,9 +59,9 @@ class CombatSkillType {
     name: string;
     rank: IntRange<0, 6>;
 
-    constructor(name: string = '', rank?: IntRange<0, 6>) {
-        this.name = name;
-        this.rank = rank || 0;
+    constructor(payload?: Partial<CombatSkillType>) {
+        this.name = payload?.name || '';
+        this.rank = payload?.rank || 0;
     }
 }
 
@@ -72,10 +72,10 @@ export class CombatSkillsType {
     swords: CombatSkillType;
 
     constructor(payload?: Partial<CombatSkillsType>) {
-        this.axes = new CombatSkillType('Haches', payload?.axes?.rank);
-        this.bows = new CombatSkillType('Arcs', payload?.bows?.rank);
-        this.spears = new CombatSkillType('Lances', payload?.spears?.rank);
-        this.swords = new CombatSkillType('Epées', payload?.swords?.rank);
+        this.axes = new CombatSkillType({name: 'Haches', rank: payload?.axes?.rank});
+        this.bows = new CombatSkillType({name: 'Arcs', rank: payload?.bows?.rank});
+        this.spears = new CombatSkillType({name: 'Lances', rank: payload?.spears?.rank});
+        this.swords = new CombatSkillType({name: 'Epées', rank: payload?.swords?.rank});
     }
 }
 
@@ -89,34 +89,46 @@ export class StrengthSkillsType {
 
     constructor(payload?: Partial<StrengthSkillsType>) {
         this.awe = new SkillType(
-            'Présence',
-            payload?.awe?.favored,
-            payload?.awe?.rank
+            {
+                name: 'Présence',
+                favored: payload?.awe?.favored,
+                rank: payload?.awe?.rank
+            }
         );
         this.athletics = new SkillType(
-            'Athélisme',
-            payload?.athletics?.favored,
-            payload?.athletics?.rank
+            {
+                name: 'Athélisme',
+                favored: payload?.athletics?.favored,
+                rank: payload?.athletics?.rank
+            }
         );
         this.awareness = new SkillType(
-            'Vigilance',
-            payload?.awareness?.favored,
-            payload?.awareness?.rank
+            {
+                name: 'Vigilance',
+                favored: payload?.awareness?.favored,
+                rank: payload?.awareness?.rank
+            }
         );
         this.hunting = new SkillType(
-            'Chasse',
-            payload?.hunting?.favored,
-            payload?.hunting?.rank
+            {
+                name: 'Chasse',
+                favored: payload?.hunting?.favored,
+                rank: payload?.hunting?.rank
+            }
         );
         this.song = new SkillType(
-            'Chant',
-            payload?.song?.favored,
-            payload?.song?.rank
+            {
+                name: 'Chant',
+                favored: payload?.song?.favored,
+                rank: payload?.song?.rank
+            }
         );
         this.craft = new SkillType(
-            'Artisanat',
-            payload?.craft?.favored,
-            payload?.craft?.rank
+            {
+                name: 'Artisanat',
+                favored: payload?.craft?.favored,
+                rank: payload?.craft?.rank
+            }
         );
     }
 }
@@ -131,34 +143,46 @@ export class HeartSkillsType {
 
     constructor(payload?: Partial<HeartSkillsType>) {
         this.enhearten = new SkillType(
-            'Inspiration',
-            payload?.enhearten?.favored,
-            payload?.enhearten?.rank
+            {
+                name: 'Inspiration',
+                favored: payload?.enhearten?.favored,
+                rank: payload?.enhearten?.rank
+            }
         );
         this.travel = new SkillType(
-            'Voyage',
-            payload?.travel?.favored,
-            payload?.travel?.rank
+            {
+                name: 'Voyage',
+                favored: payload?.travel?.favored,
+                rank: payload?.travel?.rank
+            }
         );
         this.insight = new SkillType(
-            'Intuition',
-            payload?.insight?.favored,
-            payload?.insight?.rank
+            {
+                name: 'Intuition',
+                favored: payload?.insight?.favored,
+                rank: payload?.insight?.rank
+            }
         );
         this.healing = new SkillType(
-            'Soins',
-            payload?.healing?.favored,
-            payload?.healing?.rank
+            {
+                name: 'Soins',
+                favored: payload?.healing?.favored,
+                rank: payload?.healing?.rank
+            }
         );
         this.courtesy = new SkillType(
-            'Courtoisie',
-            payload?.courtesy?.favored,
-            payload?.courtesy?.rank
+            {
+                name: 'Courtoisie',
+                favored: payload?.courtesy?.favored,
+                rank: payload?.courtesy?.rank
+            }
         );
         this.battle = new SkillType(
-            'Art de la guerre',
-            payload?.battle?.favored,
-            payload?.battle?.rank
+            {
+                name: 'Art de la guerre',
+                favored: payload?.battle?.favored,
+                rank: payload?.battle?.rank
+            }
         );
     }
 }
@@ -173,34 +197,46 @@ export class MindSkillsType {
 
     constructor(payload?: Partial<MindSkillsType>) {
         this.persuade = new SkillType(
-            'Persuasion',
-            payload?.persuade?.favored,
-            payload?.persuade?.rank
+            {
+                name: 'Persuasion',
+                favored: payload?.persuade?.favored,
+                rank: payload?.persuade?.rank
+            }
         );
         this.stealth = new SkillType(
-            'Discrétion',
-            payload?.stealth?.favored,
-            payload?.stealth?.rank
+            {
+                name: 'Discrétion',
+                favored: payload?.stealth?.favored,
+                rank: payload?.stealth?.rank
+            }
         );
         this.scan = new SkillType(
-            'Inspection',
-            payload?.scan?.favored,
-            payload?.scan?.rank
+            {
+                name: 'Inspection',
+                favored: payload?.scan?.favored,
+                rank: payload?.scan?.rank
+            }
         );
         this.explore = new SkillType(
-            'Exploration',
-            payload?.explore?.favored,
-            payload?.explore?.rank
+            {
+                name: 'Exploration',
+                favored: payload?.explore?.favored,
+                rank: payload?.explore?.rank
+            }
         );
         this.riddle = new SkillType(
-            'Enigmes',
-            payload?.riddle?.favored,
-            payload?.riddle?.rank
+            {
+                name: 'Enigmes',
+                favored: payload?.riddle?.favored,
+                rank: payload?.riddle?.rank
+            }
         );
         this.lore = new SkillType(
-            'Connaissances',
-            payload?.lore?.favored,
-            payload?.lore?.rank
+            {
+                name: 'Connaissances',
+                favored: payload?.lore?.favored,
+                rank: payload?.lore?.rank
+            }
         );
     }
 }

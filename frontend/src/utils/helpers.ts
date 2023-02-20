@@ -105,6 +105,11 @@ export interface Callback<T> {
     (): T
 }
 
+export interface CallbackParam<T> {
+    // eslint-disable-next-line no-unused-vars
+    (x: T): void
+}
+
 export interface FilterFunction<T> {
     // eslint-disable-next-line no-unused-vars
     (a: T): boolean
