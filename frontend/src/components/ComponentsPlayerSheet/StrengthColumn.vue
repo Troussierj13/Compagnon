@@ -21,17 +21,7 @@
             </div>
             <div class="relative grow w-full">
                 <TopSimpleLine />
-                <div class="absolute flex flex-col -right-1.5 top-1.5 gap-0.5">
-                    <Cog6ToothIcon
-                        v-show="state.stateConfig === 'view'"
-                        class="w-5 h-5 text-gray cursor-pointer"
-                        @click="state.stateConfig = 'config'" />
-                    <CheckCircleIcon
-                        v-show="state.stateConfig === 'config'"
-                        class="w-5 h-5 text-green-600 cursor-pointer"
-                        @click="tryValid" />
-                </div>
-                <div v-if="state.stateConfig === 'view'" class="flex flex-col h-full justify-between pt-[18px] pb-2">
+                <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
                     <div v-for="skill in props.player.strengthSkills" :key="skill.identifier">
                         <SkillRow
                             :favorisable="true"
@@ -39,7 +29,7 @@
                         />
                     </div>
                 </div>
-                <div v-if="state.stateConfig === 'config'" class="flex flex-col h-full justify-between pt-[18px] pb-2">
+                <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
                     <div v-for="skill in props.player.strengthSkills" :key="skill.identifier">
                         <SkillRowModification
                             :favorisable="true"
@@ -52,9 +42,17 @@
                 <TopSimpleLine />
                 <div class="flex flex-col h-full justify-between pt-2 pb-[10px]">
                     <span class="text-red text-sm">COMPETENCES DE COMBATS</span>
-                    <div class="my-auto flex flex-col justify-center gap-1">
+                    <div v-if="!state.onModification" class="my-auto flex flex-col justify-center gap-1">
                         <div v-for="skill in props.player.combatSkills" :key="skill.identifier">
                             <SkillRow
+                                :favorisable="false"
+                                :skill="skill"
+                            />
+                        </div>
+                    </div>
+                    <div v-else class="my-auto flex flex-col justify-center gap-1">
+                        <div v-for="skill in props.player.combatSkills" :key="skill.identifier">
+                            <SkillRowModification
                                 :favorisable="false"
                                 :skill="skill"
                             />
@@ -67,32 +65,26 @@
 </template>
 
 <script lang="ts" setup>
-import {Cog6ToothIcon} from "@heroicons/vue/24/solid";
-import {CheckCircleIcon} from "@heroicons/vue/24/outline";
 import {PlayerType} from "@/utils/Types/PlayerType";
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
 import {reactive} from "vue";
 import SkillRowModification from "./SkillRowModification.vue";
-
-type StateConfig = 'view' | 'config';
+import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
 
 interface Props {
     player: PlayerType;
 }
 
 interface State {
-    stateConfig: StateConfig;
+    onModification: boolean;
 }
 
 const props = defineProps<Props>();
 const state = reactive<State>({
-    stateConfig: 'view',
+    onModification: false,
 });
 
-const tryValid = () => {
-    state.stateConfig = 'view';
-    props.player.saveOnDb();
-};
+LevelUpSingleton.GetInstance(props.player._id).registerCallback(b => state.onModification = b);
 </script>

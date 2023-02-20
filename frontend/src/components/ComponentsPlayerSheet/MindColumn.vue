@@ -20,9 +20,17 @@
             </div>
             <div class="relative grow w-full">
                 <TopSimpleLine />
-                <div class="flex flex-col h-full justify-between pt-[18px] pb-2">
+                <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
                     <div v-for="skill in props.player.mindSkills" :key="skill.identifier">
                         <SkillRow
+                            :favorisable="true"
+                            :skill="skill"
+                        />
+                    </div>
+                </div>
+                <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
+                    <div v-for="skill in props.player.mindSkills" :key="skill.identifier">
+                        <SkillRowModification
                             :favorisable="true"
                             :skill="skill"
                         />
@@ -32,8 +40,11 @@
             <div class="relative h-40">
                 <TopSimpleLine />
                 <div class="flex flex-col h-full pt-2">
-                    <div class="flex h-4 w-full justify-between mb-2">
+                    <div class="relative flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">VERTUS</span>
+                        <span v-if="player.wisdom.rank <= player.wisdom.virtues.length" class="flex mr-auto my-0.5 ml-8">
+                            <AddVirtue :player="props.player" />
+                        </span>
                         <span class="relative diamond diamond-md top-3">
                             <span>{{ props.player.wisdom.rank }}</span>
                             <span class="absolute top-5 -left-16 font-serif text-[0.65rem]">
@@ -65,11 +76,23 @@ import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
 import DescribableName from "../DescribableName.vue";
 import DescribableNameNotChosen from "../DescribableNameNotChosen.vue";
+import SkillRowModification from "./SkillRowModification.vue";
+import {reactive} from "vue";
+import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
+import AddVirtue from "./AddVirtue.vue";
 
 interface Props {
-    player: PlayerType
+    player: PlayerType;
+}
+
+interface State {
+    onModification: boolean;
 }
 
 const props = defineProps<Props>();
+const state = reactive<State>({
+    onModification: false,
+});
 
+LevelUpSingleton.GetInstance(props.player._id).registerCallback(b => state.onModification = b);
 </script>

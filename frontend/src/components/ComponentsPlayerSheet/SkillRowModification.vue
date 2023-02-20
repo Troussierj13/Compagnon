@@ -29,8 +29,8 @@
             <span
                 v-if="props.skill.rank >= n"
                 class="absolute h-3 w-3 bg-check bg-cover bg-center bg-no-repeat cursor-pointer"
-                @click="state.modifSkill.rank = n"
-            ></span>
+                @click="state.modifSkill.rank = n-1">
+            </span>
             <span
                 v-else
                 class="absolute flex -inset-0.5 -rotate-45 cursor-pointer"

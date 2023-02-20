@@ -30,7 +30,7 @@ import {BreeHuman} from "@/utils/Culture/BreeHuman";
 import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
-import {VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
+import {Virtue, VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
 import {APIRequests} from "@/utils/apiurls";
 import {IdentifierArmor} from "@/utils/Types/OtherTypes";
 
@@ -407,6 +407,10 @@ export class PlayerType {
 
     addWeapon(weapon: WeaponType) {
         this.weapons.push(weapon);
+    }
+
+    addVirtue(virtue: Virtue) {
+        this.wisdom.virtues.push(virtue);
     }
 
     removeWeapon(weapon: WeaponType) {
