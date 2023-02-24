@@ -163,7 +163,7 @@ const characterSchema = mongoose.Schema(
       virtues: [
         {
           identifier: String,
-          chosen: [Number],
+          chosen: Number,
         },
       ],
     },

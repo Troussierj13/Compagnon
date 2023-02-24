@@ -15,8 +15,8 @@
             >
                 <span class="break-words relative">
                     <DescribableName
-                        :values="virtue.defaultInfo ? virtue.defaultInfo : virtue.info.getChosen()[0]"
-                        @click="addVirtue(virtue)" />
+                        :values="virtue.defaultInfo ? virtue.defaultInfo : virtue.getChosen()"
+                        @click="addVirtue(virtue.identifier)" />
                 </span>
             </div>
         </div>
@@ -25,24 +25,25 @@
 <script lang="ts" setup>
 
 import {reactive} from "vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton, IDictionary} from "@/utils/helpers";
 import {PlayerType} from "@/utils/Types/PlayerType";
 import Button from "../Styleguide/Button.vue";
-import {Virtue, VirtuesToInstance} from "@/utils/VallianceWisdom/Virtues";
+import {Virtue, VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
 import DescribableName from "../DescribableName.vue";
+import {APIRequests} from "@/utils/apiurls";
 
 interface Props {
     player: PlayerType
 }
 
 interface State {
-    virtuesDB: Array<Virtue>;
+    virtuesDB: IDictionary<Partial<Virtue>>;
     hover: boolean
 }
 
 const props = defineProps<Props>();
 const state = reactive<State>({
-    virtuesDB: Object.values(VirtuesToInstance),
+    virtuesDB: await APIRequests.Virtues.getAllVirtues(),
     hover: false
 });
 
@@ -52,8 +53,8 @@ const tryChangeHover = () => {
     });
 };
 
-const addVirtue = (virtue: Virtue) => {
-    props.player.addVirtue(virtue);
+const addVirtue = (virtueId: VirtueIdentifier) => {
+    props.player.addVirtue(new Virtue(state.virtuesDB[virtueId]));
     props.player.saveOnDb();
 };
 

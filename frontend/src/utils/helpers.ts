@@ -22,10 +22,10 @@ export interface IDictionary<TValue> {
 }
 
 export class PossibleChoose<T> {
-    readonly choice: Array<T>;
-    readonly chooseInto: number;
-    private _chosen: Array<number>;
     private _isChosen: boolean;
+    private choice: Array<T>;
+    private chooseInto: number;
+    private _chosen: Array<number>;
 
     constructor(chooseInto: number, choice: Array<T>, chosen?: Array<number>) {
         if (choice.length <= 0) {
@@ -66,7 +66,7 @@ export class PossibleChoose<T> {
     }
 
     public getChosen(): Array<T> {
-        if (!this._isChosen) {
+        if (!this.isChosen()) {
             throw new RangeError("Possible choice is not chosen, call setChosen(...) or call PossibleChoose<" + typeof <T>+"> constructor with chosen parameter");
         }
 
@@ -77,8 +77,12 @@ export class PossibleChoose<T> {
         return this._chosen;
     }
 
-    public isChosen(): boolean {
+    public isChosen() {
         return this._isChosen;
+    }
+
+    public getPossibleChoice(): Array<T> {
+        return this.choice;
     }
 }
 
@@ -95,7 +99,7 @@ export class DescribableName {
 export class DescribableNameWithModifier extends DescribableName {
     readonly modifiers: Array<ModifierParam>;
 
-    constructor(name: string, description: string, modifiers: Array<ModifierParam>) {
+    constructor(name: string, description: string, modifiers?: Array<ModifierParam>) {
         super(name, description);
         this.modifiers = modifiers || [];
     }

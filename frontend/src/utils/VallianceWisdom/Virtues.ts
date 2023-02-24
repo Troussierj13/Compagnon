@@ -1,122 +1,127 @@
 //Virtues
-import {DescribableName, DescribableNameWithModifier, PossibleChoose} from "@/utils/helpers";
+import {DescribableNameWithModifier, IDictionary, PossibleChoose} from "@/utils/helpers";
 
-export type VirtueIdentifier = 'assuranceVirtue'
+export type VirtueIdentifier = 'unknown'
+    | 'assuranceVirtue'
     | 'empoweredVirtue'
     | 'steadyVirtue'
     | 'masteryVirtue'
     | 'resistanceVirtue'
     | 'livenessVirtue';
 
-export type Virtue = {
+export class Virtue {
     identifier: VirtueIdentifier;
-    info: PossibleChoose<DescribableNameWithModifier>;
-    defaultInfo?: DescribableName;
-    chosen?: Array<number>;
-};
+    defaultInfo: DescribableNameWithModifier;
+    choice: Array<DescribableNameWithModifier>;
+    chosen: number;
+    private _choice: PossibleChoose<DescribableNameWithModifier>;
 
-export const Assurance: Virtue = {
-    identifier: "assuranceVirtue",
-    info: new PossibleChoose<DescribableNameWithModifier>(
-        1,
-        [
-            new DescribableNameWithModifier(
-                "Assurance",
-                "Augmentez votre Espoir de 2",
-                [{identifier: 'hopeMax', op: '+', mod: 2}]
-            )
-        ]
-    )
-};
+    constructor(payload: Partial<Virtue>) {
+        this.identifier = payload?.identifier || 'unknown';
+        this.chosen = payload?.chosen !== undefined ? payload.chosen : -1;
+        this.choice = payload?.choice || [];
+        this.defaultInfo = payload?.defaultInfo || new DescribableNameWithModifier(
+            "",
+            "",
+            []
+        );
 
-export const Empowered: Virtue = {
-    identifier: "empoweredVirtue",
-    info: new PossibleChoose<DescribableNameWithModifier>(
-        1,
-        [
-            new DescribableNameWithModifier(
-                "Habilité",
-                "Réduisez le SR de CORPS de 1",
-                [{identifier: 'strengthSR', op: '+', mod: -1}]
-            ),
-            new DescribableNameWithModifier(
-                "Habilité",
-                "Réduisez le SR de COEUR de 1",
-                [{identifier: 'heartSR', op: '+', mod: -1}]
-            ),
-            new DescribableNameWithModifier(
-                "Habilité",
-                "Réduisez le SR de ESPRIT de 1",
-                [{identifier: 'mindSR', op: '+', mod: -1}]
-            )
-        ]
-    ),
-    defaultInfo: new DescribableName(
-        "Habilité",
-        "Réduisez le SR d'un Attribut de 1"
-    ),
-};
-export const SteadyHand: Virtue = {
-    identifier: "steadyVirtue",
-    info: new PossibleChoose<DescribableNameWithModifier>(
-        1,
-        [
-            new DescribableNameWithModifier(
-                "Main sûre",
-                "Ajoutez 1 à votre valeur de CORPS pour un Coup puissant, et +1 au résultat du dé du Destin pour un Coup perforant",
-                []
-            )
-        ]
-    )
-};
+        if (payload?.choice !== undefined && payload.choice.length > 0) {
+            this._choice = new PossibleChoose<DescribableNameWithModifier>(1, this.choice);
+            if (this.chosen !== -1) {
+                this.setChosen(this.chosen);
+            }
+        } else {
+            this._choice = new PossibleChoose<DescribableNameWithModifier>(1, [this.defaultInfo]);
+            this.setChosen(0);
+        }
+    }
 
-export const Mastery: Virtue = {
-    identifier: "masteryVirtue",
-    info: new PossibleChoose<DescribableNameWithModifier>(
-        1,
-        [
-            new DescribableNameWithModifier(
-                "Maîtrise",
-                "Choisissez deux nouvelles Compétences communes favorites",
-                []
-            )
-        ]
-    )
-};
+    public setChosen(chosen?: number): void {
+        if (chosen !== undefined && chosen >= 0) {
+            this._choice.setChosen([chosen]);
+            this.chosen = this._choice.getChosenId()[0];
+        }
+    }
 
-export const Resistance: Virtue = {
-    identifier: "resistanceVirtue",
-    info: new PossibleChoose<DescribableNameWithModifier>(
-        1,
-        [
-            new DescribableNameWithModifier(
-                "Resistance",
-                "Augmentez votre Endurance de 2",
-                [{identifier: 'enduranceMax', op: '+', mod: 2}]
-            )
-        ]
-    )
-};
+    public getChosen(): DescribableNameWithModifier {
+        return this._choice.getChosen()[0];
+    }
 
-export const Liveness: Virtue = {
-    identifier: "livenessVirtue",
-    info: new PossibleChoose<DescribableNameWithModifier>(
-        1,
-        [
-            new DescribableNameWithModifier(
-                "Vivacité",
-                "Augmentez votre valeur de Parade de 1",
-                [{identifier: 'parade', op: '+', mod: 1}]
-            )
-        ]
-    )
-};
+    public isChosen(): boolean {
+        return this.chosen !== -1;
+    }
 
-export const VirtuesToInstance = {
-    assuranceVirtue: Assurance,
-    empoweredVirtue: Empowered,
-    steadyVirtue: SteadyHand,
-    masteryVirtue: Mastery,
-    resistanceVirtue: Resistance,
-    livenessVirtue: Liveness
+    public getInfos(): Array<DescribableNameWithModifier> {
+        return this._choice.getPossibleChoice();
+    }
+}
+
+
+export const dataVirtues: IDictionary<Partial<Omit<Virtue, '_choice'>>> = {
+    empoweredVirtue: {
+        identifier: 'empoweredVirtue',
+        defaultInfo: {
+            name: "Habilité",
+            description: "Réduisez le SR d'un Attribut de 1",
+            modifiers: []
+        },
+        choice: [
+            {
+                name: "Habilité (CORP)",
+                description: "Réduisez le SR de CORPS de 1",
+                modifiers: [{identifier: 'strengthSR', op: '+', mod: -1}]
+            },
+            {
+                name: "Habilité (COEUR)",
+                description: "Réduisez le SR de COEUR de 1",
+                modifiers: [{identifier: 'heartSR', op: '+', mod: -1}]
+            },
+            {
+                name: "Habilité (ESPRIT)",
+                description: "Réduisez le SR de ESPRIT de 1",
+                modifiers: [{identifier: 'mindSR', op: '+', mod: -1}]
+            }
+        ]
+    },
+    livenessVirtue: {
+        identifier: 'livenessVirtue',
+        defaultInfo: {
+            name: "Vivacité",
+            description: "Augmentez votre valeur de Parade de 1",
+            modifiers: [{identifier: 'parade', op: '+', mod: 1}]
+        }
+    },
+    resistanceVirtue: {
+        identifier: "resistanceVirtue",
+        defaultInfo: {
+            name: "Resistance",
+            description: "Augmentez votre Endurance de 2",
+            modifiers: [{identifier: 'enduranceMax', op: '+', mod: 2}]
+        }
+    },
+    masteryVirtue: {
+        identifier: "masteryVirtue",
+        defaultInfo: {
+            name: "Maîtrise",
+            description: "Choisissez deux nouvelles Compétences communes favorites",
+            modifiers: []
+        }
+    },
+    steadyVirtue: {
+        identifier: "steadyVirtue",
+        defaultInfo: {
+            name: "Main sûre",
+            description: "Ajoutez 1 à votre valeur de CORPS pour un Coup puissant, et +1 au résultat du dé du Destin pour un Coup perforant",
+            modifiers: []
+        }
+    },
+    assuranceVirtue: {
+        identifier: "assuranceVirtue",
+        defaultInfo: {
+            name: "Assurance",
+            description: "Augmentez votre Espoir de 2",
+            modifiers: [{identifier: 'hopeMax', op: '+', mod: 2}]
+        }
+    },
 };

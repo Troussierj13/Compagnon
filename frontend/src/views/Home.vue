@@ -1,6 +1,5 @@
 <template>
     <div class="m-auto flex">
-        <Socket />
         <PlayerSheet
             v-if="state.players !== null && state.weapons !== null"
             :player="state.players.at(0)"
@@ -11,7 +10,6 @@
 <script lang="ts" setup>
 import {reactive} from 'vue';
 import PlayerSheet from '../components/ComponentsPlayerSheet/PlayerSheet.vue';
-import Socket from '../components/Socket.vue';
 import {PlayerType} from "@/utils/Types/PlayerType";
 import {APIRequests} from "@/utils/apiurls";
 

@@ -53,7 +53,7 @@
             <div class="relative h-40">
                 <TopSimpleLine />
                 <div class="flex flex-col h-full pt-2">
-                    <div class="flex h-4 w-full justify-between mb-2">
+                    <div class="flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">RECOMPENSES</span>
                         <span class="relative diamond diamond-md top-3">
                             <span>{{ props.player.valiance.rank }}</span>

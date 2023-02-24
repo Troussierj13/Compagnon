@@ -1,4 +1,4 @@
-import {Virtue, VirtuesToInstance} from "@/utils/VallianceWisdom/Virtues";
+import {dataVirtues, Virtue} from "@/utils/VallianceWisdom/Virtues";
 import {Reward, RewardsToInstance} from "@/utils/VallianceWisdom/Rewards";
 import {ModifierParam} from "@/utils/MapModifiers";
 
@@ -10,21 +10,19 @@ export class Wisdom {
         this.rank = payload?.rank || 0;
         this.virtues = [];
         if (payload?.virtues) {
-            payload.virtues.map((virtues) => {
-                let vir = VirtuesToInstance[virtues.identifier];
-                if (!vir.info.isChosen() && virtues.chosen?.length) {
-                    vir.info.setChosen(virtues.chosen);
+            payload.virtues.map((virtue) => {
+                if (virtue.identifier != 'unknown') {
+                    const copy = new Virtue(dataVirtues[virtue.identifier]);
+                    copy.setChosen(virtue.chosen);
+
+                    this.virtues.push(copy);
                 }
-                if (vir.info.isChosen()) {
-                    vir.chosen = vir.info.getChosenId();
-                }
-                this.virtues.push(vir);
             });
         }
     }
 
     public getModifiers(): Array<ModifierParam> {
-        return this.virtues.filter((vir) => vir.info.isChosen()).map(vFiltered => vFiltered.info.getChosen()).flatMap(f => f).map(el => el.modifiers).flatMap(el => el);
+        return this.virtues.filter((vir) => vir.isChosen()).map(vFiltered => vFiltered.getChosen()).map(el => el.modifiers).flatMap(el => el);
     }
 }
 

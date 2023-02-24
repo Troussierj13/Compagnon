@@ -2,6 +2,7 @@ import express from "express";
 import { armorRouter } from "./armor.route.js";
 import { characterRouter } from "./character.route.js";
 import { gameRouter } from "./game.route.js";
+import { virtueRouter } from "./virtue.route.js";
 import { weaponRouter } from "./weapon.route.js";
 
 const router = express.Router();
@@ -10,6 +11,7 @@ const router = express.Router();
 router.use("/character", characterRouter);
 router.use("/game", gameRouter);
 router.use("/weapon", weaponRouter);
+router.use("/virtue", virtueRouter);
 router.use("/armor", armorRouter);
 
 export { router as routerAPI };

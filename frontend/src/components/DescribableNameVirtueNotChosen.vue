@@ -18,7 +18,7 @@
                     v-if="state.hoverChoice"
                     class="flex flex-col absolute z-50 text-xs font-sansserif font-semibold text-black leading-4 bg-white w-52 gap-2 rounded border border-gray/40 p-3 shadow-md top-6 after:absolute after:content-[''] after:h-4 after:w-4 after:rotate-45 after:-top-[0.54rem] after:border-l after:border-t after:rounded-tl after:border-gray/40 after:bg-white">
                     <span
-                        v-for="(vir, index) in props.virtue.info.choice"
+                        v-for="(vir, index) in props.virtue.getInfos()"
                         :key="index"
                         @click="changeChosenVirtue(index)">
                         {{ vir.description }}
@@ -39,6 +39,7 @@ import {HoverSingleton} from "@/utils/helpers";
 
 interface Props {
     virtue: Virtue;
+    virtueId: number;
     player: PlayerType;
 }
 
@@ -61,8 +62,7 @@ const tryChangeHover = () => {
 };
 
 const changeChosenVirtue = (index: number) => {
-    props.player.setVirtueChoice(props.virtue.identifier, index);
-    
+    props.player.setVirtueChoice(props.virtueId, index);
     props.player.saveOnDb();
 };
 

@@ -1,7 +1,7 @@
 <template>
     <div
         class="flex font-medium cursor-pointer"
-        @click.prevent="tryChangeHover">
+        @click.prevent.stop="tryChangeHover">
         <span class="relative z-10 font-UncialAntiqua whitespace-nowrap">
             {{ props.values.name }}
         </span>

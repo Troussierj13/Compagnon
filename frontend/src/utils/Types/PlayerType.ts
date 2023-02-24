@@ -30,7 +30,7 @@ import {BreeHuman} from "@/utils/Culture/BreeHuman";
 import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
-import {Virtue, VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
+import {Virtue} from "@/utils/VallianceWisdom/Virtues";
 import {APIRequests} from "@/utils/apiurls";
 import {IdentifierArmor} from "@/utils/Types/OtherTypes";
 
@@ -411,6 +411,9 @@ export class PlayerType {
 
     addVirtue(virtue: Virtue) {
         this.wisdom.virtues.push(virtue);
+        if (virtue.isChosen()) {
+            this.addModifiers(virtue.getChosen().modifiers);
+        }
     }
 
     removeWeapon(weapon: WeaponType) {
@@ -617,17 +620,15 @@ export class PlayerType {
         this.states.hurt = false;
     }
 
-    public setVirtueChoice(identifier: VirtueIdentifier, index: number) {
-        let filtered = this.wisdom.virtues.filter((vir) => vir.identifier === identifier);
-        if (filtered.length !== 1) {
-            throw new Error("Not find virtue with identifier: " + identifier);
+    public setVirtueChoice(virtueId: number, index: number) {
+        if (this.wisdom.virtues[virtueId] === undefined) {
+            throw new Error("Not find virtue with index: " + virtueId);
         }
 
-        filtered[0].chosen = [index];
-        filtered[0].info.setChosen(filtered[0].chosen);
+        this.wisdom.virtues[virtueId].setChosen(index);
 
-        const modChosen = filtered[0].info.getChosen();
-        this.addModifiers(modChosen[0].modifiers);
+        const modChosen = this.wisdom.virtues[virtueId].getChosen();
+        this.addModifiers(modChosen.modifiers);
     }
 
     public addModifiers(mods: Array<ModifierParam>) {
@@ -639,8 +640,8 @@ export class PlayerType {
         });
     }
 
-    public saveOnDb() {
-        APIRequests.Character.update(this._id, this).then();
+    public async saveOnDb() {
+        await APIRequests.Character.update(this._id, this);
     }
 
     private setCurrentHope(value: number) {

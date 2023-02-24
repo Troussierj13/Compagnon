@@ -40,28 +40,31 @@
             <div class="relative h-40">
                 <TopSimpleLine />
                 <div class="flex flex-col h-full pt-2">
-                    <div class="relative flex h-5 w-full justify-between mb-2">
+                    <div class="flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">VERTUS</span>
-                        <span v-if="player.wisdom.rank <= player.wisdom.virtues.length" class="flex mr-auto my-0.5 ml-8">
+                        <span v-if="player.wisdom.rank > player.wisdom.virtues.length" class="relative flex mr-auto my-0.5 ml-8">
                             <AddVirtue :player="props.player" />
                         </span>
                         <span class="relative diamond diamond-md top-3">
                             <span>{{ props.player.wisdom.rank }}</span>
-                            <span class="absolute top-5 -left-16 font-serif text-[0.65rem]">
+                            <span class="absolute top-4 -left-14 font-serif text-[0.65rem]">
                                 SAGESSE
                             </span>
                         </span>
                     </div>
                     <div
-                        v-for="virtue in props.player.wisdom.virtues"
-                        :key="virtue.identifier"
+                        v-for="(virtue, index) in props.player.wisdom.virtues"
+                        :key="virtue.identifier + '-' + index"
                         class="whitespace-normal text-xs relative mb-0.5 ml-3"
                     >
-                        <span v-if="virtue.info.isChosen()" class="break-words relative">
-                            <DescribableName :values="virtue.info.getChosen()[0]" />
+                        <span v-if="virtue.isChosen()" class="break-words relative">
+                            <DescribableName :values="virtue.getChosen()" />
                         </span>
                         <span v-else class="break-words relative">
-                            <DescribableNameNotChosen :player="props.player" :virtue="virtue" />
+                            <DescribableNameVirtueNotChosen
+                                :player="props.player"
+                                :virtue="virtue"
+                                :virtue-id="index" />
                         </span>
                     </div>
                 </div>
@@ -75,7 +78,7 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
 import DescribableName from "../DescribableName.vue";
-import DescribableNameNotChosen from "../DescribableNameNotChosen.vue";
+import DescribableNameVirtueNotChosen from "../DescribableNameVirtueNotChosen.vue";
 import SkillRowModification from "./SkillRowModification.vue";
 import {reactive} from "vue";
 import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
