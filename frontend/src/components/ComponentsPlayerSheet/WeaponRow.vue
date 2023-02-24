@@ -5,7 +5,7 @@
         @click="tryChangeHover">
         <span class="relative flex my-auto h-[1.125rem] grow">
             {{
-                props.weapon.name +
+                props.weapon?.name +
                     (props.weapon?.rewardsMod.length > 0
                         ? ' ( ' + props.weapon?.rewardsMod.join(', ') + ' )'
                         : '')
@@ -22,7 +22,7 @@
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
             class="relative flex my-auto h-[1.125rem] justify-center">
             {{
-                props.weapon.dmg
+                props.weapon?.name !== '' ? props.weapon.dmg : ''
             }}
             <BottomGrayLine />
         </span>
@@ -30,11 +30,11 @@
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
             class="relative flex my-auto h-[1.125rem] justify-center">
             {{
-                props.weapon.injury.oneHand === props.weapon.injury.twoHand
-                    ? props.weapon.injury.oneHand
-                    : props.weapon.injury.oneHand +
-                        ' / ' +
-                        props.weapon.injury.twoHand
+                props.weapon?.name !== '' ?
+                    props.weapon.injury.oneHand === props.weapon.injury.twoHand
+                        ? props.weapon.injury.oneHand
+                        : props.weapon.injury.oneHand + ' / ' + props.weapon.injury.twoHand
+                    : ''
             }}
             <BottomGrayLine />
         </span>
@@ -42,7 +42,7 @@
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
             class="relative flex my-auto h-[1.125rem] justify-center">
             {{
-                props.weapon.weight
+                props.weapon?.name !== '' ? props.weapon.weight : ''
             }}
             <BottomGrayLine />
         </span>
@@ -62,36 +62,14 @@ import {HoverSingleton} from "@/utils/helpers";
 import {reactive} from "vue";
 import BottomGrayLine from "../LineComponent/BottomGrayLine.vue";
 
+interface Props {
+    player: PlayerType;
+    hideNote: boolean;
+    weapon?: WeaponType;
+}
 
-const props = defineProps({
-    player: {
-        type: PlayerType,
-        default() {
-            return new PlayerType({});
-        }
-    },
-    weapon: {
-        type: WeaponType,
-        default() {
-            return {
-                name: '',
-                dmg: null,
-                injury: {
-                    oneHand: null,
-                    twoHand: null,
-                },
-                weight: null,
-                note: '',
-                rewardsMod: [],
-            };
-        },
-    },
-    hideNote: {
-        type: Boolean,
-        default() {
-            return false;
-        },
-    }
+const props = withDefaults(defineProps<Props>(), {
+    weapon: () => new WeaponType({})
 });
 
 interface State {
@@ -103,7 +81,7 @@ const state = reactive<State>({
 });
 
 const tryChangeHover = () => {
-    if (props.player && props.weapon?.name !== '') {
+    if (props.player && props.weapon.name !== '') {
 
         state.hover = HoverSingleton.GetInstance().tryChangeHover(state.hover, () => {
             state.hover = false;
@@ -112,7 +90,7 @@ const tryChangeHover = () => {
 };
 
 const tryRemove = () => {
-    if (props.player && props.weapon?.name !== '') {
+    if (props.player && props.weapon.name !== '') {
         tryChangeHover();
         props.player.removeWeapon(props.weapon);
         props.player.saveOnDb();

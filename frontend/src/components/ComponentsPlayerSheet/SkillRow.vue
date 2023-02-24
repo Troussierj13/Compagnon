@@ -50,19 +50,14 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-    favorisable: Boolean,
-    skill: {
-        type: Object,
-        default() {
-            return {
-                name: '',
-                favored: false,
-                rank: 0,
-            };
-        },
-    },
-});
+import {SkillType} from "@/utils/Types/PlayerType";
+
+interface Props {
+    favorisable: boolean;
+    skill: SkillType;
+}
+
+const props = defineProps<Props>();
 </script>
 
 <style scoped></style>
