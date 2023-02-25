@@ -1,5 +1,5 @@
 import {dataVirtues, Virtue} from "@/utils/VallianceWisdom/Virtues";
-import {Reward, RewardsToInstance} from "@/utils/VallianceWisdom/Rewards";
+import {Reward, dataRewards} from "@/utils/VallianceWisdom/Rewards";
 import {ModifierParam} from "@/utils/MapModifiers";
 
 export class Wisdom {
@@ -34,8 +34,13 @@ export class Valiance {
         this.rank = payload?.rank || 0;
         this.rewards = [];
         if (payload?.rewards) {
-            payload.rewards.map((rewards) => {
-                this.rewards.push(RewardsToInstance[rewards.identifier]);
+            payload.rewards.map((reward) => {
+                if (reward.identifier != 'unknown') {
+                    const copy = new Reward(dataRewards[reward.identifier]);
+                    
+
+                    this.rewards.push(copy);
+                }
             });
         }
     }

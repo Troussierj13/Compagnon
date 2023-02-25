@@ -19,8 +19,9 @@
                 class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
                 <WeaponRow
                     :hide-note="true"
+                    :player="player"
                     :weapon="weap"
-                    @click.stop="addWeapon(weap)" />
+                    @click.prevent.stop="addWeapon(weap)" />
             </span>
         </div>
     </div>
@@ -57,8 +58,6 @@ const tryChangeHover = () => {
 };
 
 const addWeapon = (weapon: WeaponType) => {
-    tryChangeHover();
-
     props.player.addWeapon(weapon);
     props.player.saveOnDb();
 };

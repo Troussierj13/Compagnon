@@ -42,7 +42,9 @@
                 <div class="flex flex-col h-full pt-2">
                     <div class="flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">VERTUS</span>
-                        <span v-if="player.wisdom.rank > player.wisdom.virtues.length" class="relative flex mr-auto my-0.5 ml-8">
+                        <span
+                            v-if="player.wisdom.rank > player.wisdom.virtues.length"
+                            class="relative flex mr-auto my-0.5 ml-8">
                             <AddVirtue :player="props.player" />
                         </span>
                         <span class="relative diamond diamond-md top-3">

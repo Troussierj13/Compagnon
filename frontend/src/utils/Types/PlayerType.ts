@@ -33,6 +33,7 @@ import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 import {Virtue} from "@/utils/VallianceWisdom/Virtues";
 import {APIRequests} from "@/utils/apiurls";
 import {IdentifierArmor} from "@/utils/Types/OtherTypes";
+import {Reward} from "@/utils/VallianceWisdom/Rewards";
 
 const CultureTypeToInstance = {
     bardide: Bardide,
@@ -414,6 +415,11 @@ export class PlayerType {
         if (virtue.isChosen()) {
             this.addModifiers(virtue.getChosen().modifiers);
         }
+    }
+
+    addReward(reward: Reward) {
+        this.valiance.rewards.push(reward);
+        //TODO : apply modifier to weapons/armors
     }
 
     removeWeapon(weapon: WeaponType) {

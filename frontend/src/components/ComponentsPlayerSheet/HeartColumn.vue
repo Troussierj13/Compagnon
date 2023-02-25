@@ -55,6 +55,11 @@
                 <div class="flex flex-col h-full pt-2">
                     <div class="flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">RECOMPENSES</span>
+                        <span
+                            v-if="player.valiance.rank > player.valiance.rewards.length"
+                            class="relative flex mr-auto my-0.5 ml-8">
+                            <AddReward :player="props.player" />
+                        </span>
                         <span class="relative diamond diamond-md top-3">
                             <span>{{ props.player.valiance.rank }}</span>
                             <span class="absolute top-5 -left-16 font-serif text-[0.65rem]">
@@ -88,6 +93,7 @@ import {CheckCircleIcon} from "@heroicons/vue/24/outline";
 import {reactive} from "vue";
 import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
 import SkillRowModification from "./SkillRowModification.vue";
+import AddReward from "./AddReward.vue";
 
 interface Props {
     player: PlayerType
