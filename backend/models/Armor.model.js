@@ -2,13 +2,18 @@ import mongoose from "mongoose";
 
 const armorSchema = mongoose.Schema(
   {
+    identifier: String,
     name: String,
-    protection: String,
-    parade: String,
-    weight: {
-      identifier: String,
+    protection: {
       value: Number,
     },
+    parade: {
+      value: Number,
+    },
+    weight: {
+      value: Number,
+    },
+    rewardsMod: [String],
   },
   { timestamps: true }
 );

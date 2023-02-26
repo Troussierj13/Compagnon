@@ -13,11 +13,11 @@ const router = express.Router();
 router.post("/", createArmor);
 
 router.get("/populateDb", populateDb);
-router.get("/:weaponId", getOneArmor);
+router.get("/:armorId", getOneArmor);
 router.get("/", getAllArmors);
 
-router.put("/:weaponId", updateArmor);
+router.put("/:armorId", updateArmor);
 
-router.delete("/:weaponId", deleteArmor);
+router.delete("/:armorId", deleteArmor);
 
 export { router as armorRouter };

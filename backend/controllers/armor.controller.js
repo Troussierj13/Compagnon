@@ -4,13 +4,10 @@ import Armor from "../models/Armor.model.js";
 export const populateDb = async (req, res) => {
   try {
     brutArmors.map(async (weap) => {
+      await Armor.findByIdAndDelete(weap._id);
       const newArmor = new Armor(weap);
       await newArmor.save();
     });
-    /*brutArmors.map(async (weap) => {
-              console.log(weap._id);
-              await Armor.findByIdAndDelete(weap._id);
-            });*/
     res
       .status(201)
       .json({ message: "Armor DB is now populate with default armors" });

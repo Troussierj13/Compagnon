@@ -15,7 +15,7 @@
             >
                 <span class="break-words relative">
                     <DescribableName
-                        :values="reward.info"
+                        :values="reward.defaultChoice ? reward.defaultChoice : reward.getChosen()"
                         @click="addReward(reward.identifier)" />
                 </span>
             </div>

@@ -27,6 +27,11 @@ export type SkillIdentifier =
     | HeartSkillIdentifier
     | MindSkillIdentifier;
 
+export type ArmorIdentifier = "unknown"
+    | "armor"
+    | "helm"
+    | "shield"
+
 export type Identifier =
     | "unknown"
     | "strength"
@@ -44,8 +49,13 @@ export type Identifier =
     | "currentHope"
     | "weight"
     | "armorWeight"
+    | "armorProtection"
     | "helmWeight"
-    | "shieldWeight";
+    | "helmProtection"
+    | "shieldWeight"
+    | "shieldParade"
+    | "weaponDamage"
+    | "weaponInjury";
 
 export type IdentifierModifiableAttr =
     | "adventurePoints"

@@ -132,27 +132,42 @@ const characterSchema = mongoose.Schema(
       },
     ],
     armor: {
+      identifier: String,
       name: String,
-      protection: String,
-      parade: String,
+      protection: {
+        value: Number,
+      },
+      parade: {
+        value: Number,
+      },
       weight: {
         value: Number,
       },
       rewardsMod: [String],
     },
     helm: {
+      identifier: String,
       name: String,
-      protection: String,
-      parade: String,
+      protection: {
+        value: Number,
+      },
+      parade: {
+        value: Number,
+      },
       weight: {
         value: Number,
       },
       rewardsMod: [String],
     },
     shield: {
+      identifier: String,
       name: String,
-      protection: String,
-      parade: String,
+      protection: {
+        value: Number,
+      },
+      parade: {
+        value: Number,
+      },
       weight: {
         value: Number,
       },
@@ -172,6 +187,7 @@ const characterSchema = mongoose.Schema(
       rewards: [
         {
           identifier: String,
+          applyTo: String,
         },
       ],
     },

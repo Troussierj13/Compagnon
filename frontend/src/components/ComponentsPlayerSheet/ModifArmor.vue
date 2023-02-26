@@ -15,7 +15,6 @@
             class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
             <ArmorRow
                 :armor="armor"
-                :weight="armor.weight.value"
                 @click.stop="changeArmor(armor)" />
         </span>
         <span
@@ -28,12 +27,12 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import ArmorRow from "./ArmorRow.vue";
 import {ArmorType} from "@/utils/Types/ArmorType";
 import {HoverSingleton} from "@/utils/helpers";
-import {IdentifierArmor} from "@/utils/Types/OtherTypes";
+import {ArmorIdentifier} from "@/utils/Types/IdentifiedType";
 
 interface Props {
     armors: Array<ArmorType>;
     player: PlayerType;
-    changeIdentifier: IdentifierArmor
+    changeIdentifier: ArmorIdentifier
 }
 
 const props = defineProps<Props>();
@@ -42,7 +41,8 @@ const changeArmor = (armor: ArmorType) => {
     HoverSingleton.GetInstance().tryChangeHover(true, () => {
     });
 
-    props.player.changeArmor(props.changeIdentifier, armor);
+    console.log(props.changeIdentifier);
+    props.player.changeArmor(armor, props.changeIdentifier);
     props.player.saveOnDb();
 };
 </script>

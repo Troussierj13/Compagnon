@@ -1,9 +1,9 @@
 <template>
-    <div
-        :class="{ 'cursor-pointer': props.player && props.weapon?.name !== '' }"
-        class="relative flex w-full gap-1 font-sansserif text-[0.6rem] font-bold leading-[0.8rem]"
-        @click="tryChangeHover">
-        <span class="relative flex my-auto h-[1.125rem] grow">
+    <div class="relative flex w-full gap-1 font-sansserif text-[0.6rem] font-bold leading-[0.8rem]">
+        <span
+            :class="{ 'cursor-pointer hover:bg-slate-200/40': props.player && props.weapon?.name !== '' }"
+            class="relative flex my-auto h-[1.125rem] grow rounded"
+            @click="tryChangeHover">
             {{
                 props.weapon?.name +
                     (props.weapon?.rewardsMod.length > 0

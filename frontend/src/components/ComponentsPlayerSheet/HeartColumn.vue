@@ -68,12 +68,18 @@
                         </span>
                     </div>
                     <div
-                        v-for="reward in props.player.valiance.rewards"
-                        :key="reward.identifier"
+                        v-for="(reward, index) in props.player.valiance.rewards"
+                        :key="index"
                         class="whitespace-normal text-xs relative mb-0.5 ml-3"
                     >
-                        <span class="break-words relative">
-                            <DescribableName :values="reward.info" />
+                        <span v-if="reward.isChosen()" class="break-words relative">
+                            <DescribableName :values="reward.getChosen()" />
+                        </span>
+                        <span v-else class="break-words relative">
+                            <DescribableNameRewardNotChosen
+                                :player="props.player"
+                                :reward="reward"
+                                :reward-id="index" />
                         </span>
                     </div>
                 </div>
@@ -94,6 +100,7 @@ import {reactive} from "vue";
 import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
 import SkillRowModification from "./SkillRowModification.vue";
 import AddReward from "./AddReward.vue";
+import DescribableNameRewardNotChosen from "../DescribableNameRewardNotChosen.vue";
 
 interface Props {
     player: PlayerType

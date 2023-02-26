@@ -24,9 +24,10 @@ export class Modifiers {
     }
 
     getModified(initial: number): number {
-        return (
+        const result = (
             (initial + this["+"].reduce((acc, curr) => acc + curr)) *
             this["*"].reduce((acc, curr) => acc * curr)
         );
+        return (result >= 0 ? result : 0);
     }
 }

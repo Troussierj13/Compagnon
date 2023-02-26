@@ -1,5 +1,5 @@
 //Rewards
-import {DescribableName, IDictionary} from "@/utils/helpers";
+import {DescribableNameWithModifier, IDictionary, PossibleChoose} from "@/utils/helpers";
 import {ModifierParam} from "@/utils/MapModifiers";
 
 export type RewardIdentifier = 'unknown'
@@ -10,60 +10,154 @@ export type RewardIdentifier = 'unknown'
     | 'ferociousReward'
     | 'reinforcedReward';
 
+export type ApplyIdentifier = 'notApply'
+    | 'armor'
+    | 'helm'
+    | 'shield'
+    | 'weapon'
+
+export class DescribableNameForRewards extends DescribableNameWithModifier {
+    applyTo: ApplyIdentifier;
+
+    constructor(name: string, description: string, modifiers?: Array<ModifierParam>, applyTo?: ApplyIdentifier) {
+        super(name, description, modifiers);
+        this.applyTo = applyTo || 'notApply';
+    }
+}
 
 export class Reward {
     identifier: RewardIdentifier;
-    info: DescribableName;
-    modifiers: Array<ModifierParam>;
+    defaultChoice: DescribableNameForRewards;
+    choices: Array<DescribableNameForRewards>;
+    applyTo: ApplyIdentifier;
+    private _choice: PossibleChoose<DescribableNameForRewards>;
 
     constructor(payload: Partial<Reward>) {
         this.identifier = payload?.identifier || 'unknown';
-        this.info = payload?.info || new DescribableName('', '');
-        this.modifiers = payload?.modifiers || [];
+        this.choices = payload?.choices || [];
+        this.applyTo = payload?.applyTo || 'notApply';
+        this.defaultChoice = payload?.defaultChoice || new DescribableNameForRewards(
+            "",
+            "",
+            [],
+            'notApply'
+        );
+
+        if (payload?.choices !== undefined && payload.choices.length > 0) {
+            this._choice = new PossibleChoose<DescribableNameForRewards>(1, this.choices);
+            this.setChosen(this.applyTo);
+        } else {
+            this._choice = new PossibleChoose<DescribableNameForRewards>(1, [this.defaultChoice]);
+            this.setChosen(this.defaultChoice.applyTo);
+        }
+    }
+
+    public setChosen(apply?: ApplyIdentifier): void {
+        if (apply !== undefined && apply !== 'notApply') {
+            const index = this._choice.getPossibleChoice().findIndex((el) => el.applyTo === apply);
+            this._choice.setChosen([index]);
+            this.applyTo = this.getChosen().applyTo;
+        }
+    }
+
+    public getChosen(): DescribableNameForRewards {
+        return this._choice.getChosen()[0];
+    }
+
+    public isChosen(): boolean {
+        return this.applyTo !== 'notApply';
+    }
+
+    public getInfos(): Array<DescribableNameForRewards> {
+        return this._choice.getPossibleChoice();
     }
 }
 
 export const dataRewards: IDictionary<Partial<Reward>> = {
     sharpReward: {
         identifier: "sharpReward",
-        info: new DescribableName(
-            "Acéré (arme)",
-            "Les jets d'attaque infligent un Coup perforant sur un 9 ou plus"
-        )
+        defaultChoice: {
+            name: "Acéré (arme)",
+            description: "Les jets d'attaque infligent un Coup perforant sur un 9 ou plus",
+            modifiers: [],
+            applyTo: 'weapon'
+        }
     },
     adjustedReward: {
         identifier: "adjustedReward",
-        info: new DescribableName(
-            "Ajusté (armure ou casque)",
-            "Ajoutez +2 au résultat de vos tests de PROTECTION"
-        )
+        defaultChoice: {
+            name: "Ajusté (armure ou casque)",
+            description: "Ajoutez +2 au résultat de vos tests de PROTECTION",
+            modifiers: [],
+            applyTo: 'notApply'
+        },
+        choices: [
+            {
+                name: "Ajusté (armure)",
+                description: "Ajoutez +2 au résultat de vos tests de PROTECTION",
+                modifiers: [],
+                applyTo: 'armor'
+            },
+            {
+                name: "Ajusté (casque)",
+                description: "Ajoutez +2 au résultat de vos tests de PROTECTION",
+                modifiers: [],
+                applyTo: 'helm'
+            }
+        ]
     },
     cleverReward: {
         identifier: "cleverReward",
-        info: new DescribableName(
-            "Astucieux (armure, casque ou bouclier)",
-            "Réduisez votre valeur de charge de 2"
-        )
+        defaultChoice: {
+            name: "Astucieux (armure, casque ou bouclier)",
+            description: "Réduisez votre valeur de charge de 2",
+            modifiers: [],
+            applyTo: 'notApply'
+        },
+        choices: [
+            {
+                name: "Astucieux (armure)",
+                description: "Réduisez la valeur de charge de votre armure de 2",
+                modifiers: [{identifier: 'armorWeight', mod: -2, op: '+'}],
+                applyTo: 'armor'
+            }, {
+                name: "Astucieux (casque)",
+                description: "Réduisez la valeur de charge de votre casque de 2",
+                modifiers: [{identifier: 'helmWeight', mod: -2, op: '+'}],
+                applyTo: 'helm'
+            }, {
+                name: "Astucieux (bouclier)",
+                description: "Réduisez la valeur de charge de votre bouclier de 2",
+                modifiers: [{identifier: 'shieldWeight', mod: -2, op: '+'}],
+                applyTo: 'shield'
+            },
+        ]
     },
     devastatingReward: {
         identifier: "devastatingReward",
-        info: new DescribableName(
-            "Dévastateur (arme)",
-            "Augmentez de 1 la valeur de dégats d'une arme"
-        )
+        defaultChoice: {
+            name: "Dévastateur (arme)",
+            description: "Augmentez de 1 la valeur de dégats d'une arme",
+            modifiers: [],
+            applyTo: 'weapon'
+        }
     },
     ferociousReward: {
         identifier: "ferociousReward",
-        info: new DescribableName(
-            "Féroce (arme)",
-            "Augmentez de 2 la valeur de blessure d'une arme"
-        )
+        defaultChoice: {
+            name: "Féroce (arme)",
+            description: "Augmentez de 2 la valeur de blessure d'une arme",
+            modifiers: [],
+            applyTo: 'weapon'
+        }
     },
     reinforcedReward: {
         identifier: "reinforcedReward",
-        info: new DescribableName(
-            "Renforcé (bouclier)",
-            "Augmentez de +1 le modificateur de Parade d'un bouclier"
-        )
+        defaultChoice: {
+            name: "Renforcé (bouclier)",
+            description: "Augmentez de +1 le modificateur de Parade d'un bouclier",
+            modifiers: [{identifier: 'shieldParade', mod: 1, op: '+'}],
+            applyTo: 'shield'
+        }
     },
 };

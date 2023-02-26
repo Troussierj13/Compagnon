@@ -14,6 +14,11 @@
                     </span>
                     <span class="diamond diamond-lg relative -top-2.5 ml-[56.7%] mr-auto">
                         <span>{{ props.player.getModifiedValue('parade') }}</span>
+                        <span
+                            v-if="props.player.getModifiedValue('shieldParade') > 0"
+                            class="absolute -top-7 left-8 text-sm text-red">+{{
+                                props.player.getModifiedValue('shieldParade')
+                            }}</span>
                         <span class="absolute -top-2 left-10 text-xs">Parade</span>
                     </span>
                 </div>

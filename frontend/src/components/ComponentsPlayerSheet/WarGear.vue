@@ -36,12 +36,12 @@
                 </div>
                 <ArmorRow
                     :armor="props.player.armor"
-                    :weight="props.player.getModifiedValue('armorWeight')"
+                    :player="props.player"
                     @click="tryHoverModifArmor"
                 />
                 <ModifArmor
                     v-if="state.hover.armor"
-                    :armors="state.armors.filter(arm => arm.weight.identifier === 'armorWeight').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
+                    :armors="state.armors.filter(arm => arm.identifier === 'armor').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
                     :change-identifier="'armor'"
                     :player="props.player" />
             </div>
@@ -51,11 +51,11 @@
                 </div>
                 <ArmorRow
                     :armor="props.player.helm"
-                    :weight="props.player.getModifiedValue('helmWeight')"
+                    :player="props.player"
                     @click="tryHoverModifHelm" />
                 <ModifArmor
                     v-if="state.hover.helm"
-                    :armors="state.armors.filter(arm => arm.weight.identifier === 'helmWeight').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
+                    :armors="state.armors.filter(arm => arm.identifier === 'helm').sort((a: ArmorType, b: ArmorType) => a.protection.value-b.protection.value)"
                     :change-identifier="'helm'"
                     :player="props.player" />
             </div>
@@ -68,11 +68,11 @@
             </div>
             <ArmorRow
                 :armor="props.player.shield"
-                :weight="props.player.getModifiedValue('shieldWeight')"
+                :player="props.player"
                 @click="tryHoverModifShield" />
             <ModifArmor
                 v-if="state.hover.shield"
-                :armors="state.armors.filter(arm => arm.weight.identifier === 'shieldWeight').sort((a: ArmorType, b: ArmorType) => a.parade-b.parade)"
+                :armors="state.armors.filter(arm => arm.identifier === 'shield').sort((a: ArmorType, b: ArmorType) => a.parade.value-b.parade.value)"
                 :change-identifier="'shield'"
                 :player="props.player" />
         </div>

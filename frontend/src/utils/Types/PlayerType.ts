@@ -14,6 +14,7 @@ import {SetModifiers} from '@/utils/Rules/Rules';
 import {ArmorType} from '@/utils/Types/ArmorType';
 import {Attributes} from '@/utils/Types/CharacterTypes';
 import {
+    ArmorIdentifier,
     HeartSkillIdentifier,
     IdentifiedValue,
     Identifier,
@@ -32,8 +33,7 @@ import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 import {Virtue} from "@/utils/VallianceWisdom/Virtues";
 import {APIRequests} from "@/utils/apiurls";
-import {IdentifierArmor} from "@/utils/Types/OtherTypes";
-import {Reward} from "@/utils/VallianceWisdom/Rewards";
+import {ApplyIdentifier, Reward} from "@/utils/VallianceWisdom/Rewards";
 
 const CultureTypeToInstance = {
     bardide: Bardide,
@@ -337,24 +337,9 @@ export class PlayerType {
         payload?.weapons?.map((w) => {
             this.weapons.push(new WeaponType(w));
         });
-        this.armor = new ArmorType(
-            payload?.armor,
-            payload?.armor?.weight?.identifier
-                ? payload?.armor?.weight?.identifier
-                : 'armorWeight'
-        );
-        this.helm = new ArmorType(
-            payload?.helm,
-            payload?.helm?.weight?.identifier
-                ? payload?.helm?.weight?.identifier
-                : 'helmWeight'
-        );
-        this.shield = new ArmorType(
-            payload?.shield,
-            payload?.shield?.weight?.identifier
-                ? payload?.shield?.weight?.identifier
-                : 'shieldWeight'
-        );
+        this.armor = new ArmorType(payload?.armor);
+        this.helm = new ArmorType(payload?.helm);
+        this.shield = new ArmorType(payload?.shield);
         this.wisdom = new Wisdom(payload?.wisdom);
         this.valiance = new Valiance(payload?.valiance);
         this.adventurePoints = payload?.adventurePoints || 0;
@@ -404,6 +389,7 @@ export class PlayerType {
         SetModifiers(this);
 
         this.addModifiers(this.wisdom.getModifiers());
+        this.addModifiers(this.valiance.getModifiers());
     }
 
     addWeapon(weapon: WeaponType) {
@@ -426,72 +412,21 @@ export class PlayerType {
         this.weapons = this.weapons.filter(w => w !== weapon);
     }
 
-    changeArmor(identifier: IdentifierArmor, armor: ArmorType) {
+    changeArmor(armor: ArmorType, identifier: ArmorIdentifier) {
         switch (identifier) {
             case "armor":
-                this.armor = new ArmorType(armor, 'armorWeight');
+                this.armor = new ArmorType(armor);
                 break;
             case "helm":
-                this.helm = new ArmorType(armor, 'armorWeight');
+                this.helm = new ArmorType(armor);
                 break;
             case "shield":
-                this.shield = new ArmorType(armor, 'armorWeight');
+                this.shield = new ArmorType(armor);
                 break;
         }
     }
 
-    getValue(identifier: Identifier | IdentifierModifiableAttr): number {
-        switch (identifier) {
-            case 'unknown':
-                return 0;
-            case 'sequels':
-                return this.sequels;
-            case 'adventurePoints':
-                return this.adventurePoints;
-            case 'progressPoints':
-                return this.progressPoints;
-            case 'communityPoints':
-                return this.communityPoints;
-            case 'strength':
-                return this.attributes.values.strength.value;
-            case 'heart':
-                return this.attributes.values.heart.value;
-            case 'mind':
-                return this.attributes.values.mind.value;
-            case 'strengthSR':
-                return this.attributes.sr.strength.value;
-            case 'heartSR':
-                return this.attributes.sr.heart.value;
-            case 'mindSR':
-                return this.attributes.sr.mind.value;
-            case 'enduranceMax':
-                return this.attributes.secondary.endurance.value;
-            case 'hopeMax':
-                return this.attributes.secondary.hope.value;
-            case 'parade':
-                return this.attributes.secondary.parade.value;
-            case 'fatigue':
-                return this.fatigue.value;
-            case 'shadows':
-                return this.shadows.value;
-            case 'currentEndurance':
-                return this.currentEndurance.value;
-            case 'currentHope':
-                return this.currentHope.value;
-            case 'armorWeight':
-                return this.armor.weight.value;
-            case 'helmWeight':
-                return this.helm.weight.value;
-            case 'shieldWeight':
-                return this.shield.weight.value;
-            default:
-                return 0;
-        }
-    }
-
-    getModifiedValue(
-        identifier: Identifier | IdentifierModifiableAttr
-    ): number {
+    getModifiedValue(identifier: Identifier | IdentifierModifiableAttr): number {
         if (identifier === 'unknown') {
             return 0;
         } else if (identifier === 'weight') {
@@ -637,6 +572,17 @@ export class PlayerType {
         this.addModifiers(modChosen.modifiers);
     }
 
+    public setRewardChoice(rewardId: number, applyTo: ApplyIdentifier) {
+        if (this.valiance.rewards[rewardId] === undefined) {
+            throw new Error("Not find virtue with index: " + rewardId);
+        }
+
+        this.valiance.rewards[rewardId].setChosen(applyTo);
+
+        const modChosen = this.valiance.rewards[rewardId].getChosen();
+        this.addModifiers(modChosen.modifiers);
+    }
+
     public addModifiers(mods: Array<ModifierParam>) {
         mods.map((mod) => {
             if (!this.modifiers[mod.identifier]) {
@@ -648,6 +594,61 @@ export class PlayerType {
 
     public async saveOnDb() {
         await APIRequests.Character.update(this._id, this);
+    }
+
+    private getValue(identifier: Identifier | IdentifierModifiableAttr): number {
+        switch (identifier) {
+            case 'unknown':
+                return 0;
+            case 'sequels':
+                return this.sequels;
+            case 'adventurePoints':
+                return this.adventurePoints;
+            case 'progressPoints':
+                return this.progressPoints;
+            case 'communityPoints':
+                return this.communityPoints;
+            case 'strength':
+                return this.attributes.values.strength.value;
+            case 'heart':
+                return this.attributes.values.heart.value;
+            case 'mind':
+                return this.attributes.values.mind.value;
+            case 'strengthSR':
+                return this.attributes.sr.strength.value;
+            case 'heartSR':
+                return this.attributes.sr.heart.value;
+            case 'mindSR':
+                return this.attributes.sr.mind.value;
+            case 'enduranceMax':
+                return this.attributes.secondary.endurance.value;
+            case 'hopeMax':
+                return this.attributes.secondary.hope.value;
+            case 'parade':
+                return this.attributes.secondary.parade.value;
+            case 'fatigue':
+                return this.fatigue.value;
+            case 'shadows':
+                return this.shadows.value;
+            case 'currentEndurance':
+                return this.currentEndurance.value;
+            case 'currentHope':
+                return this.currentHope.value;
+            case 'armorWeight':
+                return this.armor.weight.value;
+            case 'armorProtection':
+                return this.armor.protection.value;
+            case 'helmWeight':
+                return this.helm.weight.value;
+            case 'helmProtection':
+                return this.helm.protection.value;
+            case 'shieldWeight':
+                return this.shield.weight.value;
+            case 'shieldParade':
+                return this.shield.parade.value;
+            default:
+                return 0;
+        }
     }
 
     private setCurrentHope(value: number) {

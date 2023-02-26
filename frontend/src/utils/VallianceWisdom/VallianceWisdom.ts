@@ -37,12 +37,16 @@ export class Valiance {
             payload.rewards.map((reward) => {
                 if (reward.identifier != 'unknown') {
                     const copy = new Reward(dataRewards[reward.identifier]);
-                    
+                    copy.setChosen(reward.applyTo);
 
                     this.rewards.push(copy);
                 }
             });
         }
+    }
+
+    public getModifiers(): Array<ModifierParam> {
+        return this.rewards.filter((rew) => rew.isChosen()).map(vFiltered => vFiltered.getChosen()).map(el => el.modifiers).flatMap(el => el);
     }
 }
 
