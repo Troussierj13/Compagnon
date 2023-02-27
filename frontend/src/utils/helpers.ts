@@ -84,6 +84,11 @@ export class PossibleChoose<T> {
     public getPossibleChoice(): Array<T> {
         return this.choice;
     }
+
+    public resetChoices() {
+        this._chosen = [];
+        this._isChosen = false;
+    }
 }
 
 export class DescribableName {

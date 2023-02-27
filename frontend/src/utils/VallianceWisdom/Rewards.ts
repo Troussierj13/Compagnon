@@ -52,6 +52,11 @@ export class Reward {
         }
     }
 
+    public resetChoices() {
+        this.applyTo = 'notApply';
+        this._choice.resetChoices();
+    }
+
     public setChosen(apply?: ApplyIdentifier): void {
         if (apply !== undefined && apply !== 'notApply') {
             const index = this._choice.getPossibleChoice().findIndex((el) => el.applyTo === apply);

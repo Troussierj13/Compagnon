@@ -40,8 +40,7 @@ const props = defineProps<Props>();
 const changeArmor = (armor: ArmorType) => {
     HoverSingleton.GetInstance().tryChangeHover(true, () => {
     });
-
-    console.log(props.changeIdentifier);
+    
     props.player.changeArmor(armor, props.changeIdentifier);
     props.player.saveOnDb();
 };

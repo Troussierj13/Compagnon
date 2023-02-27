@@ -3,6 +3,11 @@
         <span
             class="relative flex grow h-[1.125rem] rounded hover:bg-slate-200/40 cursor-pointer">
             {{ getName() }}
+            <span
+                v-if="getRewardAssociate().length>0"
+                class="ml-1">( {{
+                    getRewardAssociate().map(name => name.match(/^[\w\s\u00C0-\u017F]*/)).join(', ')
+                }} )</span>
             <BottomGrayLine />
         </span>
         <span class="relative flex w-1/5 justify-center h-[1.125rem] my-auto">
@@ -76,6 +81,14 @@ const getName = () => {
         return '';
     } else {
         return props.armor.name;
+    }
+};
+
+const getRewardAssociate = (): Array<string> => {
+    if (!props.player || props.armor.identifier === 'unknown') {
+        return [];
+    } else {
+        return props.player.valiance.rewards.filter((r => r.applyTo === props.armor.identifier)).map(r => r.defaultChoice.name);
     }
 };
 

@@ -390,6 +390,8 @@ export class PlayerType {
 
         this.addModifiers(this.wisdom.getModifiers());
         this.addModifiers(this.valiance.getModifiers());
+
+        
     }
 
     addWeapon(weapon: WeaponType) {
@@ -423,6 +425,17 @@ export class PlayerType {
             case "shield":
                 this.shield = new ArmorType(armor);
                 break;
+        }
+
+        //reset choice of associate rewards
+        if (armor.identifier === 'unknown') {
+            this.valiance.rewards.map((rew) => {
+                if (rew.getChosen().applyTo === identifier) {
+                    console.log('test');
+                    this.removeModifiers(rew.getChosen().modifiers);
+                    rew.resetChoices();
+                }
+            });
         }
     }
 
@@ -578,6 +591,7 @@ export class PlayerType {
         }
 
         this.valiance.rewards[rewardId].setChosen(applyTo);
+        console.log(this.valiance.rewards[rewardId]);
 
         const modChosen = this.valiance.rewards[rewardId].getChosen();
         this.addModifiers(modChosen.modifiers);
@@ -592,11 +606,20 @@ export class PlayerType {
         });
     }
 
+    public removeModifiers(mods: Array<ModifierParam>) {
+        mods.map((mod) => {
+            if (this.modifiers[mod.identifier]) {
+                console.log("remove", mod.identifier, mod);
+                this.modifiers[mod.identifier].removeModifiers(mod);
+            }
+        });
+    }
+
     public async saveOnDb() {
         await APIRequests.Character.update(this._id, this);
     }
 
-    private getValue(identifier: Identifier | IdentifierModifiableAttr): number {
+    public getValue(identifier: Identifier | IdentifierModifiableAttr): number {
         switch (identifier) {
             case 'unknown':
                 return 0;
