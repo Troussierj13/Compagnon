@@ -51,6 +51,13 @@ describe("PossibleChoose Test", () => {
         const possible4 = new PossibleChoose<string>(2, ['first', 'second']);
         expectObjectToBe(possible4.getChosen(), '["first","second"]');
         expect(possible4.isChosen()).toBe(true);
+
+
+        const possible5 = new PossibleChoose<string>(2, ['first', 'second', 'third'], [0, 1]);
+        if (possible5.isChosen()) {
+            console.log(possible5.getChosen());
+        }
+
     });
 
     test("Test with DescribableNameWithModifier type", () => {
