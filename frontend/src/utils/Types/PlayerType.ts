@@ -256,7 +256,7 @@ export type States = {
     injuries: Injuries;
 };
 
-type TravelEquipment = {
+export type TravelEquipment = {
     name: string;
     skillRef?: SkillIdentifier;
 };
@@ -393,7 +393,11 @@ export class PlayerType {
 
     }
 
-    addTravelEquipement(equip: TravelEquipment) {
+    removeTravelEquipment(equip: TravelEquipment) {
+        this.travelEquipment = this.travelEquipment.filter(e => e !== equip);
+    }
+
+    addTravelEquipment(equip: TravelEquipment) {
         this.travelEquipment.push(equip);
     }
 
