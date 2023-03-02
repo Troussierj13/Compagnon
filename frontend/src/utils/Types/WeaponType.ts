@@ -1,3 +1,7 @@
+import {Identifier} from "@/utils/Types/IdentifiedType";
+import {Modifiers} from "@/utils/MapModifiers";
+import {dataRewards, Reward} from "@/utils/VallianceWisdom/Rewards";
+
 export type InjuriesType = {
     oneHand: number;
     twoHand: number;
@@ -9,7 +13,7 @@ export class WeaponType {
     injury: InjuriesType;
     weight: number;
     note: string;
-    rewardsMod: Array<string>; //Todo create Array<Modifier> and getModifiedWeapon() function to get weapon with modified value
+    rewardsMod: Array<Reward>;
 
     constructor(payload: Partial<WeaponType>) {
         this.name = payload?.name || "";
@@ -20,6 +24,34 @@ export class WeaponType {
         };
         this.weight = payload?.weight || 0;
         this.note = payload?.note || "";
-        this.rewardsMod = payload?.rewardsMod || [];
+        this.rewardsMod = [];
+        if (payload?.rewardsMod) {
+            payload.rewardsMod.map((rewardsMod) => {
+                if (rewardsMod.identifier != 'unknown') {
+                    const copy = new Reward(dataRewards[rewardsMod.identifier]);
+                    copy.setChosen('weapon');
+
+                    this.rewardsMod.push(copy);
+                }
+            });
+        }
+    }
+
+    public getValue(identifier: Identifier): number {
+        if (identifier === 'weaponDamage') {
+            return this.dmg;
+        } else if (identifier === 'weaponInjuryOneHand') {
+            return this.injury.oneHand;
+        } else if (identifier === 'weaponInjuryTwoHand') {
+            return this.injury.twoHand;
+        } else {
+            return 0;
+        }
+    }
+
+    public getModifiedValue(identifier: Identifier): number {
+        const id = identifier as 'weaponDamage' | 'weaponInjuryOneHand' | 'weaponInjuryTwoHand';
+        const modifiers = this.rewardsMod.map(rew => rew.getChosen().modifiers).flatMap(m => m.filter(mo => mo.identifier === id));
+        return Modifiers.tryModify(this.getValue(id), modifiers);
     }
 }

@@ -72,10 +72,10 @@
                         :key="index"
                         class="whitespace-normal text-xs relative mb-0.5 ml-3"
                     >
-                        <span v-if="reward.isChosen()" class="break-words relative">
+                        <span v-if="reward.isChosen()" class="whitespace-nowrap relative">
                             <DescribableName :values="reward.getChosen()" />
                         </span>
-                        <span v-else class="break-words relative">
+                        <span v-else class="whitespace-nowrap relative">
                             <DescribableNameRewardNotChosen
                                 :player="props.player"
                                 :reward="reward"

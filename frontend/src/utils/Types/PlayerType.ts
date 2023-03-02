@@ -291,7 +291,6 @@ export class PlayerType {
     heartSkills: HeartSkillsType;
     mindSkills: MindSkillsType;
     combatSkills: CombatSkillsType;
-    weapons: Array<WeaponType>;
     armor: ArmorType;
     helm: ArmorType;
     shield: ArmorType;
@@ -307,8 +306,8 @@ export class PlayerType {
     currentHope: IdentifiedValue;
     states: States;
     travelEquipment: Array<TravelEquipment>;
-
     modifiers: IDictionary<Modifiers>;
+    weapons: Array<WeaponType>;
 
     constructor(payload?: Partial<PlayerType>) {
         this._id = payload?._id || '';
@@ -391,7 +390,7 @@ export class PlayerType {
         this.addModifiers(this.wisdom.getModifiers());
         this.addModifiers(this.valiance.getModifiers());
 
-        
+
     }
 
     addWeapon(weapon: WeaponType) {
@@ -407,14 +406,20 @@ export class PlayerType {
 
     addReward(reward: Reward) {
         this.valiance.rewards.push(reward);
-        //TODO : apply modifier to weapons/armors
     }
 
     removeWeapon(weapon: WeaponType) {
+        const re = this.valiance.rewards.filter(rew => weapon.rewardsMod.includes(rew));
+        re.map(rew => rew.resetChoices());
         this.weapons = this.weapons.filter(w => w !== weapon);
     }
 
     changeArmor(armor: ArmorType, identifier: ArmorIdentifier) {
+        //reset choice of associate rewards
+        if (armor.identifier === 'unknown' || this.armor != new ArmorType(armor)) {
+            this.resetRewardsChoiceArmor(identifier);
+        }
+
         switch (identifier) {
             case "armor":
                 this.armor = new ArmorType(armor);
@@ -425,17 +430,6 @@ export class PlayerType {
             case "shield":
                 this.shield = new ArmorType(armor);
                 break;
-        }
-
-        //reset choice of associate rewards
-        if (armor.identifier === 'unknown') {
-            this.valiance.rewards.map((rew) => {
-                if (rew.getChosen().applyTo === identifier) {
-                    console.log('test');
-                    this.removeModifiers(rew.getChosen().modifiers);
-                    rew.resetChoices();
-                }
-            });
         }
     }
 
@@ -585,16 +579,24 @@ export class PlayerType {
         this.addModifiers(modChosen.modifiers);
     }
 
-    public setRewardChoice(rewardId: number, applyTo: ApplyIdentifier) {
+    public setRewardChoiceArmor(rewardId: number, applyTo: ApplyIdentifier) {
         if (this.valiance.rewards[rewardId] === undefined) {
             throw new Error("Not find virtue with index: " + rewardId);
         }
 
         this.valiance.rewards[rewardId].setChosen(applyTo);
-        console.log(this.valiance.rewards[rewardId]);
 
         const modChosen = this.valiance.rewards[rewardId].getChosen();
         this.addModifiers(modChosen.modifiers);
+    }
+
+    public setRewardChoiceWeapon(rewardId: number, indexWeapon: number) {
+        if (this.valiance.rewards[rewardId] === undefined) {
+            throw new Error("Not find virtue with index: " + rewardId);
+        }
+
+        this.valiance.rewards[rewardId].setChosen('weapon');
+        this.weapons[indexWeapon].rewardsMod.push(this.valiance.rewards[rewardId]);
     }
 
     public addModifiers(mods: Array<ModifierParam>) {
@@ -672,6 +674,15 @@ export class PlayerType {
             default:
                 return 0;
         }
+    }
+
+    private resetRewardsChoiceArmor(identifier: ArmorIdentifier) {
+        this.valiance.rewards.map((rew) => {
+            if (rew.isChosen() && rew.getChosen().applyTo === identifier) {
+                this.removeModifiers(rew.getChosen().modifiers);
+                rew.resetChoices();
+            }
+        });
     }
 
     private setCurrentHope(value: number) {

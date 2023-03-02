@@ -128,7 +128,11 @@ const characterSchema = mongoose.Schema(
         },
         weight: Number,
         note: String,
-        rewardsMod: [String],
+        rewardsMod: [
+          {
+            identifier: String,
+          },
+        ],
       },
     ],
     armor: {

@@ -8,7 +8,7 @@
         <InformationCircleIcon class="relative z-10 h-3 w-3 ml-2 mb-auto" />
         <div
             v-if="state.hover"
-            class="flex absolute z-50 text-xs font-sansserif font-semibold leading-4 bg-white w-64 rounded border border-gray/40 p-3 shadow-md top-6 after:absolute after:content-[''] after:h-4 after:w-4 after:rotate-45 after:-top-[0.54rem] after:border-l after:border-t after:rounded-tl after:border-gray/40 after:bg-white">
+            class="flex absolute z-50 text-xs font-sansserif font-semibold leading-4 bg-white rounded border border-gray/40 p-3 shadow-md top-6 after:absolute after:content-[''] after:h-4 after:w-4 after:rotate-45 after:-top-[0.54rem] after:border-l after:border-t after:rounded-tl after:border-gray/40 after:bg-white">
             {{ props.values.description }}
         </div>
     </div>

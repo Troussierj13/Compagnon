@@ -7,7 +7,7 @@
             {{
                 props.weapon?.name +
                     (props.weapon?.rewardsMod.length > 0
-                        ? ' ( ' + props.weapon?.rewardsMod.join(', ') + ' )'
+                        ? ' ( ' + getRewardsNames() + ' )'
                         : '')
             }}
             <div
@@ -22,7 +22,7 @@
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
             class="relative flex my-auto h-[1.125rem] justify-center">
             {{
-                props.weapon?.name !== '' ? props.weapon.dmg : ''
+                props.weapon?.name !== '' ? props.weapon.getModifiedValue('weaponDamage') : ''
             }}
             <BottomGrayLine />
         </span>
@@ -31,9 +31,9 @@
             class="relative flex my-auto h-[1.125rem] justify-center">
             {{
                 props.weapon?.name !== '' ?
-                    props.weapon.injury.oneHand === props.weapon.injury.twoHand
-                        ? props.weapon.injury.oneHand
-                        : props.weapon.injury.oneHand + ' / ' + props.weapon.injury.twoHand
+                    props.weapon.getModifiedValue('weaponInjuryOneHand') === props.weapon.getModifiedValue('weaponInjuryTwoHand')
+                        ? props.weapon.getModifiedValue('weaponInjuryOneHand')
+                        : props.weapon.getModifiedValue('weaponInjuryOneHand') + ' / ' + props.weapon.getModifiedValue('weaponInjuryTwoHand')
                     : ''
             }}
             <BottomGrayLine />
@@ -95,6 +95,10 @@ const tryRemove = () => {
         props.player.removeWeapon(props.weapon);
         props.player.saveOnDb();
     }
+};
+
+const getRewardsNames = () => {
+    return props.weapon?.rewardsMod.map(el => el.getChosen().name.match(/^[\w\s\u00C0-\u017F]*/)).join(', ');
 };
 
 </script>

@@ -85,8 +85,22 @@ export const dataRewards: IDictionary<Partial<Reward>> = {
             name: "Acéré (arme)",
             description: "Les jets d'attaque infligent un Coup perforant sur un 9 ou plus",
             modifiers: [],
-            applyTo: 'weapon'
-        }
+            applyTo: 'notApply'
+        },
+        choices: [
+            {
+                name: "Acéré (arme)",
+                description: "Les jets d'attaque infligent un Coup perforant sur un 9 ou plus",
+                modifiers: [],
+                applyTo: 'notApply'
+            },
+            {
+                name: "Acéré (arme)",
+                description: "Les jets d'attaque infligent un Coup perforant sur un 9 ou plus",
+                modifiers: [],
+                applyTo: 'weapon'
+            }
+        ]
     },
     adjustedReward: {
         identifier: "adjustedReward",
@@ -144,8 +158,22 @@ export const dataRewards: IDictionary<Partial<Reward>> = {
             name: "Dévastateur (arme)",
             description: "Augmentez de 1 la valeur de dégats d'une arme",
             modifiers: [],
-            applyTo: 'weapon'
-        }
+            applyTo: 'notApply'
+        },
+        choices: [
+            {
+                name: "Dévastateur (arme)",
+                description: "Augmentez de 1 la valeur de dégats d'une arme",
+                modifiers: [],
+                applyTo: 'notApply'
+            },
+            {
+                name: "Dévastateur (arme)",
+                description: "Augmentez de 1 la valeur de dégats d'une arme",
+                modifiers: [{identifier: 'weaponDamage', mod: 1, op: '+'}],
+                applyTo: 'weapon'
+            }
+        ]
     },
     ferociousReward: {
         identifier: "ferociousReward",
@@ -153,8 +181,26 @@ export const dataRewards: IDictionary<Partial<Reward>> = {
             name: "Féroce (arme)",
             description: "Augmentez de 2 la valeur de blessure d'une arme",
             modifiers: [],
-            applyTo: 'weapon'
-        }
+            applyTo: 'notApply'
+        },
+        choices: [
+            {
+                name: "Féroce (arme)",
+                description: "Augmentez de 2 la valeur de blessure d'une arme",
+                modifiers: [],
+                applyTo: 'notApply'
+            },
+            {
+                name: "Féroce (arme)",
+                description: "Augmentez de 2 la valeur de blessure d'une arme",
+                modifiers: [{identifier: 'weaponInjuryOneHand', mod: 2, op: '+'}, {
+                    identifier: 'weaponInjuryTwoHand',
+                    mod: 2,
+                    op: '+'
+                }],
+                applyTo: 'weapon'
+            }
+        ]
     },
     reinforcedReward: {
         identifier: "reinforcedReward",
@@ -163,6 +209,20 @@ export const dataRewards: IDictionary<Partial<Reward>> = {
             description: "Augmentez de +1 le modificateur de Parade d'un bouclier",
             modifiers: [{identifier: 'shieldParade', mod: 1, op: '+'}],
             applyTo: 'shield'
-        }
+        },
+        choices: [
+            {
+                name: "Renforcé (bouclier)",
+                description: "Augmentez de +1 le modificateur de Parade d'un bouclier",
+                modifiers: [{identifier: 'shieldParade', mod: 1, op: '+'}],
+                applyTo: 'notApply'
+            },
+            {
+                name: "Renforcé (bouclier)",
+                description: "Augmentez de +1 le modificateur de Parade d'un bouclier",
+                modifiers: [{identifier: 'shieldParade', mod: 1, op: '+'}],
+                applyTo: 'shield'
+            }
+        ]
     },
 };

@@ -58,7 +58,7 @@ const tryChangeHover = () => {
 };
 
 const addWeapon = (weapon: WeaponType) => {
-    props.player.addWeapon(weapon);
+    props.player.addWeapon(new WeaponType(weapon));
     props.player.saveOnDb();
 };
 

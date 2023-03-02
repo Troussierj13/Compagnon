@@ -102,8 +102,8 @@ interface Hover {
 }
 
 interface State {
-    armors: Array<ArmorType>
-    hover: Hover
+    armors: Array<ArmorType>;
+    hover: Hover;
 }
 
 const props = defineProps<Props>();

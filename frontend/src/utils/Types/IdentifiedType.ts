@@ -55,7 +55,8 @@ export type Identifier =
     | "shieldWeight"
     | "shieldParade"
     | "weaponDamage"
-    | "weaponInjury";
+    | "weaponInjuryOneHand"
+    | "weaponInjuryTwoHand";
 
 export type IdentifierModifiableAttr =
     | "adventurePoints"
