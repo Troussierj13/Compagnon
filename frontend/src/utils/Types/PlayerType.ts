@@ -393,6 +393,10 @@ export class PlayerType {
 
     }
 
+    addTravelEquipement(equip: TravelEquipment) {
+        this.travelEquipment.push(equip);
+    }
+
     addWeapon(weapon: WeaponType) {
         this.weapons.push(weapon);
     }
@@ -515,7 +519,8 @@ export class PlayerType {
         this.states.exhaust = modified < this.getModifiedValue('weight') + this.getModifiedValue('fatigue');
     }
 
-    getSkill(identifier: StrengthSkillIdentifier | HeartSkillIdentifier | MindSkillIdentifier): SkillType {
+    getSkill(identifier: SkillIdentifier): SkillType {
+        identifier = identifier as StrengthSkillIdentifier | HeartSkillIdentifier | MindSkillIdentifier; //Remove CombatSkillIdentifier
         switch (identifier) {
             case "awe":
                 return this.strengthSkills.awe;

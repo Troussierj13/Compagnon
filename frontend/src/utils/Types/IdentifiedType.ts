@@ -21,7 +21,7 @@ export type MindSkillIdentifier =
     | "riddle"
     | "lore";
 
-export type SkillIdentifier =
+export type SkillIdentifier = "unknown"
     | CombatSkillIdentifier
     | StrengthSkillIdentifier
     | HeartSkillIdentifier
