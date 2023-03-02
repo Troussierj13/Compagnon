@@ -1,5 +1,5 @@
 //Rewards
-import {DescribableNameWithModifier, IDictionary, PossibleChoose} from "@/utils/helpers";
+import {DescribableNameWithModifier, PossibleChoose} from "@/utils/helpers";
 import {ModifierParam} from "@/utils/MapModifiers";
 
 export type RewardIdentifier = 'unknown'
@@ -78,6 +78,7 @@ export class Reward {
     }
 }
 
+/*
 export const dataRewards: IDictionary<Partial<Reward>> = {
     sharpReward: {
         identifier: "sharpReward",
@@ -226,3 +227,4 @@ export const dataRewards: IDictionary<Partial<Reward>> = {
         ]
     },
 };
+*/

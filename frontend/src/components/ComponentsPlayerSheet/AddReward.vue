@@ -29,7 +29,8 @@ import {HoverSingleton, IDictionary} from "@/utils/helpers";
 import {PlayerType} from "@/utils/Types/PlayerType";
 import Button from "../Styleguide/Button.vue";
 import DescribableName from "../DescribableName.vue";
-import {dataRewards, Reward, RewardIdentifier} from "@/utils/VallianceWisdom/Rewards";
+import {Reward, RewardIdentifier} from "@/utils/VallianceWisdom/Rewards";
+import {APIRequests} from "@/utils/apiurls";
 
 interface Props {
     player: PlayerType
@@ -42,7 +43,7 @@ interface State {
 
 const props = defineProps<Props>();
 const state = reactive<State>({
-    rewardsDB: dataRewards,
+    rewardsDB: await APIRequests.Rewards.getAllRewards(),
     hover: false
 });
 

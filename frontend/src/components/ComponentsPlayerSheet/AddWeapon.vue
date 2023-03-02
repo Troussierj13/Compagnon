@@ -31,10 +31,11 @@
 import {WeaponType} from "@/utils/Types/WeaponType";
 import {reactive} from "vue";
 import {APIRequests} from "@/utils/apiurls";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton, IDictionary} from "@/utils/helpers";
 import {PlayerType} from "@/utils/Types/PlayerType";
 import WeaponRow from "./WeaponRow.vue";
 import Button from "../Styleguide/Button.vue";
+import {Reward} from "@/utils/VallianceWisdom/Rewards";
 
 interface Props {
     player: PlayerType
@@ -42,12 +43,15 @@ interface Props {
 
 interface State {
     weaponsDB: Array<WeaponType>;
+
+    rewardsDB: IDictionary<Partial<Reward>>;
     hover: boolean
 }
 
 const props = defineProps<Props>();
 const state = reactive<State>({
     weaponsDB: await APIRequests.Weapons.getAllWeapons(),
+    rewardsDB: await APIRequests.Rewards.getAllRewards(),
     hover: false
 });
 
@@ -58,7 +62,7 @@ const tryChangeHover = () => {
 };
 
 const addWeapon = (weapon: WeaponType) => {
-    props.player.addWeapon(new WeaponType(weapon));
+    props.player.addWeapon(new WeaponType(weapon, state.rewardsDB));
     props.player.saveOnDb();
 };
 

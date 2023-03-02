@@ -1,9 +1,8 @@
 <template>
     <div class="m-auto flex">
         <PlayerSheet
-            v-if="state.players !== null && state.weapons !== null"
-            :player="state.players.at(0)"
-            :weapons="state.weapons" />
+            v-if="state.players !== null"
+            :player="state.players.at(0)" />
     </div>
 </template>
 

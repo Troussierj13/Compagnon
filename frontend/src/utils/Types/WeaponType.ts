@@ -1,6 +1,7 @@
 import {Identifier} from "@/utils/Types/IdentifiedType";
 import {Modifiers} from "@/utils/MapModifiers";
-import {dataRewards, Reward} from "@/utils/VallianceWisdom/Rewards";
+import {Reward} from "@/utils/VallianceWisdom/Rewards";
+import {IDictionary} from "@/utils/helpers";
 
 export type InjuriesType = {
     oneHand: number;
@@ -15,7 +16,7 @@ export class WeaponType {
     note: string;
     rewardsMod: Array<Reward>;
 
-    constructor(payload: Partial<WeaponType>) {
+    constructor(payload: Partial<WeaponType>, dataRewards?: IDictionary<Partial<Reward>>) {
         this.name = payload?.name || "";
         this.dmg = payload?.dmg || 0;
         this.injury = {
@@ -25,7 +26,7 @@ export class WeaponType {
         this.weight = payload?.weight || 0;
         this.note = payload?.note || "";
         this.rewardsMod = [];
-        if (payload?.rewardsMod) {
+        if (payload?.rewardsMod && dataRewards) {
             payload.rewardsMod.map((rewardsMod) => {
                 if (rewardsMod.identifier != 'unknown') {
                     const copy = new Reward(dataRewards[rewardsMod.identifier]);

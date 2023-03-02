@@ -3,6 +3,7 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import {ArmorType} from "@/utils/Types/ArmorType";
 import {IDictionary} from "@/utils/helpers";
 import {Virtue} from "@/utils/VallianceWisdom/Virtues";
+import {Reward} from "@/utils/VallianceWisdom/Rewards";
 
 export const APISettings = {
     token: "",
@@ -21,8 +22,10 @@ export const APIRequests = {
                 headers: APISettings.headers,
             });
             const json = await response.json();
+            const virtues = await APIRequests.Virtues.getAllVirtues();
+            const rewards = await APIRequests.Rewards.getAllRewards();
             return (json as Array<PlayerType>).map(player => {
-                return new PlayerType(player);
+                return new PlayerType(player, virtues, rewards);
             });
         },
         update: async (idCharacter: string, player: PlayerType) => {
@@ -41,8 +44,9 @@ export const APIRequests = {
                 headers: APISettings.headers,
             });
             const json = await response.json();
+            const rewards = await APIRequests.Rewards.getAllRewards();
             return (json as Array<WeaponType>).map(weapon => {
-                return new WeaponType(weapon);
+                return new WeaponType(weapon, rewards);
             });
         }
     },
@@ -75,6 +79,25 @@ export const APIRequests = {
             };
 
             return dictVirtues;
+        }
+    },
+    Rewards: {
+        getAllRewards: async () => {
+            const response = await fetch(APISettings.baseURL + "reward/", {
+                method: "GET",
+                headers: APISettings.headers,
+            });
+            const rewards = await response.json() as Array<Partial<Reward>>;
+            const dictRewards: IDictionary<Partial<Reward>> = {
+                sharpReward: rewards.filter(el => el.identifier === 'sharpReward')[0],
+                adjustedReward: rewards.filter(el => el.identifier === 'adjustedReward')[0],
+                cleverReward: rewards.filter(el => el.identifier === 'cleverReward')[0],
+                devastatingReward: rewards.filter(el => el.identifier === 'devastatingReward')[0],
+                ferociousReward: rewards.filter(el => el.identifier === 'ferociousReward')[0],
+                reinforcedReward: rewards.filter(el => el.identifier === 'reinforcedReward')[0]
+            };
+
+            return dictRewards;
         }
     }
 };

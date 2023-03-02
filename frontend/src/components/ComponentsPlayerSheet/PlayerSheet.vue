@@ -57,11 +57,9 @@ import WarGear from "./WarGear.vue";
 import XpSecondaryPoints from "./XpSecondaryPoints.vue";
 import States from "./States.vue";
 import TravelEquipment from "./TravelEquipmentList.vue";
-import {WeaponType} from "@/utils/Types/WeaponType";
 
 const props = defineProps<{
     player: PlayerType;
-    weapons: Array<WeaponType>
 }>();
 
 </script>

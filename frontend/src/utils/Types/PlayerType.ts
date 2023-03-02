@@ -32,8 +32,8 @@ import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
 import {NorthRanger} from "@/utils/Culture/NorthRanger";
 import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
 import {Virtue} from "@/utils/VallianceWisdom/Virtues";
-import {APIRequests} from "@/utils/apiurls";
 import {ApplyIdentifier, Reward} from "@/utils/VallianceWisdom/Rewards";
+import {APIRequests} from "@/utils/apiurls";
 
 const CultureTypeToInstance = {
     bardide: Bardide,
@@ -309,7 +309,7 @@ export class PlayerType {
     modifiers: IDictionary<Modifiers>;
     weapons: Array<WeaponType>;
 
-    constructor(payload?: Partial<PlayerType>) {
+    constructor(payload?: Partial<PlayerType>, dataV?: IDictionary<Partial<Virtue>>, dataR?: IDictionary<Partial<Reward>>) {
         this._id = payload?._id || '';
         this.name = payload?.name || '';
         this.vocation = payload?.vocation || 'captain';
@@ -334,13 +334,13 @@ export class PlayerType {
             console.log('particularitiesId on PlayerType constructor: ', e);
         }
         payload?.weapons?.map((w) => {
-            this.weapons.push(new WeaponType(w));
+            this.weapons.push(new WeaponType(w, dataR));
         });
         this.armor = new ArmorType(payload?.armor);
         this.helm = new ArmorType(payload?.helm);
         this.shield = new ArmorType(payload?.shield);
-        this.wisdom = new Wisdom(payload?.wisdom);
-        this.valiance = new Valiance(payload?.valiance);
+        this.wisdom = new Wisdom(payload?.wisdom, dataV);
+        this.valiance = new Valiance(payload?.valiance, dataR);
         this.adventurePoints = payload?.adventurePoints || 0;
         this.progressPoints = payload?.progressPoints || 0;
         this.communityPoints = payload?.communityPoints || 0;
@@ -387,10 +387,8 @@ export class PlayerType {
         this.modifiers = {};
         SetModifiers(this);
 
-        this.addModifiers(this.wisdom.getModifiers());
         this.addModifiers(this.valiance.getModifiers());
-
-
+        this.addModifiers(this.wisdom.getModifiers());
     }
 
     removeTravelEquipment(equip: TravelEquipment) {
