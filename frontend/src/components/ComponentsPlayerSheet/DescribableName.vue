@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="props.values !== undefined"
         class="flex font-medium cursor-pointer"
         @click.prevent.stop="tryChangeHover">
         <span class="relative z-10 font-UncialAntiqua whitespace-nowrap">
@@ -21,7 +22,7 @@ import {DescribableName, HoverSingleton} from "@/utils/helpers";
 import {reactive} from "vue";
 
 interface Props {
-    values: DescribableName;
+    values?: DescribableName;
 }
 
 interface State {

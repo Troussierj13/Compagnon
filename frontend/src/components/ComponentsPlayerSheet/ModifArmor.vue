@@ -11,7 +11,7 @@
         </div>
         <span
             v-for="armor in props.armors"
-            :key="armor"
+            :key="armor.name"
             class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
             <ArmorRow
                 :armor="armor"
@@ -40,7 +40,7 @@ const props = defineProps<Props>();
 const changeArmor = (armor: ArmorType) => {
     HoverSingleton.GetInstance().tryChangeHover(true, () => {
     });
-    
+
     props.player.changeArmor(armor, props.changeIdentifier);
     props.player.saveOnDb();
 };

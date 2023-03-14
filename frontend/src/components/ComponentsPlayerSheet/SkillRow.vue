@@ -1,8 +1,8 @@
 <template>
     <div class="flex mx-3">
-        <span v-if="props.favorisable" class="square relative mr-2 flex">
+        <span v-if="props.skill instanceof SkillType" class="square relative mr-2 flex">
             <span
-                v-if="skill.favored"
+                v-if="props.skill.favored"
                 class="absolute h-3 w-3 rotate-45 bg-check bg-cover bg-center bg-no-repeat"
             ></span>
         </span>
@@ -50,11 +50,10 @@
 </template>
 
 <script lang="ts" setup>
-import {SkillType} from "@/utils/Types/PlayerType";
+import {CombatSkillType, SkillType} from "@/utils/Types/PlayerType";
 
 interface Props {
-    favorisable: boolean;
-    skill: SkillType;
+    skill: SkillType | CombatSkillType;
 }
 
 const props = defineProps<Props>();

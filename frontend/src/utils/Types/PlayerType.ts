@@ -56,7 +56,7 @@ export class SkillType {
     }
 }
 
-class CombatSkillType {
+export class CombatSkillType {
     name: string;
     rank: IntRange<0, 6>;
 
@@ -315,6 +315,7 @@ export class PlayerType {
         this.vocation = payload?.vocation || 'captain';
         this.age = payload?.age || 0;
         this.qualityLife = payload?.qualityLife || 'poor';
+        this.treasure = payload?.treasure || 0;
         this.garant = payload?.garant || '';
         this.particularities = payload?.particularities || [];
         this.particularitiesId = payload?.particularitiesId || [];
@@ -521,7 +522,7 @@ export class PlayerType {
         this.states.exhaust = modified < this.getModifiedValue('weight') + this.getModifiedValue('fatigue');
     }
 
-    getSkill(identifier: SkillIdentifier): SkillType {
+    getSkill(identifier?: SkillIdentifier): SkillType {
         identifier = identifier as StrengthSkillIdentifier | HeartSkillIdentifier | MindSkillIdentifier; //Remove CombatSkillIdentifier
         switch (identifier) {
             case "awe":

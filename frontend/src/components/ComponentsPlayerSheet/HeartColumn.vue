@@ -1,7 +1,7 @@
 <template>
     <div class="relative h-full w-full px-3">
         <RightDoubleLine />
-        <div class="absolute z-50 top-1/3 left-[50%] -translate-x-[50%]">
+        <div class="absolute z-50 top-[35.4%] left-[50%] -translate-x-[50%]">
             <span class="relative z-40 text-red bg-yellow pl-2 pr-8">COMPETENCES</span>
             <Cog6ToothIcon
                 v-if="!state.onModification"
@@ -34,17 +34,15 @@
             <div class="relative grow w-full">
                 <TopSimpleLine />
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="skill in props.player.heartSkills" :key="skill.identifier">
+                    <div v-for="(skill, index) in props.player.heartSkills" :key="index">
                         <SkillRow
-                            :favorisable="true"
                             :skill="skill"
                         />
                     </div>
                 </div>
                 <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="skill in props.player.heartSkills" :key="skill.identifier">
+                    <div v-for="(skill, index) in props.player.heartSkills" :key="index">
                         <SkillRowModification
-                            :favorisable="true"
                             :skill="skill"
                         />
                     </div>
@@ -93,14 +91,14 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
-import DescribableName from "../DescribableName.vue";
+import DescribableName from "./DescribableName.vue";
 import {Cog6ToothIcon} from "@heroicons/vue/24/solid";
 import {CheckCircleIcon} from "@heroicons/vue/24/outline";
 import {reactive} from "vue";
 import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
 import SkillRowModification from "./SkillRowModification.vue";
 import AddReward from "./AddReward.vue";
-import DescribableNameRewardNotChosen from "../DescribableNameRewardNotChosen.vue";
+import DescribableNameRewardNotChosen from "./DescribableNameRewardNotChosen.vue";
 
 interface Props {
     player: PlayerType
