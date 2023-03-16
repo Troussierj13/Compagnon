@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore --fix src",
     "format": "prettier .  --write",
-    "test": "jest"
+    "test": "jest",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.14",
@@ -20,6 +21,7 @@
     "vue-router": "^4.0.13"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1.2.3",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.18",
