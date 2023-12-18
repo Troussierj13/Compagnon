@@ -45,7 +45,7 @@ type Rule = {
 const dwarfRule: Rule = {
     condition: {
         lCondition: "culture.culture",
-        rCondition: "durinDwarf",
+        rCondition: "dwarf",
         operator: "===",
     },
     modFalse: [],
@@ -57,7 +57,7 @@ const dwarfRule: Rule = {
 
 //Ajouter ici tte les règles à appliquer sous forme de constante de type Rule, puis ajouter ces règles au tableau 'rules'
 
-const rules: Array<Rule> = [dwarfRule];
+const rules = [dwarfRule];
 
 const SetModifiers = (player: PlayerType) => {
     const deriveRace = player.culture.derivedCharacteristics;
@@ -69,10 +69,9 @@ const SetModifiers = (player: PlayerType) => {
             deriveRace.modParade,
         ],
     };
-    const tmpRule: Array<Rule> = [...rules];
-    tmpRule.push(modAttr);
+    rules.push(modAttr);
 
-    tmpRule.map((ru) => {
+    rules.map((ru) => {
         if (getConditionResult(ru.condition, player)) {
             ru.modTrue.map((mod) => {
                 if (!player.modifiers[mod.identifier]) {

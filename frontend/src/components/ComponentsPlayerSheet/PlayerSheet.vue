@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative mx-auto flex w-[90rem] border-t-80 border-b-56 border-red/0 bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">
+        class="relative mx-auto flex min-w-[90rem] border-t-80 border-b-56 border-red/0 bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">
         <div
             class="absolute -top-20 h-20 w-full bg-topSheet bg-contain bg-center brightness-75 contrast-125 saturate-150"></div>
         <div
@@ -30,10 +30,10 @@
             </div>
         </div>
         <div class="flex h-full w-[24.7%] flex-col border-r-18 border-red/0 px-1">
-            <div class="flex h-48 flex-col p-3">
+            <div class="flex h-1/3 flex-col p-3">
                 <div class="simple-border h-full w-full" />
             </div>
-            <div class="flex h-4/6 flex-col">
+            <div class="flex grow flex-col">
                 <XpSecondaryPoints :player="props.player" />
             </div>
             <div class="flex h-1/6">

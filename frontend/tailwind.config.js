@@ -49,7 +49,6 @@ module.exports = {
             doubleLine: "url('./double-line.png')",
             line: "url('./line.png')",
             check: "url('./check.png')",
-            oneRing: "url('./TheOneRing_Tower_small.jpg')"
         },
     },
     plugins: [],

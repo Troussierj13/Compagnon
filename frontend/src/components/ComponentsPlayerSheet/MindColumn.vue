@@ -26,15 +26,17 @@
             <div class="relative grow w-full">
                 <TopSimpleLine />
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="(skill, index) in props.player.mindSkills" :key="index">
+                    <div v-for="skill in props.player.mindSkills" :key="skill.identifier">
                         <SkillRow
+                            :favorisable="true"
                             :skill="skill"
                         />
                     </div>
                 </div>
                 <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="(skill, index) in props.player.mindSkills" :key="index">
+                    <div v-for="skill in props.player.mindSkills" :key="skill.identifier">
                         <SkillRowModification
+                            :favorisable="true"
                             :skill="skill"
                         />
                     </div>
@@ -82,8 +84,8 @@
 import {PlayerType} from "@/utils/Types/PlayerType";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
-import DescribableName from "./DescribableName.vue";
-import DescribableNameVirtueNotChosen from "./DescribableNameVirtueNotChosen.vue";
+import DescribableName from "../DescribableName.vue";
+import DescribableNameVirtueNotChosen from "../DescribableNameVirtueNotChosen.vue";
 import SkillRowModification from "./SkillRowModification.vue";
 import {reactive} from "vue";
 import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";

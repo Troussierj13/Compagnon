@@ -22,15 +22,17 @@
             <div class="relative grow w-full">
                 <TopSimpleLine />
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="(skill, index) in props.player.strengthSkills" :key="index">
+                    <div v-for="skill in props.player.strengthSkills" :key="skill.identifier">
                         <SkillRow
+                            :favorisable="true"
                             :skill="skill"
                         />
                     </div>
                 </div>
                 <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="(skill, index) in props.player.strengthSkills" :key="index">
+                    <div v-for="skill in props.player.strengthSkills" :key="skill.identifier">
                         <SkillRowModification
+                            :favorisable="true"
                             :skill="skill"
                         />
                     </div>
@@ -41,15 +43,17 @@
                 <div class="flex flex-col h-full justify-between pt-2 pb-[10px]">
                     <span class="text-red text-sm">COMPETENCES DE COMBATS</span>
                     <div v-if="!state.onModification" class="my-auto flex flex-col justify-center gap-1">
-                        <div v-for="(skill, index) in props.player.combatSkills" :key="index">
+                        <div v-for="skill in props.player.combatSkills" :key="skill.identifier">
                             <SkillRow
+                                :favorisable="false"
                                 :skill="skill"
                             />
                         </div>
                     </div>
                     <div v-else class="my-auto flex flex-col justify-center gap-1">
-                        <div v-for="(skill, index) in props.player.combatSkills" :key="index">
+                        <div v-for="skill in props.player.combatSkills" :key="skill.identifier">
                             <SkillRowModification
+                                :favorisable="false"
                                 :skill="skill"
                             />
                         </div>

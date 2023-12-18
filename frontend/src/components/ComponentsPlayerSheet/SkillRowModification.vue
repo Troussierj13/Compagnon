@@ -1,15 +1,15 @@
 <template>
     <div class="flex mx-3">
-        <span v-if="props.skill instanceof SkillType" class="square relative mr-2 flex">
+        <span v-if="props.favorisable" class="square relative mr-2 flex">
             <span
-                v-if="modifSkill instanceof SkillType && modifSkill.favored"
+                v-if="props.skill.favored"
                 class="absolute h-3 w-3 rotate-45 bg-check bg-cover bg-center bg-no-repeat cursor-pointer"
-                @click="(modifSkill instanceof SkillType ? modifSkill.favored = false : null)"
+                @click="state.modifSkill.favored = false"
             ></span>
             <span
                 v-else
                 class="absolute flex -inset-0.5 cursor-pointer"
-                @click="(modifSkill instanceof SkillType ? modifSkill.favored = true : null)">
+                @click="state.modifSkill.favored = true">
                 <span
                     class="absolute h-3 w-3 rotate-45 bg-check bg-cover bg-center bg-no-repeat opacity-10 animate-ping"
                 ></span>
@@ -29,12 +29,12 @@
             <span
                 v-if="props.skill.rank >= n"
                 class="absolute h-3 w-3 bg-check bg-cover bg-center bg-no-repeat cursor-pointer"
-                @click="changeRank(n-1)">
+                @click="state.modifSkill.rank = n-1">
             </span>
             <span
                 v-else
                 class="absolute flex -inset-0.5 -rotate-45 cursor-pointer"
-                @click="changeRank(n)">
+                @click="state.modifSkill.rank = n">
                 <span
                     class="absolute h-3 w-3 rotate-45 bg-check bg-cover bg-center bg-no-repeat opacity-10 animate-ping"
                 ></span>
@@ -47,21 +47,22 @@
 </template>
 
 <script lang="ts" setup>
-import {CombatSkillType, SkillType} from "@/utils/Types/PlayerType";
+import {CombatSkillsType, SkillType} from "@/utils/Types/PlayerType";
 import {reactive} from "vue";
 
 interface Props {
-    skill: SkillType | CombatSkillType;
+    favorisable: boolean;
+    skill: SkillType | CombatSkillsType;
+}
+
+interface State {
+    modifSkill: SkillType | CombatSkillsType;
 }
 
 const props = defineProps<Props>();
-const modifSkill = reactive<SkillType | CombatSkillType>(props.skill) as SkillType | CombatSkillType;
-
-const changeRank = (newRank: any) => {
-    if (typeof newRank === typeof props.skill.rank) {
-        modifSkill.rank = newRank;
-    }
-};
+const state = reactive<State>({
+    modifSkill: props.skill,
+});
 
 </script>
 

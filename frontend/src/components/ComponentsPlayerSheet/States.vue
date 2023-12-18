@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex flex-col h-full w-full mb-2">
+    <div class="relative flex flex-col h-full w-full">
         <TopSimpleLine class="-top-2 left-2" />
         <div class="relative flex flex-col">
             <span class="text-sm mx-auto mb-2 text-center text-red">ETATS</span>
@@ -74,7 +74,7 @@ const state = reactive<State>({
 const changeInjury = () => {
     if (props.player.states.injuries.value > 0) {
         props.player.removeInjury();
-
+        
         props.player.saveOnDb();
     } else {
         tryChangeHover();

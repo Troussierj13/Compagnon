@@ -14,8 +14,8 @@
                 <span class="my-auto h-2.5 w-1/6 text-center">Charge</span>
             </div>
             <span
-                v-for="weap in weaponsDB.filter((w) => !props.player.weapons.includes(w))"
-                :key="weap.name"
+                v-for="weap in state.weaponsDB.filter((w) => !props.player.weapons.includes(w))"
+                :key="weap"
                 class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
                 <WeaponRow
                     :hide-note="true"
@@ -42,13 +42,16 @@ interface Props {
 }
 
 interface State {
+    weaponsDB: Array<WeaponType>;
+
+    rewardsDB: IDictionary<Partial<Reward>>;
     hover: boolean
 }
 
 const props = defineProps<Props>();
-const weaponsDB = reactive<Array<WeaponType>>(await APIRequests.Weapons.getAllWeapons()) as Array<WeaponType>;
-const rewardsDB = reactive<IDictionary<Partial<Reward>>>(await APIRequests.Rewards.getAllRewards()) as IDictionary<Partial<Reward>>;
 const state = reactive<State>({
+    weaponsDB: await APIRequests.Weapons.getAllWeapons(),
+    rewardsDB: await APIRequests.Rewards.getAllRewards(),
     hover: false
 });
 
@@ -59,7 +62,7 @@ const tryChangeHover = () => {
 };
 
 const addWeapon = (weapon: WeaponType) => {
-    props.player.addWeapon(new WeaponType(weapon, rewardsDB));
+    props.player.addWeapon(new WeaponType(weapon, state.rewardsDB));
     props.player.saveOnDb();
 };
 

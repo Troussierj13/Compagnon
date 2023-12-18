@@ -41,7 +41,7 @@
                 />
                 <ModifArmor
                     v-if="state.hover.armor"
-                    :armors="state.armors.filter(arm => arm.identifier === 'armor').sort((a: ArmorType, b: ArmorType) => a.protection.value-b.protection.value)"
+                    :armors="state.armors.filter(arm => arm.identifier === 'armor').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
                     :change-identifier="'armor'"
                     :player="props.player" />
             </div>
