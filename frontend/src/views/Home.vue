@@ -7,11 +7,13 @@
 <script lang="ts" setup>
 import {reactive} from 'vue';
 import {PlayerType} from "@/utils/Types/PlayerType";
-import {APIRequests} from "@/utils/apiurls";
+import {APIRequests} from "../utils/apiurls";
 import EdgeDisplaySystem from "./EdgeDisplaySystem.vue";
 
-const players = reactive<Array<PlayerType>>(
+let players = reactive<Array<PlayerType>>(
     await APIRequests.Character.getAllCharacters()
 ) as Array<PlayerType>;
+
+
 </script>
 <style scoped></style>

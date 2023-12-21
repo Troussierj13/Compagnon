@@ -2,8 +2,11 @@
   "compilerOptions": {
     "composite": true,
     "module": "commonjs",
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "moduleResolution": "Node10",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./src/*", "./dist/*"]
+    }
   },
   "include": [
     "vite.config.ts"
