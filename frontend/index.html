@@ -17,6 +17,14 @@
 <body>
 <div class="fixed bg-oneRing bg-cover bg-center h-[100vh] w-[100vw] top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] -z-50"></div>
 <div id="app" class="h-[100vh] w-[100vw] font-UncialAntiqua text-black"></div>
-<script src="./src/main.ts" type="module"></script>
+<script>
+    import router from "@/router/router";
+    import App from "./App.vue";
+    import "./styles/style.css";
+
+    const { createApp, ref } = Vue
+    
+    createApp(App).use(router).mount("#app");
+</script>
 </body>
 </html>
