@@ -6,7 +6,7 @@ export const stateSocket = reactive({
   ennemyAppearEvents: new Array<any>
 });
 
-export const socket = io("http://localhost:8000");
+export const socket = io("http://192.168.1.32:8000");
 
 socket.on("connect", () => {
     stateSocket.connected = true;

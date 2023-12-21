@@ -11,7 +11,7 @@ export const APISettings = {
         Accept: "application/json",
         "Content-Type": "application/json"
     }),
-    baseURL: "http://localhost:8000/api/",
+    baseURL: "http://192.168.1.32:8000/api/",
 };
 
 export const APIRequests = {
