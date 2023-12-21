@@ -1,0 +1,28 @@
+meta {
+  name: Update virtue
+  type: http
+  seq: 3
+}
+
+put {
+  url: localhost:8000/api/virtue/:virtueIdentifier
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "identifier":"livenessVirtue",
+      "defaultInfo":{
+          "name":"Vivacité",
+          "description":"Augmentez votre valeur de Parade de 1",
+          "modifiers":[
+              {
+                  "identifier":"parade",
+                  "op":"+",
+                  "mod":1
+              }
+          ]
+      }
+  }
+}

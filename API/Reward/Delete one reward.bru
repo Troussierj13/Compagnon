@@ -1,0 +1,11 @@
+meta {
+  name: Delete one reward
+  type: http
+  seq: 4
+}
+
+delete {
+  url: localhost:8000/api/reward/:rewardIdentifier
+  body: json
+  auth: none
+}

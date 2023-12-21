@@ -1,0 +1,28 @@
+meta {
+  name: Create virtue
+  type: http
+  seq: 1
+}
+
+post {
+  url: localhost:8000/api/virtue/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "identifier":"assuranceVirtue",
+      "defaultInfo":{
+          "name":"Assurance",
+          "description":"Augmentez votre Espoir de 2",
+          "modifiers":[
+              {
+                  "identifier":"hopeMax",
+                  "op":"+",
+                  "mod":2
+              }
+          ]
+      }
+  }
+}

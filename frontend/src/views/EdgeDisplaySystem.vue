@@ -1,5 +1,6 @@
 <template>
     <div class="relative w-screen h-screen">
+        <div v-show="state.ennemyAppear.length > 0" class="bg-white">Angalagon appear</div>
         <div class="center-container relative">
             <div
                 v-for="player in props.players.filter(el => state.elemLeft.includes(el._id) || state.elemRight.includes(el._id))"
@@ -61,6 +62,7 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import {nextTick, reactive} from "vue";
 import PlayerSheet from "../components/ComponentsPlayerSheet/PlayerSheet.vue";
 import {HoverSingleton} from "@/utils/helpers";
+import { stateSocket } from "@/socket";
 
 interface Props {
     players: Array<PlayerType>;
@@ -72,6 +74,7 @@ interface State {
     currentId: string;
     hoverRight: boolean;
     hoverLeft: boolean;
+    ennemyAppear: Array<any>;
 }
 
 const props = defineProps<Props>();
@@ -80,7 +83,8 @@ const state = reactive<State>({
     elemRight: [],
     currentId: "",
     hoverRight: false,
-    hoverLeft: false
+    hoverLeft: false,
+    ennemyAppear: stateSocket.ennemyAppearEvents
 });
 
 const TryHoverRight = () => {

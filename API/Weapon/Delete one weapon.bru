@@ -1,0 +1,11 @@
+meta {
+  name: Delete one weapon
+  type: http
+  seq: 5
+}
+
+delete {
+  url: localhost:8000/api/weapon/:weaponId
+  body: json
+  auth: none
+}

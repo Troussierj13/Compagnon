@@ -14,14 +14,14 @@
                 <span class="my-auto h-2.5 w-1/6 text-center">Charge</span>
             </div>
             <span
-                v-for="weap in state.weaponsDB.filter((w) => !props.player.weapons.includes(w))"
-                :key="weap"
+                v-for="(weap) in state.weaponsDB.filter((w) => !props.player.weapons.includes(w as WeaponType))"
+                :key="JSON.stringify(weap)"
                 class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
                 <WeaponRow
                     :hide-note="true"
                     :player="player"
-                    :weapon="weap"
-                    @click.prevent.stop="addWeapon(weap)" />
+                    :weapon="(weap as WeaponType)"
+                    @click.prevent.stop="addWeapon(weap as WeaponType)" />
             </span>
         </div>
     </div>
@@ -36,6 +36,7 @@ import {PlayerType} from "@/utils/Types/PlayerType";
 import WeaponRow from "./WeaponRow.vue";
 import Button from "../Styleguide/Button.vue";
 import {Reward} from "@/utils/VallianceWisdom/Rewards";
+import { onMounted } from 'vue';
 
 interface Props {
     player: PlayerType
@@ -50,9 +51,14 @@ interface State {
 
 const props = defineProps<Props>();
 const state = reactive<State>({
-    weaponsDB: await APIRequests.Weapons.getAllWeapons(),
-    rewardsDB: await APIRequests.Rewards.getAllRewards(),
+    weaponsDB: [],
+    rewardsDB: {},
     hover: false
+});
+
+onMounted(async () => {
+    state.weaponsDB = await APIRequests.Weapons.getAllWeapons();
+    state.rewardsDB = await APIRequests.Rewards.getAllRewards();
 });
 
 const tryChangeHover = () => {

@@ -11,7 +11,7 @@
         </div>
         <span
             v-for="armor in props.armors"
-            :key="armor"
+            :key="JSON.stringify(armor)"
             class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
             <ArmorRow
                 :armor="armor"

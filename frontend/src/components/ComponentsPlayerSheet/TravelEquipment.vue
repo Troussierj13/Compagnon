@@ -1,7 +1,7 @@
 <template>
     <span class="hover:bg-slate-200/40 rounded cursor-pointer" @click="tryChangeHover">
         {{ equip.name }}
-        <span v-if="equip.skillRef !== 'unknown'">
+        <span v-if="equip.skillRef && equip.skillRef !== 'unknown'">
             ( <span class="font-semibold">{{ props.player.getSkill(equip.skillRef).name }}</span> )
         </span>
     </span>

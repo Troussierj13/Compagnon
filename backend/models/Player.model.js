@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 const playerSchema = mongoose.Schema(
 	{
+		name: { type: mongoose.Schema.Types.String, required: true },
+		password: { type: mongoose.Schema.Types.String, required: true },
 		characters: [
 			{
 				type: mongoose.Schema.Types.ObjectId,

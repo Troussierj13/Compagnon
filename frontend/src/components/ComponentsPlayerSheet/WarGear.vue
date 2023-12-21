@@ -41,7 +41,7 @@
                 />
                 <ModifArmor
                     v-if="state.hover.armor"
-                    :armors="state.armors.filter(arm => arm.identifier === 'armor').sort((a: ArmorType, b: ArmorType) => a.protection-b.protection)"
+                    :armors="state.armors.filter(arm => arm.identifier === 'armor').sort((a: ArmorType, b: ArmorType):number => a.protection.value-b.protection.value)"
                     :change-identifier="'armor'"
                     :player="props.player" />
             </div>
@@ -90,6 +90,7 @@ import {ArmorType} from "@/utils/Types/ArmorType";
 import {APIRequests} from "@/utils/apiurls";
 import ModifArmor from "./ModifArmor.vue";
 import {HoverSingleton} from "@/utils/helpers";
+import { onMounted } from 'vue';
 
 interface Props {
     player: PlayerType
@@ -108,12 +109,16 @@ interface State {
 
 const props = defineProps<Props>();
 const state = reactive<State>({
-    armors: await APIRequests.Armors.getAllArmors(),
+    armors: [],
     hover: {
         armor: false,
         helm: false,
         shield: false
     }
+});
+
+onMounted(async () => {
+    state.armors = await APIRequests.Armors.getAllArmors();
 });
 
 const tryHoverModifArmor = () => {

@@ -26,7 +26,7 @@
             <div class="relative grow w-full">
                 <TopSimpleLine />
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="skill in props.player.mindSkills" :key="skill.identifier">
+                    <div v-for="skill in props.player.mindSkills" :key="JSON.stringify(skill)">
                         <SkillRow
                             :favorisable="true"
                             :skill="skill"
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div v-for="skill in props.player.mindSkills" :key="skill.identifier">
+                    <div v-for="skill in props.player.mindSkills" :key="JSON.stringify(skill)">
                         <SkillRowModification
                             :favorisable="true"
                             :skill="skill"

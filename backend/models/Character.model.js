@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const characterSchema = mongoose.Schema(
   {
+    player: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Character",
+    },
     name: { type: mongoose.Schema.Types.String, required: true },
     culture: {
       culture: { type: mongoose.Schema.Types.String, required: true },

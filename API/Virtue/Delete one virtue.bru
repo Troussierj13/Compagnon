@@ -1,0 +1,11 @@
+meta {
+  name: Delete one virtue
+  type: http
+  seq: 4
+}
+
+delete {
+  url: localhost:8000/api/virtue/:virtueIdentifier
+  body: json
+  auth: none
+}

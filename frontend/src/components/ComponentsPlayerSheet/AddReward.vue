@@ -15,8 +15,8 @@
             >
                 <span class="break-words relative">
                     <DescribableName
-                        :values="reward.defaultChoice ? reward.defaultChoice : reward.getChosen()"
-                        @click="addReward(reward.identifier)" />
+                        :values="getRewardValues(reward)"
+                        @click="reward.identifier && addReward(reward.identifier)" />
                 </span>
             </div>
         </div>
@@ -29,8 +29,9 @@ import {HoverSingleton, IDictionary} from "@/utils/helpers";
 import {PlayerType} from "@/utils/Types/PlayerType";
 import Button from "../Styleguide/Button.vue";
 import DescribableName from "../DescribableName.vue";
-import {Reward, RewardIdentifier} from "@/utils/VallianceWisdom/Rewards";
+import {DescribableNameForRewards, Reward, RewardIdentifier} from "@/utils/VallianceWisdom/Rewards";
 import {APIRequests} from "@/utils/apiurls";
+import { onMounted } from 'vue';
 
 interface Props {
     player: PlayerType
@@ -43,8 +44,12 @@ interface State {
 
 const props = defineProps<Props>();
 const state = reactive<State>({
-    rewardsDB: await APIRequests.Rewards.getAllRewards(),
+    rewardsDB: {},
     hover: false
+});
+
+onMounted(async () => {
+    state.rewardsDB = await APIRequests.Rewards.getAllRewards();
 });
 
 const tryChangeHover = () => {
@@ -56,6 +61,15 @@ const tryChangeHover = () => {
 const addReward = (rewardId: RewardIdentifier) => {
     props.player.addReward(new Reward(state.rewardsDB[rewardId]));
     props.player.saveOnDb();
+};
+
+const getRewardValues = (reward: Partial<Reward>): DescribableNameForRewards => {
+    if(reward && reward.getChosen) {
+        return reward.getChosen();
+    }
+    else {
+        return reward ? reward.defaultChoice || new DescribableNameForRewards("", "") : new DescribableNameForRewards("", "");
+    }
 };
 
 </script>
