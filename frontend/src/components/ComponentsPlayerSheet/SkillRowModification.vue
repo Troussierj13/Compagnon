@@ -68,13 +68,13 @@ const state = reactive<State>({
 
 const validateRank = (rank: number): rank is IntRange<0, 6> => {
     return rank >= 0 && rank <= 6;
-}
+};
 
 const changeRank = (nRank: number) => {
     if('rank' in state.modifSkill && validateRank(nRank)) {
         state.modifSkill.rank = nRank;
     }
-}
+};
 
 </script>
 

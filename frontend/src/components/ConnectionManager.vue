@@ -1,21 +1,21 @@
 <template>
     <button @click="connect()">Connect</button>
     <button @click="disconnect()">Disconnect</button>
-  </template>
+</template>
   
   <script lang="ts">
-  import { socket } from "../socket";
+import { socket } from "../socket";
   
-  export default {
+export default {
     name: "ConnectionManager",
   
     methods: {
-      connect() {
-        socket.connect();
-      },
-      disconnect() {
-        socket.disconnect();
-      }
+        connect() {
+            socket.connect();
+        },
+        disconnect() {
+            socket.disconnect();
+        }
     }
-  }
+};
   </script>

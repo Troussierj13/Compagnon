@@ -10,7 +10,13 @@
             href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
             rel="stylesheet"
     />
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script type="importmap">
+        {
+          "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+          }
+        }
+      </script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Compagnon</title>
 </head>

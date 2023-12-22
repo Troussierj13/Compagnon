@@ -1,17 +1,17 @@
 <template>
     <p>State: {{ connected }}</p>
-  </template>
+</template>
   
   <script lang="ts">
-  import { stateSocket } from "../socket";
+import { stateSocket } from "../socket";
   
-  export default {
+export default {
     name: "ConnectionState",
   
     computed: {
-      connected() {
-        return stateSocket.connected;
-      }
+        connected() {
+            return stateSocket.connected;
+        }
     }
-  }
+};
   </script>

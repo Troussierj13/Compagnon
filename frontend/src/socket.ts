@@ -20,5 +20,5 @@ socket.on("ennemyAppear", (...args) => {
     stateSocket.ennemyAppearEvents.push(args);
     setTimeout(() => {
         stateSocket.ennemyAppearEvents.pop();
-    }, 2000)
+    }, 2000);
 });

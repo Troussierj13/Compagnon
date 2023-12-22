@@ -4,11 +4,15 @@ const { resolve } = require('path')
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: 'http://localhost:4173/',
   plugins: [vue()],
   build: {
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
+      input: "index.html",
+      output: {
+          entryFileNames: `assets/[name].js`,
+          chunkFileNames: `assets/[name].js`,
+          assetFileNames: `assets/[name].[ext]`
       },
       external: ['vue', 'vuetify']
     }
