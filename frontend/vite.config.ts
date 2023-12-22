@@ -7,7 +7,6 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     target: 'esnext',
-    outDir: 'dist',
     rollupOptions: {
       input: "index.html",
       output: {
