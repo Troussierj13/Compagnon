@@ -1,12 +1,13 @@
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
-const { resolve } = require('path')
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
   plugins: [vue()],
   build: {
+    target: 'esnext',
+    outDir: 'dist',
     rollupOptions: {
       input: "index.html",
       output: {
@@ -14,7 +15,7 @@ export default defineConfig({
           chunkFileNames: `assets/[name].js`,
           assetFileNames: `assets/[name].[ext]`
       },
-      external: ['vue', 'vuetify']
+      external: ['vue', 'vuetify'],
     }
   },
 });
