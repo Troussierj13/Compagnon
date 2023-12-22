@@ -4,7 +4,7 @@ const { resolve } = require('path')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: 'http://192.168.1.32:80/',
+  base: '/',
   plugins: [vue()],
   build: {
     rollupOptions: {
