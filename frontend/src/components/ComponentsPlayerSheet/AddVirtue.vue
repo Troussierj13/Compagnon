@@ -25,12 +25,12 @@
 <script lang="ts" setup>
 
 import {reactive} from "vue";
-import {DescribableNameWithModifier, HoverSingleton, IDictionary} from "@/utils/helpers";
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {DescribableNameWithModifier, HoverSingleton, IDictionary} from "../../utils/helpers";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import Button from "../Styleguide/Button.vue";
-import {Virtue, VirtueIdentifier} from "@/utils/VallianceWisdom/Virtues";
+import {Virtue, VirtueIdentifier} from "../../utils/VallianceWisdom/Virtues";
 import DescribableName from "../DescribableName.vue";
-import {APIRequests} from "@/utils/apiurls";
+import {APIRequests} from "../../utils/apiurls";
 import { onMounted } from 'vue';
 
 interface Props {

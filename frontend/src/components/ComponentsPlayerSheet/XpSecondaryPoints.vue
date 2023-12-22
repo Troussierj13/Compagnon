@@ -81,7 +81,7 @@
 </template>
 <script lang="ts" setup>
 
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import EditablePoints from "./EditablePoints.vue";
 
 interface Props {

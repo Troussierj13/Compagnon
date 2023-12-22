@@ -28,14 +28,14 @@
 </template>
 <script lang="ts" setup>
 
-import {WeaponType} from "@/utils/Types/WeaponType";
+import {WeaponType} from "../../utils/Types/WeaponType";
 import {reactive} from "vue";
-import {APIRequests} from "@/utils/apiurls";
-import {HoverSingleton, IDictionary} from "@/utils/helpers";
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {APIRequests} from "../../utils/apiurls";
+import {HoverSingleton, IDictionary} from "../../utils/helpers";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import WeaponRow from "./WeaponRow.vue";
 import Button from "../Styleguide/Button.vue";
-import {Reward} from "@/utils/VallianceWisdom/Rewards";
+import {Reward} from "../../utils/VallianceWisdom/Rewards";
 import { onMounted } from 'vue';
 
 interface Props {

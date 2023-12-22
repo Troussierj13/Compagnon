@@ -73,13 +73,13 @@
 </template>
 
 <script lang="ts" setup>
-import { PlayerType, SkillType} from "@/utils/Types/PlayerType";
+import { PlayerType, SkillType} from "../../utils/Types/PlayerType";
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
 import {reactive} from "vue";
 import SkillRowModification from "./SkillRowModification.vue";
-import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
+import {LevelUpSingleton} from "../../utils/Types/LevelUpSingleton";
 
 interface Props {
     player: PlayerType;

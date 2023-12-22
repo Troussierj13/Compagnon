@@ -23,8 +23,8 @@
 
 <script lang="ts" setup>
 import BottomGrayLine from "../LineComponent/BottomGrayLine.vue";
-import {PlayerType} from "@/utils/Types/PlayerType";
-import {ArmorType} from "@/utils/Types/ArmorType";
+import {PlayerType} from "../../utils/Types/PlayerType";
+import {ArmorType} from "../../utils/Types/ArmorType";
 
 interface Props {
     player?: PlayerType;

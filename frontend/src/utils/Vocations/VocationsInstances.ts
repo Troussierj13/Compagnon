@@ -1,6 +1,6 @@
-import {DescribableName, PossibleChoose} from "@/utils/helpers";
-import {SkillIdentifier} from "@/utils/Types/IdentifiedType";
-import {VocationType} from "@/utils/Vocations/Vocations";
+import {DescribableName, PossibleChoose} from "../helpers";
+import {SkillIdentifier} from "../Types/IdentifiedType";
+import {VocationType} from "../Vocations/Vocations";
 
 export const Captain = new VocationType(
     new DescribableName(

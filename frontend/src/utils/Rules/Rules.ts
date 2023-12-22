@@ -1,5 +1,5 @@
-import {ModifierParam, Modifiers} from "@/utils/MapModifiers";
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {ModifierParam, Modifiers} from "../MapModifiers";
+import {PlayerType} from "../Types/PlayerType";
 // @ts-ignore
 import {get} from "lodash";
 

@@ -1,5 +1,5 @@
-import {SkillIdentifier} from "@/utils/Types/IdentifiedType";
-import {DescribableName, PossibleChoose} from "@/utils/helpers";
+import {SkillIdentifier} from "../Types/IdentifiedType";
+import {DescribableName, PossibleChoose} from "../helpers";
 
 export type Vocation =
     | "captain"

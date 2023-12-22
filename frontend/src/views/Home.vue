@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import {reactive} from 'vue';
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../utils/Types/PlayerType";
 import {APIRequests} from "../utils/apiurls";
 import EdgeDisplaySystem from "./EdgeDisplaySystem.vue";
 

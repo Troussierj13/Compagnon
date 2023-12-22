@@ -3,8 +3,8 @@ import {
     DefaultCombatSkill,
     DerivedCharacteristics,
     SimpleAttributesValuesType,
-} from "@/utils/Culture/CultureType";
-import {PossibleChoose} from "@/utils/helpers";
+} from "../Culture/CultureType";
+import {PossibleChoose} from "../helpers";
 
 class LindonElfType extends CultureType {
     constructor() {

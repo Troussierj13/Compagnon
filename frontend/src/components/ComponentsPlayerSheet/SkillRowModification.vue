@@ -48,8 +48,8 @@
 </template>
 
 <script lang="ts" setup>
-import {CombatSkillsType, SkillType} from "@/utils/Types/PlayerType";
-import {IntRange} from '@/utils/helpers';
+import {CombatSkillsType, SkillType} from "../../utils/Types/PlayerType";
+import {IntRange} from "../../utils/helpers";
 import {reactive} from "vue";
 
 interface Props {

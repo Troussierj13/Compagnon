@@ -16,7 +16,7 @@
 </template>
 <script lang="ts" setup>
 
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import AddTravelEquipment from "./AddTravelEquipment.vue";
 import TravelEquipment from "./TravelEquipment.vue";

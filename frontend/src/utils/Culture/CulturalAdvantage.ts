@@ -1,4 +1,4 @@
-import {DescribableName} from "@/utils/helpers";
+import {DescribableName} from "../helpers";
 
 export type CulturalAdvantage =
     "intrepid"

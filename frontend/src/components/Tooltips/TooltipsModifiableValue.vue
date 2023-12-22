@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts" setup>
-import {Identifier, IdentifierModifiableAttr,} from '@/utils/Types/IdentifiedType';
-import {PlayerType} from '@/utils/Types/PlayerType';
+import {Identifier, IdentifierModifiableAttr,} from '../../utils/Types/IdentifiedType';
+import {PlayerType} from '../../utils/Types/PlayerType';
 import {reactive} from 'vue';
-import {Vector2Rect} from "@/utils/helpers";
+import {Vector2Rect} from "../../utils/helpers";
 
 interface Props {
     children: Object;

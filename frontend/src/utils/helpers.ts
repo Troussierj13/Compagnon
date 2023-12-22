@@ -1,4 +1,4 @@
-import {ModifierParam} from "@/utils/MapModifiers";
+import {ModifierParam} from "./MapModifiers";
 
 type Enumerate<
     N extends number,

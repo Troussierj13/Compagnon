@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
@@ -97,7 +97,7 @@ import DescribableName from "../DescribableName.vue";
 import {Cog6ToothIcon} from "@heroicons/vue/24/solid";
 import {CheckCircleIcon} from "@heroicons/vue/24/outline";
 import {reactive} from "vue";
-import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
+import {LevelUpSingleton} from "../../utils/Types/LevelUpSingleton";
 import SkillRowModification from "./SkillRowModification.vue";
 import AddReward from "./AddReward.vue";
 import DescribableNameRewardNotChosen from "../DescribableNameRewardNotChosen.vue";

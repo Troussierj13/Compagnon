@@ -60,11 +60,11 @@
 
 import {InformationCircleIcon} from '@heroicons/vue/24/outline';
 import {reactive, ref} from "vue";
-import {PlayerType} from "@/utils/Types/PlayerType";
-import {HoverSingleton} from "@/utils/helpers";
-import {ApplyIdentifier, Reward} from "@/utils/VallianceWisdom/Rewards";
+import {PlayerType} from "../utils/Types/PlayerType";
+import {HoverSingleton} from "../utils/helpers";
+import {ApplyIdentifier, Reward} from "../utils/VallianceWisdom/Rewards";
 import {ArrowLongRightIcon} from "@heroicons/vue/20/solid";
-import {ModifierParam, Modifiers} from "@/utils/MapModifiers";
+import {ModifierParam, Modifiers} from "../utils/MapModifiers";
 
 interface Props {
     reward: Reward;

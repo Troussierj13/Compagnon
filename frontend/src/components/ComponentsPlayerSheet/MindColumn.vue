@@ -81,14 +81,14 @@
 </template>
 
 <script lang="ts" setup>
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";
 import DescribableName from "../DescribableName.vue";
 import DescribableNameVirtueNotChosen from "../DescribableNameVirtueNotChosen.vue";
 import SkillRowModification from "./SkillRowModification.vue";
 import {reactive} from "vue";
-import {LevelUpSingleton} from "@/utils/Types/LevelUpSingleton";
+import {LevelUpSingleton} from "../../utils/Types/LevelUpSingleton";
 import AddVirtue from "./AddVirtue.vue";
 
 interface Props {

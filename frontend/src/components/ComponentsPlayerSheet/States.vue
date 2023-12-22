@@ -52,10 +52,10 @@
 </template>
 <script lang="ts" setup>
 
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import {reactive} from "vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton} from "../../utils/helpers";
 import TooltipsAddInjury from "../Tooltips/TooltipsAddInjury.vue";
 
 interface Props {

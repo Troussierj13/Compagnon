@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 
 import {InformationCircleIcon} from '@heroicons/vue/24/outline';
-import {DescribableName, HoverSingleton} from "@/utils/helpers";
+import {DescribableName, HoverSingleton} from "../utils/helpers";
 import {reactive} from "vue";
 
 interface Props {

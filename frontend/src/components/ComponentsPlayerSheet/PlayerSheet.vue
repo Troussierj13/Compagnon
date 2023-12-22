@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-import {PlayerType} from '@/utils/Types/PlayerType';
+import {PlayerType} from '../../utils/Types/PlayerType';
 import HeaderPlayerSheet from './HeaderPlayerSheet.vue';
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import StrengthColumn from "./StrengthColumn.vue";

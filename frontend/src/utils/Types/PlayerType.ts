@@ -5,14 +5,14 @@ import {
     QualityLife,
     qualityLifeByTreasure,
     QualityLifeType,
-} from '@/utils/Culture/CultureType';
-import {Vocation, VocationType} from '@/utils/Vocations/Vocations';
-import {VocationTypeToInstance} from '@/utils/Vocations/VocationsInstances';
-import {DescribableName, IDictionary, IntRange} from '@/utils/helpers';
-import {ModifierParam, Modifiers} from '@/utils/MapModifiers';
-import {SetModifiers} from '@/utils/Rules/Rules';
-import {ArmorType} from '@/utils/Types/ArmorType';
-import {Attributes} from '@/utils/Types/CharacterTypes';
+} from '../Culture/CultureType';
+import {Vocation, VocationType} from '../Vocations/Vocations';
+import {VocationTypeToInstance} from '../Vocations/VocationsInstances';
+import {DescribableName, IDictionary, IntRange} from '../helpers';
+import {ModifierParam, Modifiers} from '../MapModifiers';
+import {SetModifiers} from '../Rules/Rules';
+import {ArmorType} from './ArmorType';
+import {Attributes} from './CharacterTypes';
 import {
     ArmorIdentifier,
     HeartSkillIdentifier,
@@ -22,18 +22,18 @@ import {
     MindSkillIdentifier,
     SkillIdentifier,
     StrengthSkillIdentifier,
-} from '@/utils/Types/IdentifiedType';
-import {WeaponType} from '@/utils/Types/WeaponType';
-import {Bardide} from "@/utils/Culture/Bardide";
-import {Hobbit} from '@/utils/Culture/Hobbit';
-import {LindonElf} from "@/utils/Culture/LindonElf";
-import {BreeHuman} from "@/utils/Culture/BreeHuman";
-import {DurinDwarf} from "@/utils/Culture/DurinDwarf";
-import {NorthRanger} from "@/utils/Culture/NorthRanger";
-import {Valiance, Wisdom} from "@/utils/VallianceWisdom/VallianceWisdom";
-import {Virtue} from "@/utils/VallianceWisdom/Virtues";
-import {ApplyIdentifier, Reward} from "@/utils/VallianceWisdom/Rewards";
-import {APIRequests} from "@/utils/apiurls";
+} from "./IdentifiedType";
+import {WeaponType} from './WeaponType';
+import {Bardide} from "../Culture/Bardide";
+import {Hobbit} from "../Culture/Hobbit";
+import {LindonElf} from "../Culture/LindonElf";
+import {BreeHuman} from "../Culture/BreeHuman";
+import {DurinDwarf} from "../Culture/DurinDwarf";
+import {NorthRanger} from "../Culture/NorthRanger";
+import {Valiance, Wisdom} from "../VallianceWisdom/VallianceWisdom";
+import {Virtue} from "../VallianceWisdom/Virtues";
+import {ApplyIdentifier, Reward} from "../VallianceWisdom/Rewards";
+import {APIRequests} from "../apiurls";
 
 const CultureTypeToInstance = {
     bardide: Bardide,

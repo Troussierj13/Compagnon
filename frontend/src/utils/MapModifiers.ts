@@ -1,4 +1,4 @@
-import {Identifier} from "@/utils/Types/IdentifiedType";
+import {Identifier} from "./Types/IdentifiedType";
 
 export type ModificatorOperation = "+" | "*";
 

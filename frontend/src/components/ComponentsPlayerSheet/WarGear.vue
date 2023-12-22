@@ -79,17 +79,17 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import ArmorRow from "./ArmorRow.vue";
 import WeaponRow from "./WeaponRow.vue";
 import RightSimpleLine from "../LineComponent/RightSimpleLine.vue";
 import TopDoubleLine from "../LineComponent/TopDoubleLine.vue";
 import AddWeapon from "./AddWeapon.vue";
 import {reactive} from "vue";
-import {ArmorType} from "@/utils/Types/ArmorType";
-import {APIRequests} from "@/utils/apiurls";
+import {ArmorType} from "../../utils/Types/ArmorType";
+import {APIRequests} from "../../utils/apiurls";
 import ModifArmor from "./ModifArmor.vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton} from "../../utils/helpers";
 import { onMounted } from 'vue';
 
 interface Props {

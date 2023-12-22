@@ -1,7 +1,7 @@
-import {Identifier} from "@/utils/Types/IdentifiedType";
-import {Modifiers} from "@/utils/MapModifiers";
-import {Reward} from "@/utils/VallianceWisdom/Rewards";
-import {IDictionary} from "@/utils/helpers";
+import {Identifier} from "../Types/IdentifiedType";
+import {Modifiers} from "../MapModifiers";
+import {Reward} from "../VallianceWisdom/Rewards";
+import {IDictionary} from "../helpers";
 
 export type InjuriesType = {
     oneHand: number;

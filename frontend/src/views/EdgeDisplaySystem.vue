@@ -58,11 +58,11 @@
 
 <script lang="ts" setup>
 import {PlusIcon} from "@heroicons/vue/24/solid";
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../utils/Types/PlayerType";
 import {nextTick, reactive} from "vue";
 import PlayerSheet from "../components/ComponentsPlayerSheet/PlayerSheet.vue";
-import {HoverSingleton} from "@/utils/helpers";
-import { stateSocket } from "@/socket";
+import {HoverSingleton} from "../utils/helpers";
+import { stateSocket } from "../socket";
 
 interface Props {
     players: Array<PlayerType>;

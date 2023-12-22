@@ -15,12 +15,6 @@
     ],
     "skipLibCheck": true,
     "noEmit": true,
-    "paths": {
-      "@/*": [
-        "./src/*",
-        "./dist/*"
-      ]
-    }
   },
   "include": [
     "src/**/*.ts",

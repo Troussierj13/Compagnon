@@ -1,7 +1,7 @@
-import {Virtue} from "@/utils/VallianceWisdom/Virtues";
-import {Reward} from "@/utils/VallianceWisdom/Rewards";
-import {ModifierParam} from "@/utils/MapModifiers";
-import {IDictionary} from "@/utils/helpers";
+import {Virtue} from "../VallianceWisdom/Virtues";
+import {Reward} from "../VallianceWisdom/Rewards";
+import {ModifierParam} from "../MapModifiers";
+import {IDictionary} from "../helpers";
 
 export class Wisdom {
     rank: number;

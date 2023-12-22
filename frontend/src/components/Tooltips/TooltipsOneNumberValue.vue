@@ -28,8 +28,8 @@
 </template>
 
 <script lang="ts" setup>
-import {Identifier, IdentifierModifiableAttr,} from '@/utils/Types/IdentifiedType';
-import {PlayerType} from '@/utils/Types/PlayerType';
+import {Identifier, IdentifierModifiableAttr,} from '../../utils/Types/IdentifiedType';
+import {PlayerType} from '../../utils/Types/PlayerType';
 import {ChevronDoubleDownIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronUpIcon,} from '@heroicons/vue/24/solid';
 
 interface Props {

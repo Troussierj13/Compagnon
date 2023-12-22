@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import {SkillType} from "@/utils/Types/PlayerType";
+import {SkillType} from "../../utils/Types/PlayerType";
 
 interface Props {
     favorisable: boolean;

@@ -10,21 +10,12 @@
             href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap"
             rel="stylesheet"
     />
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Compagnon</title>
 </head>
 <body>
 <div class="fixed bg-oneRing bg-cover bg-center h-[100vh] w-[100vw] top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] -z-50"></div>
 <div id="app" class="h-[100vh] w-[100vw] font-UncialAntiqua text-black"></div>
-<script type="module">
-    import router from "@/router/router";
-    import App from "./src/App.vue";
-    import "./src/styles/style.css";
-
-    const { createApp, ref } = Vue
-
-    createApp(App).use(router).mount("#app");
-</script>
+<script src="src/main.ts" type="module"></script>
 </body>
 </html>

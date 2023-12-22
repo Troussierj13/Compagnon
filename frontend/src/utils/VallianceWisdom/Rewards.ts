@@ -1,6 +1,6 @@
 //Rewards
-import {DescribableNameWithModifier, PossibleChoose} from "@/utils/helpers";
-import {ModifierParam} from "@/utils/MapModifiers";
+import {DescribableNameWithModifier, PossibleChoose} from "../helpers";
+import {ModifierParam} from "../MapModifiers";
 
 export type RewardIdentifier = 'unknown'
     | 'sharpReward'

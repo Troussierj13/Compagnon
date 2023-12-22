@@ -1,4 +1,4 @@
-import {dataVirtues, Virtue} from "@/utils/VallianceWisdom/Virtues";
+import {dataVirtues, Virtue} from "../utils/VallianceWisdom/Virtues";
 
 describe("Virtues tests", () => {
     const emp = new Virtue(dataVirtues.empoweredVirtue);

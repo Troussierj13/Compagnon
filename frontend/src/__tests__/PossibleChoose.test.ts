@@ -1,4 +1,4 @@
-import {DescribableNameWithModifier, PossibleChoose} from "@/utils/helpers";
+import {DescribableNameWithModifier, PossibleChoose} from "../utils/helpers";
 
 const expectObjectToBe = (exp: object, toB: string) => {
     //console.log('Result: ', JSON.stringify(exp), '\n', 'Expect: ', toB);

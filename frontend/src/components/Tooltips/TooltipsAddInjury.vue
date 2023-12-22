@@ -28,9 +28,9 @@
 </template>
 
 <script lang="ts" setup>
-import {Injuries, PlayerType} from '@/utils/Types/PlayerType';
+import {Injuries, PlayerType} from '../../utils/Types/PlayerType';
 import {reactive} from "vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton} from "../../utils/helpers";
 
 interface Props {
     player: PlayerType

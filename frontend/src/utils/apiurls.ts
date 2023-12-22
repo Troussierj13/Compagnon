@@ -1,9 +1,9 @@
-import {WeaponType} from "@/utils/Types/WeaponType";
-import {PlayerType} from "@/utils/Types/PlayerType";
-import {ArmorType} from "@/utils/Types/ArmorType";
-import {IDictionary} from "@/utils/helpers";
-import {Virtue} from "@/utils/VallianceWisdom/Virtues";
-import {Reward} from "@/utils/VallianceWisdom/Rewards";
+import {WeaponType} from "./Types/WeaponType";
+import {PlayerType} from "./Types/PlayerType";
+import {ArmorType} from "./Types/ArmorType";
+import {IDictionary} from "./helpers";
+import {Virtue} from "./VallianceWisdom/Virtues";
+import {Reward} from "./VallianceWisdom/Rewards";
 
 export const APISettings = {
     token: "",

@@ -13,9 +13,9 @@
 </template>
 <script lang="ts" setup>
 
-import {PlayerType, TravelEquipment} from "@/utils/Types/PlayerType";
+import {PlayerType, TravelEquipment} from "../../utils/Types/PlayerType";
 import {reactive} from "vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton} from "../../utils/helpers";
 
 interface Props {
     player: PlayerType;

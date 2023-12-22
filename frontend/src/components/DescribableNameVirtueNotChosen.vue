@@ -33,9 +33,9 @@
 
 import {InformationCircleIcon} from '@heroicons/vue/24/outline';
 import {reactive} from "vue";
-import {Virtue} from "@/utils/VallianceWisdom/Virtues";
-import {PlayerType} from "@/utils/Types/PlayerType";
-import {HoverSingleton} from "@/utils/helpers";
+import {Virtue} from "../utils/VallianceWisdom/Virtues";
+import {PlayerType} from "../utils/Types/PlayerType";
+import {HoverSingleton} from "../utils/helpers";
 
 interface Props {
     virtue: Virtue;

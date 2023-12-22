@@ -23,11 +23,11 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import ArmorRow from "./ArmorRow.vue";
-import {ArmorType} from "@/utils/Types/ArmorType";
-import {HoverSingleton} from "@/utils/helpers";
-import {ArmorIdentifier} from "@/utils/Types/IdentifiedType";
+import {ArmorType} from "../../utils/Types/ArmorType";
+import {HoverSingleton} from "../../utils/helpers";
+import {ArmorIdentifier} from "../../utils/Types/IdentifiedType";
 
 interface Props {
     armors: Array<ArmorType>;

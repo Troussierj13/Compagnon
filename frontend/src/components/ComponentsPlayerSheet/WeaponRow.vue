@@ -56,9 +56,9 @@
 </template>
 
 <script lang="ts" setup>
-import {WeaponType} from "@/utils/Types/WeaponType";
-import {PlayerType} from "@/utils/Types/PlayerType";
-import {HoverSingleton} from "@/utils/helpers";
+import {WeaponType} from "../../utils/Types/WeaponType";
+import {PlayerType} from "../../utils/Types/PlayerType";
+import {HoverSingleton} from "../../utils/helpers";
 import {reactive} from "vue";
 import BottomGrayLine from "../LineComponent/BottomGrayLine.vue";
 

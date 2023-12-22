@@ -1,5 +1,5 @@
 //Virtues
-import {DescribableNameWithModifier, IDictionary, PossibleChoose} from "@/utils/helpers";
+import {DescribableNameWithModifier, IDictionary, PossibleChoose} from "../helpers";
 
 export type VirtueIdentifier = 'unknown'
     | 'assuranceVirtue'

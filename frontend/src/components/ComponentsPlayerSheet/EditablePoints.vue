@@ -22,11 +22,11 @@
 </template>
 <script lang="ts" setup>
 
-import {PlayerType} from "@/utils/Types/PlayerType";
+import {PlayerType} from "../../utils/Types/PlayerType";
 import TooltipsOneNumberValue from "../Tooltips/TooltipsOneNumberValue.vue";
-import {Identifier, IdentifierModifiableAttr} from "@/utils/Types/IdentifiedType";
+import {Identifier, IdentifierModifiableAttr} from "../../utils/Types/IdentifiedType";
 import {reactive} from "vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton} from "../../utils/helpers";
 
 type StateClick = 'unknown' | 'simple' | 'double';
 type SizeDiamond = 'medium' | 'large';

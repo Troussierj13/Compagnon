@@ -1,4 +1,4 @@
-import {SkillType} from "@/utils/Types/PlayerType";
+import {SkillType} from "../utils/Types/PlayerType";
 
 describe("Player tests", () => {
     test("Test SkillType.assign", () => {

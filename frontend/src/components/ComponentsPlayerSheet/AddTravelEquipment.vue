@@ -53,10 +53,10 @@
 </template>
 <script lang="ts" setup>
 import Button from "../Styleguide/Button.vue";
-import {PlayerType} from "@/utils/Types/PlayerType";
-import {SkillIdentifier} from "@/utils/Types/IdentifiedType";
+import {PlayerType} from "../../utils/Types/PlayerType";
+import {SkillIdentifier} from "../../utils/Types/IdentifiedType";
 import {reactive} from "vue";
-import {HoverSingleton} from "@/utils/helpers";
+import {HoverSingleton} from "../../utils/helpers";
 
 interface Props {
     player: PlayerType;
