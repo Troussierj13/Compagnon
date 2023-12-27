@@ -13,11 +13,6 @@ export const createGame = async (req, res) => {
 		console.log("Socket connected to room " + req.params.id);
 	});
 
-	io.on("hi", (arg) => {
-		console.log(arg); // 123
-		socket.broadcast.emit("hi", "join");
-	  });
-
 	res.status(200).json({ message: "Game created" });
 };
 
@@ -91,9 +86,8 @@ export const emitEnnemyAppears = async (req, res) => {
 	try {
 		await Game.findById(req.params.gameId);
 
-		io.on("connection", (socket) => {
-			socket.timeout(5000).emit("ennemyAppear", req.body);
-		});
+		io.emit("ennemyAppear", req.body);
+		
 		res.status(200).json(req.body);
 	} catch (error) {
 		res.status(409).json({ message: error.message });
