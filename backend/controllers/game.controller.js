@@ -87,6 +87,7 @@ export const emitEnnemyAppears = async (req, res) => {
 		await Game.findById(req.params.gameId);
 
 		io.emit("ennemyAppear", req.body);
+		console.log('Emit ' + JSON.stringify(req.body))
 		
 		res.status(200).json(req.body);
 	} catch (error) {

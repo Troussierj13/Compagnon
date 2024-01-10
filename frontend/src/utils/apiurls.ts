@@ -11,7 +11,8 @@ export const APISettings = {
         Accept: "application/json",
         "Content-Type": "application/json"
     }),
-    baseURL: "http://192.168.1.32:8000/api/",
+    baseURL: "http://localhost:8000/api/",
+    socketURL: "http://localhost:8000",
 };
 
 export const APIRequests = {
@@ -98,6 +99,16 @@ export const APIRequests = {
             };
 
             return dictRewards;
+        }
+    },
+    Ntags: {
+        update: async (hexNtag: string) => {
+            const response = await fetch(APISettings.baseURL + "encryptedNtag", {
+                method: "PUT",
+                headers: APISettings.headers,
+                body: JSON.stringify({data: hexNtag})
+            });
+            return await response.json();
         }
     }
 };
