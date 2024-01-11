@@ -1,11 +1,11 @@
 <template>
     <div class="m-auto flex relative">
       <CardEnnemy />
-      <div v-if="state.ennAppear.length > 0" class="absolute flex justify-center items-center bg-gray/50 h-full w-full">
+      <div v-if="state.ennAppear.length > 0" class="absolute flex justify-center items-center font-sansserif font-black bg-gray/50 h-full w-full">
         <div class="relative group flex">
           <div class="border-gradient-red rounded"></div>
-          <div class="relative rounded">
-            <div class="p-10 rounded-lg bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">{{ EncrypteNtag.DecrypteHex(state.ennAppear[0])}}</div>
+          <div @click="state.ennAppear.pop()" class="relative rounded">
+            <div class="p-10 max-w-7xl rounded-lg bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">{{ state.ennAppear[0]}}</div>
           </div>
         </div>
       </div>
@@ -33,7 +33,6 @@ interface State {
 const state = reactive<State>({
   ennAppear: stateSocket.ennemyAppearEvents
 });
-
 </script>
 <style scoped>
 .border-gradient-red {

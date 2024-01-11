@@ -1,6 +1,7 @@
 import { reactive } from "vue";
 import { io } from "socket.io-client";
 import {APISettings} from "./utils/apiurls";
+import {EncrypteNtag, NtagData} from "./utils/EncryptNtag";
 
 export const stateSocket = reactive({
   connected: false,
@@ -18,8 +19,5 @@ socket.on("disconnect", () => {
 });
 
 socket.on("ennemyAppear", (arg) => {
-    stateSocket.ennemyAppearEvents.push(arg.data);
-    setTimeout(() => {
-        stateSocket.ennemyAppearEvents.pop();
-    }, 2000);
+    stateSocket.ennemyAppearEvents.push(EncrypteNtag.DecryptHex(arg.data) as NtagData);
 });

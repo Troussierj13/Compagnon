@@ -6,11 +6,6 @@
         <!-- Metadata -->
         <div class="flex justify-center items-center mb-4 space-x-10">
           <div class="flex flex-col items-center">
-            <label class="font-bold text-lg">Version Encrypte</label>
-            <input type="number" v-model="state.versionEncrypte" />
-          </div>
-
-          <div class="flex flex-col items-center">
             <label class="font-bold text-lg mr-2">isHorde</label>
             <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" v-model="state.isHorde" />
           </div>
@@ -41,7 +36,7 @@
           <div>
             <div class="flex space-x-6">
               <label class="font-bold text-lg">Characteristics Name</label>
-              <Button v-show="state.characteristicsName.length < 3" @click="state.characteristicsName.push('')" content="Add" class="text-base"></Button>
+              <Button v-show="state.characteristicsName.length < 2" @click="state.characteristicsName.push('')" content="Add" class="text-base"></Button>
             </div>
             <div v-for="(char, index) in state.characteristicsName" :key="index" class="mb-2">
               <input type="text" v-model="state.characteristicsName[index]" />
@@ -72,8 +67,8 @@
 
           <div class="flex flex-col">
             <label v-show="state.haveHate" class="font-bold text-lg">Hate</label>
-            <label v-show="!state.haveHate" class="font-bold text-lg">Endurance</label>
-            <input type="number" class="max-w-[8em]" v-model="state.valueHE" />
+            <label v-show="!state.haveHate" class="font-bold text-lg">Might</label>
+            <input type="number" class="max-w-[8em]" v-model="state.valueHM" />
           </div>
 
           <div class="flex flex-col">
@@ -90,7 +85,7 @@
         <!-- Weapons -->
         <div>
           <label class="font-bold text-lg mr-4">Weapons</label>
-          <Button v-show="state.weapons.length < 4" @click="state.weapons.push({specialDamage: []} as Weapon)" content="Add" class="text-base"></Button>
+          <Button v-show="state.weapons.length < 3" @click="state.weapons.push({specialDamage: []} as Weapon)" content="Add" class="text-base"></Button>
           <div v-for="(weapon, weaponIndex) in state.weapons" :key="weaponIndex" class="flex justify-center items-center mb-4 space-x-10">
             <div class="flex flex-col">
               <label class="font-bold">Name</label>
@@ -115,7 +110,7 @@
             <div>
               <div class="flex space-x-6">
                 <label class="font-bold text-lg">Special damage</label>
-                <Button v-show="weapon.specialDamage.length < 4" @click="weapon.specialDamage.push('')" content="Add" class="text-base font-bold"></Button>
+                <Button v-show="weapon.specialDamage.length < 2" @click="weapon.specialDamage.push('')" content="Add" class="text-base font-bold"></Button>
               </div>
               <div v-for="(spe, indexSpe) in weapon.specialDamage" :key="indexSpe" class="mb-2">
                 <input type="text" v-model=weapon.specialDamage[indexSpe] />
@@ -128,7 +123,7 @@
         <!-- Specifications -->
         <div>
           <label class="font-bold text-lg mr-4">Specifications</label>
-          <Button v-show="state.specifications.length < 4" @click="state.specifications.push('')" content="Add" class="text-base"></Button>
+          <Button v-show="state.specifications.length < 2" @click="state.specifications.push('')" content="Add" class="text-base"></Button>
 
           <div v-for="(spec, specIndex) in state.specifications" :key="specIndex" class="mb-2">
             <input type="text" v-model="state.specifications[specIndex]" />
@@ -173,7 +168,6 @@ interface Weapon {
 }
 
 interface FormState {
-  versionEncrypte: number;
   isHorde: boolean;
   nbrOnHorde: number;
   displayMode: number;
@@ -184,7 +178,7 @@ interface FormState {
   endurance: number;
   power: number;
   haveHate: boolean;
-  valueHE: number;
+  valueHM: number;
   parade: number;
   armor: number;
   weapons: Weapon[];
@@ -194,23 +188,37 @@ interface FormState {
 }
 
 const state = ref<FormState>({
-  versionEncrypte: 1,
-  isHorde: true,
-  nbrOnHorde: 2,
-  displayMode: 3,
-  name: 'Squelette',
-  surname: 'Revelante',
-  characteristicsName: [],
-  lvlAttribute: 0,
-  endurance: 10,
-  power: 1,
+  isHorde: false,
+  nbrOnHorde: 1,
+  displayMode: 1,
+  name: 'Ukmars Vragge',
+  surname: 'Pilleur du Sud',
+  characteristicsName: ['Rusé', 'Visieux'],
+  lvlAttribute: 4,
+  endurance: 15,
+  power: 2,
   haveHate: false,
-  valueHE: 15,
+  valueHM: 4,
   parade: 1,
   armor: 2,
-  weapons: [],
-  specifications: [],
-  description:'',
+  weapons: [
+    {
+      name: 'Hache',
+      level: 3,
+      damage: 4,
+      injury: 18,
+      specialDamage: []
+    },
+    {
+      name: 'Lance courte',
+      level: 2,
+      damage: 3,
+      injury: 15,
+      specialDamage: ['Perforation']
+    },
+  ],
+  specifications: ["Féroce: Dépense 1pt de volonté, -1d lors d'une attaque"],
+  description:'Lors des longs hivers, les Hommes du Sud se rassemblent et partent à la recherche de propriétaires isolés à piller.',
   hexaData: '',
 });
 

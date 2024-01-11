@@ -17,7 +17,7 @@ export interface NtagData {
     endurance: number;
     power: number;
     haveHate: boolean;
-    valueHE: number;
+    valueHM: number;
     parade: number;
     armor: number;
     weapons: NtagWeapon[];
@@ -27,54 +27,126 @@ export interface NtagData {
 export class EncrypteNtag {
     public static EncryptHex(state: NtagData): string {
         const hexData = [
-            this.convertToHex(1, 1),
-            this.convertToHex(state.isHorde, 1),
-            this.convertToHex(state.isHorde ? state.nbrOnHorde : 0, 1),
-            this.convertToHex(state.displayMode, 1),
-            "00".repeat(12),
-
-            // Example for Name (48 octets)
-            this.convertToHex(state.name, 32),
-            this.convertToHex(state.surname, 32),
-            this.convertToHex(state.characteristicsName[0] || '', 16),
-            this.convertToHex(state.characteristicsName[1] || '', 16),
-            this.convertToHex(state.characteristicsName[2] || '', 16),
-            this.convertToHex(state.lvlAttribute, 1),
-            this.convertToHex(state.endurance, 1),
-            this.convertToHex(state.power, 1),
-            this.convertToHex(state.haveHate, 1),
-            this.convertToHex(state.valueHE, 1),
-            this.convertToHex(state.parade, 1),
-            this.convertToHex(state.armor, 1),
-            "00".repeat(9),
+            this.convertToHex(1),
+            this.convertToHex(state.isHorde),
+            this.convertToHex(state.isHorde ? state.nbrOnHorde : 0),
+            this.convertToHex(state.displayMode),
+            this.convertToHex(state.name),
+            this.convertToHex(state.surname),
+            this.convertToHex(state.characteristicsName[0]),
+            this.convertToHex(state.characteristicsName[1]),
+            this.convertToHex(state.lvlAttribute),
+            this.convertToHex(state.endurance),
+            this.convertToHex(state.power),
+            this.convertToHex(state.haveHate),
+            this.convertToHex(state.valueHM),
+            this.convertToHex(state.parade),
+            this.convertToHex(state.armor),
         ];
 
-        for(let i = 0 ; i<4 ; i++) {
-            hexData.push(this.convertToHex(state.weapons[i]?.name || '', 32));
-            hexData.push(this.convertToHex(state.weapons[i]?.level || '', 1));
-            hexData.push(this.convertToHex(state.weapons[i]?.damage || '', 1));
-            hexData.push(this.convertToHex(state.weapons[i]?.injury || '', 1));
-            hexData.push(this.convertToHex(state.weapons[i]?.specialDamage[0] || '', 13));
-            for(let j = 1 ; j<4 ; j++) {
-                hexData.push(this.convertToHex(state.weapons[i]?.specialDamage[j] || '', 16));
-            }
-        }
+        hexData.push(this.convertToHex(state.weapons.length));
+        state.weapons.map((weapon) => {
+            hexData.push(this.convertToHex(weapon.name));
+            hexData.push(this.convertToHex(weapon.level));
+            hexData.push(this.convertToHex(weapon.damage));
+            hexData.push(this.convertToHex(weapon.injury));
+            hexData.push(this.convertToHex(weapon.specialDamage.length));
+            weapon.specialDamage.map((spe) => {
+                hexData.push(this.convertToHex(spe));
+            })
+        })
 
-        for(let i = 0 ; i<4 ; i++) {
-            hexData.push(this.convertToHex(state.specifications[i] || '', 48));
-        }
+        hexData.push(this.convertToHex(state.specifications.length));
+        state.specifications.map((spe) => {
+            hexData.push(this.convertToHex(spe));
+        });
 
-        hexData.push(this.convertToHex(state.description, 0));
+        hexData.push(this.convertToHex(state.description));
 
         return hexData.join('');
     }
 
-    public static DecrypteHex(hexData: string): NtagData {
-        console.log(hexData)
-        return {
-            name: this.hexToAscii(hexData.substring(16*2, 16*2+32*2)),
-            surname: this.hexToAscii(hexData.substring(32*2, 32*2+32*2)),
-        } as NtagData;
+    public static DecryptHex(hexData: string): NtagData {
+        let index = 0;
+        console.log("start decrypte");
+
+        const getValue = (): string => {
+            const valueLength = parseInt(hexData.substring(index, index + 2), 16);
+
+            index += 2;
+            const value = hexData.substring(index, index + valueLength * 2);
+            console.log("Value length:", valueLength);
+            console.log("Value:", value);
+            index += valueLength * 2;
+
+            return value;
+        };
+
+        const getBool = (): boolean => {
+            const value = hexData.substring(index, index + 2);
+            index += 2;
+
+            return !!parseInt(value, 16);
+        };
+
+        const AsciiStr = (hex: string) => {
+            const hexArray = hex.match(/.{1,2}/g);
+            if (!hexArray) return '';
+
+            const uint8Array = new Uint8Array(hexArray.map(byte => parseInt(byte, 16)));
+            const decoder = new TextDecoder('utf-8');
+
+            return decoder.decode(uint8Array);
+        }
+
+        const versionEncrypter = parseInt(getValue(), 16)
+
+        const state: NtagData = {
+            isHorde: getBool(),
+            nbrOnHorde: parseInt(getValue(), 16),
+            displayMode: parseInt(getValue(), 16),
+            name: AsciiStr(getValue()),
+            surname: AsciiStr(getValue()),
+            characteristicsName: [AsciiStr(getValue()), AsciiStr(getValue())],
+            lvlAttribute: parseInt(getValue(), 16),
+            endurance: parseInt(getValue(), 16),
+            power: parseInt(getValue(), 16),
+            haveHate: getBool(),
+            valueHM: parseInt(getValue(), 16),
+            parade: parseInt(getValue(), 16),
+            armor: parseInt(getValue(), 16),
+            weapons: [],
+            specifications: [],
+            description: '', // Assuming 0 means there is no length prefix for description
+        };
+
+        const numWeapons = parseInt(getValue(), 16);
+        for (let i = 0; i < numWeapons; i++) {
+            const weapon: NtagWeapon = {
+                name: AsciiStr(getValue()),
+                level: parseInt(getValue(), 16),
+                damage: parseInt(getValue(), 16),
+                injury: parseInt(getValue(), 16),
+                specialDamage: [],
+            };
+
+            const numSpecialDamage = parseInt(getValue(), 16);
+                for (let j = 0; j < numSpecialDamage; j++) {
+                    weapon.specialDamage.push(AsciiStr(getValue()));
+                }
+
+            state.weapons.push(weapon);
+        }
+
+        const numSpecifications = parseInt(getValue(), 16);
+        for (let i = 0; i < numSpecifications; i++) {
+            console.log(i, numSpecifications)
+            state.specifications.push(AsciiStr(getValue()));
+        }
+
+        state.description = (AsciiStr(getValue()));
+
+        return state;
     }
 
     public static splitStringIntoLines(str: string, lineLength: number): string {
@@ -90,26 +162,29 @@ export class EncrypteNtag {
         return lines.join('\n');
     }
 
-    private static convertToHex (value: string | boolean | number, length: number): string {
+    private static convertToHex(value: string | boolean | number | string[]): string {
         if (typeof value === 'boolean') {
             return value ? '01' : '00';
-        }
-        else if(typeof value === 'number') {
-            return (value % 256).toString(16).padStart(2, '00');
+        } else if (typeof value === 'number') {
+            if(value <= 0) {
+                return '0100';
+            }
+            const numBytes = Math.ceil(Math.log2(value + 1) / 8);
+            return numBytes.toString(16).padStart(2, '0') + value.toString(16).padStart(numBytes * 2, '0');
+        } else if (typeof value === 'string') {
+            const encoder = new TextEncoder();
+            const uint8Array = encoder.encode(value);
+            const lengthByte = uint8Array.length.toString(16).padStart(2, '0');
+            const hexArray = Array.from(uint8Array, byte => byte.toString(16).padStart(2, '0'));
+            return lengthByte + hexArray.join('');
+        } else if (Array.isArray(value)) {
+            // Handle array of strings
+            const hexArray = value.map(str => this.convertToHex(str));
+            const lengthByte = hexArray.length.toString(16).padStart(2, '0');
+            return lengthByte + hexArray.join('');
         }
 
-        const encoder = new TextEncoder();
-        const uint8Array = encoder.encode(value);
-        const hexArray = Array.from(uint8Array, byte => byte.toString(16).padStart(2, '0'));
-
-        const hexVal = hexArray.join('').padEnd(length * 2, '00');
-
-        if(length > 0) {
-            return hexVal.slice(0, length*2);
-        }
-        else {
-            return hexVal;
-        }
+        return '';
     }
 
     private static hexToAscii(hex: string): string {
