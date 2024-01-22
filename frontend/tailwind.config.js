@@ -19,6 +19,9 @@ module.exports = {
                 base: ['16px', '24px'],
                 lg: ['20px', '28px'],
                 xl: ['24px', '32px'],
+            },
+            aspectRatio: {
+                '25/35': '25/35',
             }
         },
         fontFamily: {
@@ -40,6 +43,8 @@ module.exports = {
         },
         backgroundImage: {
             sheet: "url('./background.jpg')",
+            cardLayoutFront: "url(./card_layout_front.png)",
+            cardLayoutBack: "url(./card_layout_back.png)",
             topSheet: "url('./top_sheet.png')",
             bottomSheet: "url('./bottom_sheet.png')",
             redBorder: "url('./border-red.png')",

@@ -68,15 +68,12 @@ export class EncrypteNtag {
 
     public static DecryptHex(hexData: string): NtagData {
         let index = 0;
-        console.log("start decrypte");
 
         const getValue = (): string => {
             const valueLength = parseInt(hexData.substring(index, index + 2), 16);
 
             index += 2;
             const value = hexData.substring(index, index + valueLength * 2);
-            console.log("Value length:", valueLength);
-            console.log("Value:", value);
             index += valueLength * 2;
 
             return value;
@@ -140,7 +137,6 @@ export class EncrypteNtag {
 
         const numSpecifications = parseInt(getValue(), 16);
         for (let i = 0; i < numSpecifications; i++) {
-            console.log(i, numSpecifications)
             state.specifications.push(AsciiStr(getValue()));
         }
 

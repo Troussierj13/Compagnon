@@ -21,4 +21,4 @@ const playerSchema = mongoose.Schema(
 	{ timestamps: true }
 );
 
-export default mongoose.model("Game", playerSchema);
+export default mongoose.model("Player", playerSchema);

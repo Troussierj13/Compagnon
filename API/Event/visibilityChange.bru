@@ -1,0 +1,19 @@
+meta {
+  name: visibilityChange
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/api/event/visibilityChange
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "entityIndex": 0,
+    "recto": 0,
+    "weapon": 0
+  }
+}

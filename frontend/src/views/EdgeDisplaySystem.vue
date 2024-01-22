@@ -1,6 +1,5 @@
 <template>
     <div class="relative w-screen h-screen">
-        <div v-show="state.ennemyAppear.length > 0" class="bg-white">Angalagon appear</div>
         <div class="center-container relative">
             <div
                 v-for="player in props.players.filter(el => state.elemLeft.includes(el._id) || state.elemRight.includes(el._id))"

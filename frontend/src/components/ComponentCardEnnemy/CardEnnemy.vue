@@ -1,232 +1,138 @@
 <template>
-  <div class="relative group relative flex m-auto mt-10">
-    <div class="border-gradient-red"></div>
-    <div class="relative ring-2 ring-slate-900/5">
-      <div class="relative p-6 space-y-12 rounded-lg bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">
-        <!-- Metadata -->
-        <div class="flex justify-center items-center mb-4 space-x-10">
-          <div class="flex flex-col items-center">
-            <label class="font-bold text-lg mr-2">isHorde</label>
-            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" v-model="state.isHorde" />
-          </div>
-
-          <div v-show="state.isHorde" class="flex flex-col items-center">
-            <label class="font-bold text-lg">Number On Horde</label>
-            <input type="number" v-model="state.nbrOnHorde" />
-          </div>
-
-          <div class="flex flex-col items-center">
-            <label class="font-bold text-lg">Display Mode</label>
-            <input type="number" v-model="state.displayMode" />
-          </div>
-        </div>
-
-        <!-- Additional fields -->
-
-        <div class="flex justify-center items-center mb-4 space-x-10">
-          <div class="flex flex-col items-center space-x-2">
-            <label class="font-bold text-lg">Name</label>
-            <input type="text" v-model="state.name" />
-          </div>
-
-          <div class="flex flex-col items-center space-x-2">
-            <label class="font-bold text-lg">Surname</label>
-            <input type="text" v-model="state.surname" />
-          </div>
-          <div>
-            <div class="flex space-x-6">
-              <label class="font-bold text-lg">Characteristics Name</label>
-              <Button v-show="state.characteristicsName.length < 2" @click="state.characteristicsName.push('')" content="Add" class="text-base"></Button>
-            </div>
-            <div v-for="(char, index) in state.characteristicsName" :key="index" class="mb-2">
-              <input type="text" v-model="state.characteristicsName[index]" />
+  <div class="absolute z-50 flex h-screen w-screen justify-center space-x-16 select-none">
+    <div
+        @click="state.showVerso = !state.showVerso"
+        class="perspective flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35">
+      <!-- Card container with flip logic -->
+      <div v-show="props.entity.isHorde">
+        <div class="absolute rotate-[8deg] translate-x-12 -translate-y-2 card-face front flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35">
+          <div class="border-gradient-red"></div>
+          <div class="relative ring-2 ring-slate-900/5">
+            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35 rounded bg-cardLayoutFront bg-cover bg-clip-border bg-center bg-origin-border">
             </div>
           </div>
         </div>
-
-        <div class="flex justify-center items-center mb-4 space-x-10">
-          <div class="flex flex-col">
-            <label class="font-bold text-lg">Level Attribute</label>
-            <input type="number" class="max-w-[8em]" v-model="state.lvlAttribute" />
-          </div>
-
-          <div class="flex flex-col">
-            <label class="font-bold text-lg">Endurance</label>
-            <input type="number" class="max-w-[8em]" v-model="state.endurance" />
-          </div>
-
-          <div class="flex flex-col">
-            <label class="font-bold text-lg">Power</label>
-            <input type="number" class="max-w-[8em]" v-model="state.power" />
-          </div>
-
-          <div class="flex items-center">
-            <label class="font-bold text-lg">Is Hate</label>
-            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" v-model="state.haveHate" />
-          </div>
-
-          <div class="flex flex-col">
-            <label v-show="state.haveHate" class="font-bold text-lg">Hate</label>
-            <label v-show="!state.haveHate" class="font-bold text-lg">Might</label>
-            <input type="number" class="max-w-[8em]" v-model="state.valueHM" />
-          </div>
-
-          <div class="flex flex-col">
-            <label class="font-bold text-lg">Parade</label>
-            <input type="number" class="max-w-[8em]" v-model="state.parade" />
-          </div>
-
-          <div class="flex flex-col">
-            <label class="font-bold text-lg">Armor</label>
-            <input type="number" class="max-w-[8em]" v-model="state.armor" />
+        <div class="absolute -rotate-[8deg] -translate-x-12 -translate-y-2 card-face front flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35">
+          <div class="border-gradient-red"></div>
+          <div class="relative ring-2 ring-slate-900/5">
+            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35 rounded bg-cardLayoutFront bg-cover bg-clip-border bg-center bg-origin-border">
+            </div>
           </div>
         </div>
-
-        <!-- Weapons -->
-        <div>
-          <label class="font-bold text-lg mr-4">Weapons</label>
-          <Button v-show="state.weapons.length < 3" @click="state.weapons.push({specialDamage: []} as Weapon)" content="Add" class="text-base"></Button>
-          <div v-for="(weapon, weaponIndex) in state.weapons" :key="weaponIndex" class="flex justify-center items-center mb-4 space-x-10">
-            <div class="flex flex-col">
-              <label class="font-bold">Name</label>
-              <input type="text" v-model="weapon.name" />
-            </div>
-
-            <div class="flex flex-col">
-              <label class="font-bold">Level weapon</label>
-              <input type="number" v-model="weapon.level" />
-            </div>
-
-            <div class="flex flex-col">
-              <label class="font-bold">Damage Weapon</label>
-              <input type="number" v-model="weapon.damage" />
-            </div>
-
-            <div class="flex flex-col">
-              <label class="font-bold">Injury weapon</label>
-              <input type="number" v-model="weapon.injury" />
-            </div>
-
-            <div>
-              <div class="flex space-x-6">
-                <label class="font-bold text-lg">Special damage</label>
-                <Button v-show="weapon.specialDamage.length < 2" @click="weapon.specialDamage.push('')" content="Add" class="text-base font-bold"></Button>
+      </div>
+      <div
+          class="card flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35"
+           :class="{'is-flipped': state.showVerso}">
+        <!-- Recto View -->
+        <div id="recto" class="relative card-face front flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35">
+          <div class="border-gradient-red"></div>
+          <div class="relative ring-2 ring-slate-900/5">
+            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35 rounded bg-cardLayoutFront bg-cover bg-clip-border bg-center bg-origin-border">
+              <div class="flex w-full h-[57%] pt-8 justify-center">
+                <img src="/card_illu/sbire_culte_Morgoth.png" alt="Illustration of ennemy card" class="h-[90%] my-auto aspect-square">
               </div>
-              <div v-for="(spe, indexSpe) in weapon.specialDamage" :key="indexSpe" class="mb-2">
-                <input type="text" v-model=weapon.specialDamage[indexSpe] />
+              <div class="flex w-full h-[13%] justify-center items-center">
+                <span class="relative text-xl -top-0.5 -left-0.5 transition-all"  :class="{'blur-sm': !props.visibility.lvlAttribute}">{{props.entity.lvlAttribute}}</span>
+              </div>
+              <div class="w-full h-[24%] ">
+                <div class="h-full flex flex-col justify-between items-center">
+                  <div class="flex flex-col items-center space-y-2">
+                    <div class="flex flex-col items-center">
+                      <div class="font-bold transition-all" :class="{'blur-sm': !props.visibility.name}">
+                        {{props.entity.name}}
+                        <span v-show="props.entity.isHorde"> x{{props.entity.nbrOnHorde}}</span>
+                      </div>
+                      <div v-show="!props.entity.isHorde" class="text-xs transition-all" :class="{'blur-sm': !props.visibility.surname}">
+                        {{props.entity.surname}}
+                      </div>
+                    </div>
+                    <div class="text-xs font-sansserif font-bold text-center mx-6 transition-all" :class="{'blur-sm': !props.visibility.description}">{{props.entity.description}}</div>
+                  </div>
+                  <div class="text-xs font-sansserif font-black transition-all" :class="{'blur-sm': !props.visibility.characteristicsName}">{{props.entity.characteristicsName.join(', ')}}</div>
+                </div>
               </div>
             </div>
-            <!-- Add similar sections for specialWeapons -->
           </div>
         </div>
-
-        <!-- Specifications -->
-        <div>
-          <label class="font-bold text-lg mr-4">Specifications</label>
-          <Button v-show="state.specifications.length < 2" @click="state.specifications.push('')" content="Add" class="text-base"></Button>
-
-          <div v-for="(spec, specIndex) in state.specifications" :key="specIndex" class="mb-2">
-            <input type="text" v-model="state.specifications[specIndex]" />
+        <div id="verso" class="relative card-face back flex my-auto w-[30vw] min-w-[20em] max-w-[30em]  aspect-25/35 ">
+          <div class="border-gradient-red"></div>
+          <div class="relative ring-2 ring-slate-900/5">
+            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35 rounded bg-cardLayoutBack bg-cover bg-clip-border bg-center bg-origin-border">
+              <div class="relative flex flex-col w-full top-[9%] h-[6%] text-xs 2xl:text-base">
+                <div class="relative flex w-full my-auto">
+                  <span class="relative left-[7.5%]">Endu.</span>
+                  <span class="absolute left-[28%]">Pui.</span>
+                  <span class="absolute left-[45%]">Haine</span>
+                  <span class="absolute left-[62%]">Parade</span>
+                  <span class="absolute left-[80.5%]">Armure</span>
+                </div>
+              </div>
+              <div class="relative flex flex-col w-full top-[9%] h-[9.3%]">
+                <div class="relative flex w-full h-full pl-[6.3%] pr-[5.6%] justify-between text-xs lg:text-lg xl:text-xl">
+                  <div class="flex justify-center w-[15.1%]"><span class="relative flex my-auto -top-1 transition-all" :class="{'blur-sm': !props.visibility.endurance}">{{props.entity.endurance}}</span></div>
+                  <div class="flex justify-center w-[15.1%]"><span class="relative flex my-auto -top-1 transition-all" :class="{'blur-sm': !props.visibility.power}">{{props.entity.power}}</span></div>
+                  <div class="flex justify-center w-[15.1%]"><span class="relative flex my-auto -top-1 -left-0.5 transition-all" :class="{'blur-sm': !props.visibility.valueHM}">{{props.entity.valueHM}}</span></div>
+                  <div class="flex justify-center w-[15.1%]"><span class="relative flex my-auto -top-0.5 -left-0.5 transition-all" :class="{'blur-sm': !props.visibility.parade}">+{{props.entity.parade}}</span></div>
+                  <div class="flex justify-center w-[15.1%]"><span class="relative flex my-auto -top-1 -left-0.5 transition-all" :class="{'blur-sm': !props.visibility.armor}">{{props.entity.armor}}</span></div>
+                </div>
+              </div>
+              <div class="relative flex flex-col top-[9%] mt-8 mx-6">
+                <span class="w-full text-center">Attaques</span>
+                <div class="relative grid grid-cols-7 my-2 text-xs xl:text-sm font-sansserif font-bold">
+                  <span class="col-span-2">Nom</span>
+                  <span class="mx-auto">Rang</span>
+                  <span class="mx-auto">Dégats</span>
+                  <span class="mx-auto">Blessure</span>
+                  <span class="col-span-2 mx-auto">Dégats spé.</span>
+                </div>
+                <div v-for="(weapon, weaponIndex) in props.entity.weapons" :key="weaponIndex" class="relative grid grid-cols-7 text-xs xl:text-sm font-sansserif">
+                  <span class="col-span-2 transition-all" :class="{'blur-sm': !props.visibility.weapons[weaponIndex]}">{{weapon.name}}</span>
+                  <span class="mx-auto transition-all" :class="{'blur-sm': !props.visibility.weapons[weaponIndex]}">{{weapon.level}}</span>
+                  <span class="mx-auto transition-all" :class="{'blur-sm': !props.visibility.weapons[weaponIndex]}">{{weapon.damage}}</span>
+                  <span class="mx-auto transition-all" :class="{'blur-sm': !props.visibility.weapons[weaponIndex]}">{{weapon.injury}}</span>
+                  <span class="col-span-2 mx-auto transition-all" :class="{'blur-sm': !props.visibility.weapons[weaponIndex]}">{{weapon.specialDamage.join(', ')}}</span>
+                  <BottomGrayLine :class="{'blur-sm': !props.visibility.weapons[weaponIndex]}"/>
+                </div>
+              </div>
+              <div class="relative flex flex-col mt-28 h-[20%] mx-6">
+                <span class="w-full text-center">Capacités</span>
+                <div class="relative grid grid-cols-6 my-2 text-xs xl:text-sm font-sansserif font-bold">
+                  <span>Nom</span>
+                  <span class="col-span-5">Effet</span>
+                </div>
+                <div v-for="(spe, speIndex) in props.entity.specifications" :key="speIndex" class="relative grid grid-cols-6 text-xs xl:text-sm font-sansserif">
+                  <span class="transition-all" :class="{'blur-sm': !props.visibility.specifications[speIndex]}">{{spe.split(': ')[0] || ''}}</span>
+                  <span class="col-span-5 transition-all" :class="{'blur-sm': !props.visibility.specifications[speIndex]}">{{spe.split(': ')[1] || ''}}</span>
+                  <BottomGrayLine :class="{'blur-sm': !props.visibility.specifications[speIndex]}"/>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="flex flex-col">
-          <label class="font-bold text-lg">Description</label>
-          <textarea v-model="state.description" />
-        </div>
-
-        <div class="flex justify-center">
-          <Button @click="encryptNtag(state)" content="Encrypt for to NTAG" class="mt-14 mb-8 text-xl font-bold"/>
-        </div>
-
-        <div v-show="state.hexaData.length > 0" class="flex justify-center">
-          <textarea disabled v-model="state.hexaData" />
-        </div>
-
-        <div class="flex justify-center">
-          <Button @click="APIRequests.Ntags.update(state.hexaData)" content="Send data to server" class="mt-14 mb-8 text-xl font-bold"/>
-        </div>
-
-
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import Button from "../Styleguide/Button.vue";
-import {EncrypteNtag, NtagData} from "../../utils/EncryptNtag";
-import {APIRequests} from "../../utils/apiurls";
+import {NtagData} from "../../utils/EncryptNtag";
+import BottomGrayLine from "../LineComponent/BottomGrayLine.vue";
+import {reactive} from "vue";
+import {VisibilityEntity} from "../../utils/Types/Entity";
 
-interface Weapon {
-  name: string;
-  level: number;
-  damage: number;
-  injury: number;
-  specialDamage: string[];
+interface Props {
+  entity: NtagData;
+  visibility: VisibilityEntity;
 }
 
-interface FormState {
-  isHorde: boolean;
-  nbrOnHorde: number;
-  displayMode: number;
-  name: string;
-  surname: string;
-  characteristicsName: string[];
-  lvlAttribute: number;
-  endurance: number;
-  power: number;
-  haveHate: boolean;
-  valueHM: number;
-  parade: number;
-  armor: number;
-  weapons: Weapon[];
-  specifications: string[];
-  description: string;
-  hexaData: string;
+interface State {
+  showVerso: Boolean
 }
 
-const state = ref<FormState>({
-  isHorde: false,
-  nbrOnHorde: 1,
-  displayMode: 1,
-  name: 'Ukmars Vragge',
-  surname: 'Pilleur du Sud',
-  characteristicsName: ['Rusé', 'Visieux'],
-  lvlAttribute: 4,
-  endurance: 15,
-  power: 2,
-  haveHate: false,
-  valueHM: 4,
-  parade: 1,
-  armor: 2,
-  weapons: [
-    {
-      name: 'Hache',
-      level: 3,
-      damage: 4,
-      injury: 18,
-      specialDamage: []
-    },
-    {
-      name: 'Lance courte',
-      level: 2,
-      damage: 3,
-      injury: 15,
-      specialDamage: ['Perforation']
-    },
-  ],
-  specifications: ["Féroce: Dépense 1pt de volonté, -1d lors d'une attaque"],
-  description:'Lors des longs hivers, les Hommes du Sud se rassemblent et partent à la recherche de propriétaires isolés à piller.',
-  hexaData: '',
+const props = defineProps<Props>();
+const state = reactive<State>({
+  showVerso: false
 });
-
-const encryptNtag = (state: FormState) => {
-  const hexData = EncrypteNtag.EncryptHex(state);
-  state.hexaData = hexData;
-  //state.hexaData = EncrypteNtag.splitStringIntoLines(hexData, 16);
-}
 
 </script>
 
@@ -245,5 +151,33 @@ input {
 
 textarea {
   @apply border rounded w-full p-2 h-48 font-sansserif font-bold
+}
+
+.perspective {
+  perspective: 1000px;
+}
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+.card.is-flipped {
+  transform: rotateY(180deg);
+}
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+.card-face.front {
+  /* Front face styling */
+}
+.card-face.back {
+  transform: rotateY(180deg);
+  /* Back face styling */
 }
 </style>

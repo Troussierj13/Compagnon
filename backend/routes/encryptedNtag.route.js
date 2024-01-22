@@ -6,4 +6,4 @@ const router = express.Router();
 router.put("/", updateEncryptedNtag);
 router.get("/", getEncryptedNtag);
 
-export { router as encryptedNtag };
+export { router as encryptedNtagRouter };

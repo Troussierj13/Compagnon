@@ -1,38 +1,59 @@
 <template>
     <div class="m-auto flex relative">
-      <CardEnnemy />
-      <div v-if="state.ennAppear.length > 0" class="absolute flex justify-center items-center font-sansserif font-black bg-gray/50 h-full w-full">
-        <div class="relative group flex">
-          <div class="border-gradient-red rounded"></div>
-          <div @click="state.ennAppear.pop()" class="relative rounded">
-            <div class="p-10 max-w-7xl rounded-lg bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">{{ state.ennAppear[0]}}</div>
-          </div>
-        </div>
+      <div v-if="state.ennAppear.length > 0">
+        <CardEnnemy :entity="state.ennAppear[0]" :visibility="state.ennVisibility[0]" class="cursor-pointer"/>
+        <EdgeDisplaySystem :players="players" />
       </div>
-      <!-- <EdgeDisplaySystem :players="players" /> -->
+      <button v-else class="rounded bg-amber-50 px-2 m-2" @click="APIRequests.Event.sendTestEnnemy()">Appear</button>
     </div>
 </template>
 
 <script lang="ts" setup>
-import {reactive} from 'vue';
+import {reactive, ref} from 'vue';
 import {PlayerType} from "../utils/Types/PlayerType";
 import {APIRequests} from "../utils/apiurls";
 import EdgeDisplaySystem from "./EdgeDisplaySystem.vue";
 import CardEnnemy from "../components/ComponentCardEnnemy/CardEnnemy.vue";
 import { stateSocket } from "../socket";
-import {EncrypteNtag} from "../utils/EncryptNtag";
+import {NtagData} from "../utils/EncryptNtag";
+import EditCardEnnemy from "../components/ComponentCardEnnemy/EditCardEnnemy.vue";
+import {VisibilityEntity} from "../utils/Types/Entity";
+import {IDictionary} from "../utils/helpers";
 
 let players = reactive<Array<PlayerType>>(
     await APIRequests.Character.getAllCharacters()
 ) as Array<PlayerType>;
 
 interface State {
-  ennAppear: Array<any>;
+  ennAppear: Array<NtagData>;
+  ennVisibility: IDictionary<VisibilityEntity>;
 }
 
 const state = reactive<State>({
-  ennAppear: stateSocket.ennemyAppearEvents
+  ennAppear: stateSocket.ennemyAppearEvents,
+  ennVisibility: stateSocket.visibilityChangeEvents
 });
+
+
+const entity = ref<NtagData>({
+  isHorde: false,
+  nbrOnHorde: 1,
+  displayMode: 1,
+  name: '',
+  surname: '',
+  characteristicsName: [],
+  lvlAttribute: 0,
+  endurance: 0,
+  power: 0,
+  haveHate: false,
+  valueHM: 0,
+  parade: 0,
+  armor: 0,
+  weapons: [],
+  specifications: [],
+  description:'',
+});
+
 </script>
 <style scoped>
 .border-gradient-red {
