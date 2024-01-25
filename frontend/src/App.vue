@@ -5,7 +5,7 @@ import Home from "./views/Home.vue";
 
 <template>
     <Suspense>
-        <Home />
+        <router-view/>
     </Suspense>
 </template>
 

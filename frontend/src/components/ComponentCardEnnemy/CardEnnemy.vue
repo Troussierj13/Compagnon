@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute z-50 flex h-screen w-screen justify-center space-x-16 select-none">
+  <div class="flex justify-center space-x-16 select-none">
     <div
         @click="state.showVerso = !state.showVerso"
         class="perspective flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35">
@@ -27,7 +27,7 @@
         <div id="recto" class="relative card-face front flex my-auto w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35">
           <div class="border-gradient-red"></div>
           <div class="relative ring-2 ring-slate-900/5">
-            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35 rounded bg-cardLayoutFront bg-cover bg-clip-border bg-center bg-origin-border">
+            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] rounded aspect-25/35 bg-cardLayoutFront bg-cover bg-clip-border bg-center bg-origin-border">
               <div class="flex w-full h-[57%] pt-8 justify-center">
                 <img src="/card_illu/sbire_culte_Morgoth.png" alt="Illustration of ennemy card" class="h-[90%] my-auto aspect-square">
               </div>
@@ -57,7 +57,7 @@
         <div id="verso" class="relative card-face back flex my-auto w-[30vw] min-w-[20em] max-w-[30em]  aspect-25/35 ">
           <div class="border-gradient-red"></div>
           <div class="relative ring-2 ring-slate-900/5">
-            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] aspect-25/35 rounded bg-cardLayoutBack bg-cover bg-clip-border bg-center bg-origin-border">
+            <div class="relative w-[30vw] min-w-[20em] max-w-[30em] rounded aspect-25/35 bg-cardLayoutBack bg-cover bg-clip-border bg-center bg-origin-border">
               <div class="relative flex flex-col w-full top-[9%] h-[6%] text-xs 2xl:text-base">
                 <div class="relative flex w-full my-auto">
                   <span class="relative left-[7.5%]">Endu.</span>

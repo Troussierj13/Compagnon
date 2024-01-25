@@ -81,16 +81,3 @@ export const deleteGame = async (req, res) => {
 		res.status(409).json({ message: error.message });
 	}
 };
-
-export const emitEnnemyAppears = async (req, res) => {
-	try {
-		await Game.findById(req.params.gameId);
-
-		io.emit("ennemyAppear", req.body);
-		console.log('Emit ' + JSON.stringify(req.body))
-		
-		res.status(200).json(req.body);
-	} catch (error) {
-		res.status(409).json({ message: error.message });
-	}
-};

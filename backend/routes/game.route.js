@@ -1,9 +1,7 @@
 import express from "express";
-import { createGame, getAllGames, addCharacterToGame, removeCharacterToGame, emitEnnemyAppears, deleteGame } from "../controllers/game.controller.js";
+import { createGame, getAllGames, addCharacterToGame, removeCharacterToGame, deleteGame } from "../controllers/game.controller.js";
 
 const router = express.Router();
-
-router.post("/ennemyAppear/:id", emitEnnemyAppears);
 
 router.get("/:id", createGame);
 router.get("/", getAllGames);

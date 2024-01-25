@@ -22,6 +22,7 @@ module.exports = {
             },
             aspectRatio: {
                 '25/35': '25/35',
+                '108/64': '108/64',
             }
         },
         fontFamily: {

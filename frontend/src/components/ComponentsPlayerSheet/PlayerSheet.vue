@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative mx-auto flex min-w-[90rem] border-t-80 border-b-56 border-red/0 bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">
+        class="relative flex min-w-[85rem] max-w-[85rem] aspect-[1080/690] border-t-80 border-b-56 border-red/0 bg-sheet bg-cover bg-clip-border bg-center bg-origin-border">
         <div
             class="absolute -top-20 h-20 w-full bg-topSheet bg-contain bg-center brightness-75 contrast-125 saturate-150"></div>
         <div
