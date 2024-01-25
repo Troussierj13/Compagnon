@@ -1,6 +1,6 @@
 <template>
     <div class="relative h-full w-full">
-        <RightDoubleLine />
+        <RightDoubleLine/>
         <div class="flex flex-col h-full w-full pr-3">
             <div class="flex flex-col h-1/3 w-full justify-center mb-2">
                 <span class="mx-auto text-red">CORPS</span>
@@ -20,10 +20,10 @@
                 </div>
             </div>
             <div class="relative grow w-full">
-                <TopSimpleLine />
+                <TopSimpleLine/>
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div 
-                        v-for="skill in props.player.strengthSkills" 
+                    <div
+                        v-for="skill in props.player.strengthSkills"
                         :key="JSON.stringify(skill)">
                         <SkillRow
                             :favorisable="true"
@@ -32,8 +32,8 @@
                     </div>
                 </div>
                 <div v-else class="flex flex-col h-full justify-between pt-[18px] pb-2">
-                    <div 
-                        v-for="skill in props.player.strengthSkills" 
+                    <div
+                        v-for="skill in props.player.strengthSkills"
                         :key="JSON.stringify(skill)">
                         <SkillRowModification
                             :favorisable="true"
@@ -43,12 +43,12 @@
                 </div>
             </div>
             <div class="relative h-40">
-                <TopSimpleLine />
+                <TopSimpleLine/>
                 <div class="flex flex-col h-full justify-between pt-2 pb-[10px]">
                     <span class="text-red text-sm">COMPETENCES DE COMBATS</span>
                     <div v-if="!state.onModification" class="my-auto flex flex-col justify-center gap-1">
-                        <div 
-                            v-for="skill in props.player.combatSkills" 
+                        <div
+                            v-for="skill in props.player.combatSkills"
                             :key="JSON.stringify(skill)">
                             <SkillRow
                                 :favorisable="false"
@@ -57,8 +57,8 @@
                         </div>
                     </div>
                     <div v-else class="my-auto flex flex-col justify-center gap-1">
-                        <div 
-                            v-for="skill in props.player.combatSkills" 
+                        <div
+                            v-for="skill in props.player.combatSkills"
                             :key="JSON.stringify(skill)">
                             <SkillRowModification
                                 :favorisable="false"
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PlayerType, SkillType} from "../../utils/Types/PlayerType";
+import {PlayerType, SkillType} from "../../utils/Types/PlayerType";
 import RightDoubleLine from "../LineComponent/RightDoubleLine.vue";
 import TopSimpleLine from "../LineComponent/TopSimpleLine.vue";
 import SkillRow from "../ComponentsPlayerSheet/SkillRow.vue";

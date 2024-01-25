@@ -1,9 +1,9 @@
 <template>
     <div class="position-tooltips relative text-lg">
-        <div class="simple-border absolute inset-0 z-50 flex h-full w-full" />
+        <div class="simple-border absolute inset-0 z-50 flex h-full w-full"/>
         <div class="relative h-full w-full p-1">
             <div class="h-full w-full bg-sheet bg-cover p-1">
-                <component :is="children" v-model="model" />
+                <component :is="children" v-model="model"/>
             </div>
         </div>
     </div>
@@ -41,16 +41,16 @@ const model = reactive<State>({
 @import 'tailwindcss/utilities';
 
 .simple-border {
-  border: 10px solid;
-  border-image-repeat: stretch;
-  border-image-slice: 18 18 18 18;
-  z-index: 0;
-  border-image-source: theme('backgroundImage.redBorderSimple');
+    border: 10px solid;
+    border-image-repeat: stretch;
+    border-image-slice: 18 18 18 18;
+    z-index: 0;
+    border-image-source: theme('backgroundImage.redBorderSimple');
 }
 
 .position-tooltips {
-  top: v-bind('props.position.top');
-  @apply -translate-y-[50%];
-  left: v-bind('props.position.left');
+    top: v-bind('props.position.top');
+    @apply -translate-y-[50%];
+    left: v-bind('props.position.left');
 }
 </style>

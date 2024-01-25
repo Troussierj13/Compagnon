@@ -17,7 +17,7 @@
         <TooltipsOneNumberValue
             v-show="state.hover"
             :identifier-attr="props.identifierAttr"
-            :player="props.player" />
+            :player="props.player"/>
     </div>
 </template>
 <script lang="ts" setup>

@@ -15,7 +15,7 @@
             class="cursor-pointer hover:bg-slate-200 px-1 rounded-sm pt-0.5">
             <ArmorRow
                 :armor="armor"
-                @click.stop="changeArmor(armor)" />
+                @click.stop="changeArmor(armor)"/>
         </span>
         <span
             class="mt-3 ml-1 px-2 border border-red rounded w-fit font-UncialAntiqua text-red text-2xs font-normal cursor-pointer"
@@ -40,7 +40,7 @@ const props = defineProps<Props>();
 const changeArmor = (armor: ArmorType) => {
     HoverSingleton.GetInstance().tryChangeHover(true, () => {
     });
-    
+
     props.player.changeArmor(armor, props.changeIdentifier);
     props.player.saveOnDb();
 };

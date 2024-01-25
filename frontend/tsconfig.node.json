@@ -5,7 +5,10 @@
     "moduleResolution": "Node10",
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@/*": ["./src/*", "./dist/*"]
+      "@/*": [
+        "./src/*",
+        "./dist/*"
+      ]
     }
   },
   "include": [

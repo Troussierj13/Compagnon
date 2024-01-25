@@ -20,7 +20,7 @@ type VisibilityEntity = {
     specifications: boolean[];
 }
 
-const VISIBILITY_ALL:VisibilityEntity = {
+const VISIBILITY_ALL: VisibilityEntity = {
     name: true,
     surname: true,
     characteristicsName: true,
@@ -70,14 +70,14 @@ const CompressVisibility = (v: VisibilityEntity): CompressedVisibility => {
     }
 
     return {
-        recto: checkB(v.name)*1 + checkB(v.surname)*2 + checkB(v.characteristicsName)*4 + checkB(v.lvlAttribute)*8 + checkB(v.description)*16,
-        charact: checkB(v.endurance)*1 + checkB(v.power)*2 + checkB(v.valueHM)*4 + checkB(v.parade)*8 + checkB(v.armor)*16,
-        weapon: checkB(v.weapons[0])*1 + checkB(v.weapons[1])*2 + checkB(v.weapons[2])*4,
-        spe: checkB(v.specifications[0])*1 + checkB(v.specifications[1])*2
+        recto: checkB(v.name) * 1 + checkB(v.surname) * 2 + checkB(v.characteristicsName) * 4 + checkB(v.lvlAttribute) * 8 + checkB(v.description) * 16,
+        charact: checkB(v.endurance) * 1 + checkB(v.power) * 2 + checkB(v.valueHM) * 4 + checkB(v.parade) * 8 + checkB(v.armor) * 16,
+        weapon: checkB(v.weapons[0]) * 1 + checkB(v.weapons[1]) * 2 + checkB(v.weapons[2]) * 4,
+        spe: checkB(v.specifications[0]) * 1 + checkB(v.specifications[1]) * 2
     }
 }
 
-const VisibilityEntityBuilder = (v: CompressedVisibility, second: CompressedVisibility):VisibilityEntity => {
+const VisibilityEntityBuilder = (v: CompressedVisibility, second: CompressedVisibility): VisibilityEntity => {
     const recto = v.recto != null ? v.recto : second.recto
     const charact = v.charact != null ? v.charact : second.charact
     const weapon = v.weapon != null ? v.weapon : second.weapon
@@ -88,7 +88,7 @@ const VisibilityEntityBuilder = (v: CompressedVisibility, second: CompressedVisi
     const weaponV: string = weapon.toString(2).padStart(3, '0').slice(-3);
     const speV: string = spe.toString(2).padStart(2, '0').slice(-2);
 
-    const checkV = (n: string):boolean => {
+    const checkV = (n: string): boolean => {
         return n == '1';
     }
 
@@ -108,13 +108,18 @@ const VisibilityEntityBuilder = (v: CompressedVisibility, second: CompressedVisi
     } as VisibilityEntity
 }
 
-type Entity = {
-
-}
+type Entity = {}
 
 const EntityBuilder = () => {
 
 }
 
-export type { VisibilityEntity, CompressedVisibility }
-export { VisibilityEntityBuilder, CompressVisibility, VISIBILITY_ALL, VISIBILITY_DEFAULT, COMPRESS_VISIBILITY_ALL, COMPRESS_VISIBILITY_DEFAULT }
+export type {VisibilityEntity, CompressedVisibility}
+export {
+    VisibilityEntityBuilder,
+    CompressVisibility,
+    VISIBILITY_ALL,
+    VISIBILITY_DEFAULT,
+    COMPRESS_VISIBILITY_ALL,
+    COMPRESS_VISIBILITY_DEFAULT
+}

@@ -24,6 +24,7 @@ export interface NtagData {
     specifications: string[];
     description: string;
 }
+
 export class EncrypteNtag {
     public static EncryptHex(state: NtagData): string {
         const hexData = [
@@ -128,9 +129,9 @@ export class EncrypteNtag {
             };
 
             const numSpecialDamage = parseInt(getValue(), 16);
-                for (let j = 0; j < numSpecialDamage; j++) {
-                    weapon.specialDamage.push(AsciiStr(getValue()));
-                }
+            for (let j = 0; j < numSpecialDamage; j++) {
+                weapon.specialDamage.push(AsciiStr(getValue()));
+            }
 
             state.weapons.push(weapon);
         }
@@ -162,7 +163,7 @@ export class EncrypteNtag {
         if (typeof value === 'boolean') {
             return value ? '01' : '00';
         } else if (typeof value === 'number') {
-            if(value <= 0) {
+            if (value <= 0) {
                 return '0100';
             }
             const numBytes = Math.ceil(Math.log2(value + 1) / 8);
@@ -189,8 +190,8 @@ export class EncrypteNtag {
         for (let i = 0; i < hex.length; i += 2) {
             const hexPair = hex.substr(i, 2);
             const decimalValue = parseInt(hexPair, 16);
-            if(decimalValue !== 0)
-            asciiString += String.fromCharCode(decimalValue);
+            if (decimalValue !== 0)
+                asciiString += String.fromCharCode(decimalValue);
         }
 
         return asciiString;

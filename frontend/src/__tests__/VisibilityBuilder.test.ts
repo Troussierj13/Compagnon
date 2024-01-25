@@ -1,7 +1,8 @@
 import {
-    COMPRESS_VISIBILITY_ALL, COMPRESS_VISIBILITY_DEFAULT,
-    CompressedVisibility, CompressVisibility,
-    VISIBILITY_ALL, VISIBILITY_DEFAULT,
+    COMPRESS_VISIBILITY_DEFAULT,
+    CompressedVisibility,
+    CompressVisibility,
+    VISIBILITY_DEFAULT,
     VisibilityEntity,
     VisibilityEntityBuilder
 } from "../utils/Types/Entity";
@@ -14,7 +15,7 @@ describe("Visibility builder tests", () => {
         spe: 0
     }
 
-    const testV:VisibilityEntity = {
+    const testV: VisibilityEntity = {
         name: true,
         surname: false,
         characteristicsName: false,

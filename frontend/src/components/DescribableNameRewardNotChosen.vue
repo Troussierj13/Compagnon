@@ -5,7 +5,7 @@
         <span class="relative z-10 font-UncialAntiqua whitespace-nowrap">
             {{ props.reward.defaultChoice.name }}
         </span>
-        <InformationCircleIcon class="relative z-10 h-3 w-3 ml-2 mb-auto text-red" />
+        <InformationCircleIcon class="relative z-10 h-3 w-3 ml-2 mb-auto text-red"/>
         <div
             v-if="state.hover"
             class="flex absolute z-40 text-xs font-sansserif font-semibold leading-4 bg-white rounded border border-gray/40 p-3 shadow-md top-6 after:absolute after:content-[''] after:h-4 after:w-4 after:rotate-45 after:-top-[0.54rem] after:border-l after:border-t after:rounded-tl after:border-gray/40 after:bg-white">
@@ -43,7 +43,7 @@
                                     v-else
                                     class="flex mx-auto">
                                     <span class="px-1 text-slate-400">{{ wgInfo.value.join('/') }}</span>
-                                    <ArrowLongRightIcon class="h-4 w-4" />
+                                    <ArrowLongRightIcon class="h-4 w-4"/>
                                     <span class="px-1 text-red">{{ wgInfo.modifiedValue.join('/') }}</span>
                                 </div>
                             </div>
@@ -119,16 +119,16 @@ const changeChosenReward = (applyTo: ApplyIdentifier, wgInfo: WarGearInfo) => {
 
 const warGearExist = (identifier: ApplyIdentifier): boolean => {
     switch (identifier) {
-    case "notApply":
-        return false;
-    case "armor":
-        return props.player.armor.identifier !== 'unknown';
-    case "helm":
-        return props.player.helm.identifier !== 'unknown';
-    case "shield":
-        return props.player.shield.identifier !== 'unknown';
-    case "weapon":
-        return props.player.weapons.length > 0;
+        case "notApply":
+            return false;
+        case "armor":
+            return props.player.armor.identifier !== 'unknown';
+        case "helm":
+            return props.player.helm.identifier !== 'unknown';
+        case "shield":
+            return props.player.shield.identifier !== 'unknown';
+        case "weapon":
+            return props.player.weapons.length > 0;
 
     }
 };
@@ -136,45 +136,45 @@ const warGearExist = (identifier: ApplyIdentifier): boolean => {
 const getWarGearInfo = (identifier: ApplyIdentifier, mods: Array<ModifierParam>): Array<WarGearInfo> => {
     if (warGearExist(identifier)) {
         switch (identifier) {
-        case "notApply":
-            break;
-        case "armor":
-            return [
-                {
-                    identifier: 'armor',
-                    name: props.player.armor.name,
-                    value: mods.map(mod => props.player.getValue(mod.identifier)),
-                    modifiedValue: mods.map(mod => Modifiers.tryModify(props.player.getValue(mod.identifier), [mod])),
-                }
-            ];
-        case "helm":
-            return [
-                {
-                    identifier: 'armor',
-                    name: props.player.helm.name,
-                    value: mods.map(mod => props.player.getValue(mod.identifier)),
-                    modifiedValue: mods.map(mod => Modifiers.tryModify(props.player.getValue(mod.identifier), [mod])),
-                }
-            ];
-        case "shield":
-            return [
-                {
-                    identifier: 'armor',
-                    name: props.player.shield.name,
-                    value: mods.map(mod => props.player.getValue(mod.identifier)),
-                    modifiedValue: mods.map(mod => Modifiers.tryModify(props.player.getValue(mod.identifier), [mod])),
-                }
-            ];
-        case "weapon":
-            return props.player.weapons.map((we, index) => {
-                return {
-                    identifier: 'weapon',
-                    id: index,
-                    name: we.name,
-                    value: [...new Set(mods.map(mod => we.getModifiedValue(mod.identifier)))],
-                    modifiedValue: [...new Set(mods.map(mod => Modifiers.tryModify(we.getModifiedValue(mod.identifier), [mod])))]
-                };
-            });
+            case "notApply":
+                break;
+            case "armor":
+                return [
+                    {
+                        identifier: 'armor',
+                        name: props.player.armor.name,
+                        value: mods.map(mod => props.player.getValue(mod.identifier)),
+                        modifiedValue: mods.map(mod => Modifiers.tryModify(props.player.getValue(mod.identifier), [mod])),
+                    }
+                ];
+            case "helm":
+                return [
+                    {
+                        identifier: 'armor',
+                        name: props.player.helm.name,
+                        value: mods.map(mod => props.player.getValue(mod.identifier)),
+                        modifiedValue: mods.map(mod => Modifiers.tryModify(props.player.getValue(mod.identifier), [mod])),
+                    }
+                ];
+            case "shield":
+                return [
+                    {
+                        identifier: 'armor',
+                        name: props.player.shield.name,
+                        value: mods.map(mod => props.player.getValue(mod.identifier)),
+                        modifiedValue: mods.map(mod => Modifiers.tryModify(props.player.getValue(mod.identifier), [mod])),
+                    }
+                ];
+            case "weapon":
+                return props.player.weapons.map((we, index) => {
+                    return {
+                        identifier: 'weapon',
+                        id: index,
+                        name: we.name,
+                        value: [...new Set(mods.map(mod => we.getModifiedValue(mod.identifier)))],
+                        modifiedValue: [...new Set(mods.map(mod => Modifiers.tryModify(we.getModifiedValue(mod.identifier), [mod])))]
+                    };
+                });
         }
     }
     return [];

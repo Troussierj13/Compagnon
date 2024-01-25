@@ -2,13 +2,13 @@
     <button @click="connect()">Connect</button>
     <button @click="disconnect()">Disconnect</button>
 </template>
-  
-  <script lang="ts">
-import { socket } from "../socket";
-  
+
+<script lang="ts">
+import {socket} from "../socket";
+
 export default {
     name: "ConnectionManager",
-  
+
     methods: {
         connect() {
             socket.connect();
@@ -18,4 +18,4 @@ export default {
         }
     }
 };
-  </script>
+</script>

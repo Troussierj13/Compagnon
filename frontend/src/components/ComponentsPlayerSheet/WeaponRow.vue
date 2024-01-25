@@ -6,9 +6,9 @@
             @click="tryChangeHover">
             {{
                 props.weapon?.name +
-                    (props.weapon?.rewardsMod.length > 0
-                        ? ' ( ' + getRewardsNames() + ' )'
-                        : '')
+                (props.weapon?.rewardsMod.length > 0
+                    ? ' ( ' + getRewardsNames() + ' )'
+                    : '')
             }}
             <div
                 v-if="props.player && props.weapon?.name !== '' && state.hover"
@@ -16,7 +16,7 @@
                 @click.stop="tryChangeHover">
                 <span class="pl-2 rounded hover:bg-slate-200" @click.stop="tryRemove">Jeter</span>
             </div>
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
         <span
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
@@ -24,7 +24,7 @@
             {{
                 props.weapon?.name !== '' ? props.weapon.getModifiedValue('weaponDamage') : ''
             }}
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
         <span
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
@@ -36,7 +36,7 @@
                         : props.weapon.getModifiedValue('weaponInjuryOneHand') + ' / ' + props.weapon.getModifiedValue('weaponInjuryTwoHand')
                     : ''
             }}
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
         <span
             :class="{ 'w-1/12': !props.hideNote, 'w-1/6': props.hideNote }"
@@ -44,13 +44,13 @@
             {{
                 props.weapon?.name !== '' ? props.weapon.weight : ''
             }}
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
         <span v-if="!props.hideNote" class="relative flex my-auto h-[1.125rem] w-4/12">
             {{
                 props.weapon.note
             }}
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
     </div>
 </template>

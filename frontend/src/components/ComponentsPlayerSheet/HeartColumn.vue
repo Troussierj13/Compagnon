@@ -1,16 +1,16 @@
 <template>
     <div class="relative h-full w-full px-3">
-        <RightDoubleLine />
+        <RightDoubleLine/>
         <div class="absolute z-50 top-1/3 left-[50%] -translate-x-[50%]">
             <span class="relative z-40 text-red bg-yellow pl-2 pr-8">COMPETENCES</span>
             <Cog6ToothIcon
                 v-if="!state.onModification"
                 class="absolute right-2 top-[50%] -translate-y-[50%] z-50 w-4 h-4 text-gray cursor-pointer"
-                @click="changeModificationSkill" />
+                @click="changeModificationSkill"/>
             <CheckCircleIcon
                 v-else
                 class="absolute right-2 top-[50%] -translate-y-[50%] z-50 w-4 h-4 text-green-600 cursor-pointer"
-                @click="changeModificationSkill" />
+                @click="changeModificationSkill"/>
         </div>
         <div class="flex flex-col h-full w-full">
             <div class="flex flex-col h-1/3 w-full justify-center mb-2">
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="relative grow w-full">
-                <TopSimpleLine />
+                <TopSimpleLine/>
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
                     <div v-for="skill in props.player.heartSkills" :key="JSON.stringify(skill)">
                         <SkillRow
@@ -51,14 +51,14 @@
                 </div>
             </div>
             <div class="relative h-40">
-                <TopSimpleLine />
+                <TopSimpleLine/>
                 <div class="flex flex-col h-full pt-2">
                     <div class="flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">RECOMPENSES</span>
                         <span
                             v-if="player.valiance.rank > player.valiance.rewards.length"
                             class="relative flex mr-auto my-0.5 ml-8">
-                            <AddReward :player="props.player" />
+                            <AddReward :player="props.player"/>
                         </span>
                         <span class="relative diamond diamond-md top-3">
                             <span>{{ props.player.valiance.rank }}</span>
@@ -73,13 +73,13 @@
                         class="whitespace-normal text-xs relative mb-0.5 ml-3"
                     >
                         <span v-if="reward.isChosen()" class="whitespace-nowrap relative">
-                            <DescribableName :values="reward.getChosen()" />
+                            <DescribableName :values="reward.getChosen()"/>
                         </span>
                         <span v-else class="whitespace-nowrap relative">
                             <DescribableNameRewardNotChosen
                                 :player="props.player"
                                 :reward="reward"
-                                :reward-id="index" />
+                                :reward-id="index"/>
                         </span>
                     </div>
                 </div>

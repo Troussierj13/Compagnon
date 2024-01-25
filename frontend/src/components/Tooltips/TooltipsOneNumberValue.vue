@@ -13,8 +13,8 @@
                 @click="addToPlayerValue(1)"
             />
             <span class="mx-auto w-fit select-none">{{
-                getPlayerValue()
-            }}</span>
+                    getPlayerValue()
+                }}</span>
             <ChevronDownIcon
                 class="mx-auto h-6 w-6 cursor-pointer"
                 @click="addToPlayerValue(-1)"

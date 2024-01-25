@@ -3,7 +3,7 @@
         <Button
             class="absolute right-4 top-0.5 text-red"
             content="+"
-            @click="tryChangeHover" />
+            @click="tryChangeHover"/>
     </div>
     <div
         v-if="state.hover"
@@ -14,7 +14,7 @@
                 v-model="state.name"
                 class="col-span-2 p-1 h-5 my-auto rounded border border-slate-200"
                 name="name"
-                type="text" />
+                type="text"/>
             <label class="mr-2 mt-2 whitespace-nowrap" for="name">Compétences :</label>
             <select
                 v-model="state.skillRef"
@@ -45,7 +45,7 @@
                 <Button
                     class="text-red text-sm"
                     content="Ajouter"
-                    @click="addEquipment" />
+                    @click="addEquipment"/>
             </div>
 
         </div>

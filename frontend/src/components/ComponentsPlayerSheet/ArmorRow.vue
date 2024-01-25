@@ -8,15 +8,15 @@
                 class="ml-1">( {{
                     getRewardAssociate().map(name => name.match(/^[\w\s\u00C0-\u017F]*/)).join(', ')
                 }} )</span>
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
         <span class="relative flex w-1/5 justify-center h-[1.125rem] my-auto">
             {{ getProtectionParade() }}
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
         <span class="relative flex w-1/5 justify-center h-[1.125rem] my-auto">
             {{ getWeight() }}
-            <BottomGrayLine />
+            <BottomGrayLine/>
         </span>
     </div>
 </template>
@@ -36,14 +36,14 @@ const props = defineProps<Props>();
 const getWeight = () => {
     if (props.player) {
         switch (props.armor.identifier) {
-        case "unknown":
-            return '';
-        case "armor":
-            return props.player.getModifiedValue('armorWeight');
-        case "helm":
-            return props.player.getModifiedValue('helmWeight');
-        case "shield":
-            return props.player.getModifiedValue('shieldWeight');
+            case "unknown":
+                return '';
+            case "armor":
+                return props.player.getModifiedValue('armorWeight');
+            case "helm":
+                return props.player.getModifiedValue('helmWeight');
+            case "shield":
+                return props.player.getModifiedValue('shieldWeight');
         }
     } else {
         return props.armor.weight.value;
@@ -54,14 +54,14 @@ const getWeight = () => {
 const getProtectionParade = () => {
     if (props.player) {
         switch (props.armor.identifier) {
-        case "unknown":
-            return '';
-        case "armor":
-            return props.player.getModifiedValue('armorProtection') + 'd';
-        case "helm":
-            return '+' + props.player.getModifiedValue('helmProtection') + 'd';
-        case "shield":
-            return '+' + props.player.getModifiedValue('shieldParade');
+            case "unknown":
+                return '';
+            case "armor":
+                return props.player.getModifiedValue('armorProtection') + 'd';
+            case "helm":
+                return '+' + props.player.getModifiedValue('helmProtection') + 'd';
+            case "shield":
+                return '+' + props.player.getModifiedValue('shieldParade');
         }
     } else if (props.armor.identifier === 'unknown') {
         return '';

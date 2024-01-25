@@ -1,7 +1,4 @@
-<script lang="ts" setup>
-import Home from "./views/Home.vue";
-
-</script>
+<script lang="ts" setup></script>
 
 <template>
     <Suspense>

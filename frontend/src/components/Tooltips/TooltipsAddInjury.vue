@@ -10,7 +10,7 @@
                     v-model="state.injury.value"
                     class="w-10 p-1 h-6 my-auto"
                     name="value"
-                    type="number" />
+                    type="number"/>
                 <select
                     v-model="state.injury.unit"
                     class="block py-1 pl-2 pr-4 text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none focus:outline-none focus:ring-0 focus:border-gray-200">

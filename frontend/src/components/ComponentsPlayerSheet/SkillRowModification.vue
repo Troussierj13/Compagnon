@@ -71,7 +71,7 @@ const validateRank = (rank: number): rank is IntRange<0, 6> => {
 };
 
 const changeRank = (nRank: number) => {
-    if('rank' in state.modifSkill && validateRank(nRank)) {
+    if ('rank' in state.modifSkill && validateRank(nRank)) {
         state.modifSkill.rank = nRank;
     }
 };

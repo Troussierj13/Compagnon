@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="relative grow w-full">
-                <TopSimpleLine />
+                <TopSimpleLine/>
                 <div v-if="!state.onModification" class="flex flex-col h-full justify-between pt-[18px] pb-2">
                     <div v-for="skill in props.player.mindSkills" :key="JSON.stringify(skill)">
                         <SkillRow
@@ -43,14 +43,14 @@
                 </div>
             </div>
             <div class="relative h-40">
-                <TopSimpleLine />
+                <TopSimpleLine/>
                 <div class="flex flex-col h-full pt-2">
                     <div class="flex h-5 w-full justify-between mb-2">
                         <span class="text-red text-sm">VERTUS</span>
                         <span
                             v-if="player.wisdom.rank > player.wisdom.virtues.length"
                             class="relative flex mr-auto my-0.5 ml-8">
-                            <AddVirtue :player="props.player" />
+                            <AddVirtue :player="props.player"/>
                         </span>
                         <span class="relative diamond diamond-md top-3">
                             <span>{{ props.player.wisdom.rank }}</span>
@@ -65,13 +65,13 @@
                         class="whitespace-normal text-xs relative mb-0.5 ml-3"
                     >
                         <span v-if="virtue.isChosen()" class="break-words relative">
-                            <DescribableName :values="virtue.getChosen()" />
+                            <DescribableName :values="virtue.getChosen()"/>
                         </span>
                         <span v-else class="break-words relative">
                             <DescribableNameVirtueNotChosen
                                 :player="props.player"
                                 :virtue="virtue"
-                                :virtue-id="index" />
+                                :virtue-id="index"/>
                         </span>
                     </div>
                 </div>

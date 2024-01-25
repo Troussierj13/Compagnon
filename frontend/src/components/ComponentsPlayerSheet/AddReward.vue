@@ -3,7 +3,7 @@
         <Button
             class="text-red"
             content="Ajouter"
-            @click="tryChangeHover" />
+            @click="tryChangeHover"/>
         <div
             v-if="state.hover"
             class="flex flex-col absolute z-50 text-2xs text-black font-sansserif font-semibold leading-4 bg-white w-80 rounded border border-gray/40 p-3 shadow-md left-[125%] top-0 -translate-y-[80%] after:absolute after:content-[''] after:h-4 after:w-4 after:-rotate-45 after:-left-[0.54rem] after:top-[75%] after:translate-y-[50%] after:border-l after:border-t after:rounded-tl after:border-gray/40 after:bg-white"
@@ -16,7 +16,7 @@
                 <span class="break-words relative">
                     <DescribableName
                         :values="getRewardValues(reward)"
-                        @click="reward.identifier && addReward(reward.identifier)" />
+                        @click="reward.identifier && addReward(reward.identifier)"/>
                 </span>
             </div>
         </div>
@@ -24,14 +24,13 @@
 </template>
 <script lang="ts" setup>
 
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import {HoverSingleton, IDictionary} from "../../utils/helpers";
 import {PlayerType} from "../../utils/Types/PlayerType";
 import Button from "../Styleguide/Button.vue";
 import DescribableName from "../DescribableName.vue";
 import {DescribableNameForRewards, Reward, RewardIdentifier} from "../../utils/VallianceWisdom/Rewards";
 import {APIRequests} from "../../utils/apiurls";
-import { onMounted } from 'vue';
 
 interface Props {
     player: PlayerType
@@ -64,10 +63,9 @@ const addReward = (rewardId: RewardIdentifier) => {
 };
 
 const getRewardValues = (reward: Partial<Reward>): DescribableNameForRewards => {
-    if(reward && reward.getChosen) {
+    if (reward && reward.getChosen) {
         return reward.getChosen();
-    }
-    else {
+    } else {
         return reward ? reward.defaultChoice || new DescribableNameForRewards("", "") : new DescribableNameForRewards("", "");
     }
 };

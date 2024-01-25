@@ -1,13 +1,13 @@
 <template>
-    <TopDoubleLine class="w-[99%]" />
+    <TopDoubleLine class="w-[99%]"/>
     <div class="relative flex flex-col h-full w-2/3 pt-2 pr-2">
-        <RightSimpleLine class="h-[80%] mt-1" />
+        <RightSimpleLine class="h-[80%] mt-1"/>
         <div class="flex w-full gap-1 font-sansserif text-[0.6rem] font-bold leading-[0.8rem]">
             <span class="relative grow flex justify-between font-UncialAntiqua text-sm font-normal text-red">
                 ATTIRAIL DE GUERRE
                 <AddWeapon
                     v-if="props.player.weapons.length < 4"
-                    :player="props.player" />
+                    :player="props.player"/>
             </span>
             <span class="my-auto h-2.5 w-1/12 text-center">Dégats</span>
             <span class="my-auto h-2.5 w-1/12 text-center">Blessure</span>
@@ -22,7 +22,7 @@
             <WeaponRow
                 :hide-note="false"
                 :player="props.player"
-                :weapon="props.player.weapons[n - 1]" />
+                :weapon="props.player.weapons[n - 1]"/>
         </div>
     </div>
     <div class="flex h-full grow flex-col justify-between pt-2 pl-2 pr-2">
@@ -43,7 +43,7 @@
                     v-if="state.hover.armor"
                     :armors="state.armors.filter(arm => arm.identifier === 'armor').sort((a: ArmorType, b: ArmorType):number => a.protection.value-b.protection.value)"
                     :change-identifier="'armor'"
-                    :player="props.player" />
+                    :player="props.player"/>
             </div>
             <div class="relative flex flex-col">
                 <div class="flex w-full gap-1 text-[0.6rem] leading-[0.8rem]">
@@ -52,12 +52,12 @@
                 <ArmorRow
                     :armor="props.player.helm"
                     :player="props.player"
-                    @click="tryHoverModifHelm" />
+                    @click="tryHoverModifHelm"/>
                 <ModifArmor
                     v-if="state.hover.helm"
                     :armors="state.armors.filter(arm => arm.identifier === 'helm').sort((a: ArmorType, b: ArmorType) => a.protection.value-b.protection.value)"
                     :change-identifier="'helm'"
-                    :player="props.player" />
+                    :player="props.player"/>
             </div>
         </div>
         <div class="relative">
@@ -69,12 +69,12 @@
             <ArmorRow
                 :armor="props.player.shield"
                 :player="props.player"
-                @click="tryHoverModifShield" />
+                @click="tryHoverModifShield"/>
             <ModifArmor
                 v-if="state.hover.shield"
                 :armors="state.armors.filter(arm => arm.identifier === 'shield').sort((a: ArmorType, b: ArmorType) => a.parade.value-b.parade.value)"
                 :change-identifier="'shield'"
-                :player="props.player" />
+                :player="props.player"/>
         </div>
     </div>
 </template>
@@ -85,12 +85,11 @@ import WeaponRow from "./WeaponRow.vue";
 import RightSimpleLine from "../LineComponent/RightSimpleLine.vue";
 import TopDoubleLine from "../LineComponent/TopDoubleLine.vue";
 import AddWeapon from "./AddWeapon.vue";
-import {reactive} from "vue";
+import {onMounted, reactive} from "vue";
 import {ArmorType} from "../../utils/Types/ArmorType";
 import {APIRequests} from "../../utils/apiurls";
 import ModifArmor from "./ModifArmor.vue";
 import {HoverSingleton} from "../../utils/helpers";
-import { onMounted } from 'vue';
 
 interface Props {
     player: PlayerType

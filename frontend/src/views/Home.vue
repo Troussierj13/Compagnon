@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import ServeurGameCard from "../components/ServeurGameCard.vue";
 import GameMode from "./GameMode.vue";
 </script>
 
