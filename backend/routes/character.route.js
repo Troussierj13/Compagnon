@@ -1,5 +1,11 @@
 import express from "express";
-import { getOneCharacter, createCharacter, getAllCharacters, updateCharacter, deleteCharacter } from "../controllers/character.controller.js";
+import {
+    createCharacter,
+    deleteCharacter,
+    getAllCharacters,
+    getOneCharacter,
+    updateCharacter
+} from "../controllers/character.controller.js";
 
 const router = express.Router();
 
@@ -12,4 +18,4 @@ router.put("/:characterId", updateCharacter);
 
 router.delete("/:characterId", deleteCharacter);
 
-export { router as characterRouter };
+export {router as characterRouter};

@@ -1,9 +1,10 @@
 import express from "express";
-import {emitVisibilityChange, emitEnnemyAppears} from "../controllers/event.controller.js";
+import {emitEnnemyAppears, emitShowState, emitVisibilityChange} from "../controllers/event.controller.js";
 
 const router = express.Router();
 
-router.post("/ennemyAppear/:id", emitEnnemyAppears);
+router.post("/ennemyAppear/", emitEnnemyAppears);
 router.post("/visibilityChange/", emitVisibilityChange);
+router.post("/showState/", emitShowState);
 
-export { router as eventRouter };
+export {router as eventRouter};

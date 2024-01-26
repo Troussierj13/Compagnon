@@ -1,8 +1,9 @@
 <template>
-    <div class="relative flex">
-        <div :class="{'border-gradient-red': state.buttonHover}" class="opacity-0"></div>
+    <div class="relative flex w-full">
+        <div :class="{'border-gradient-red': state.buttonHover && !disable}" class="opacity-0"></div>
         <div
-            class="relative rounded ring-1 ring-slate-900/40 hover:ring-slate-900/0 transition-shadow bg-amber-50 cursor-pointer p-2"
+            class="relative w-full rounded text-center ring-1 ring-slate-900/40 hover:ring-slate-900/0 transition-shadow bg-amber-50 cursor-pointer p-2"
+            :class="{'opacity-20 hover:ring-slate-900/40 cursor-not-allowed': disable}"
             @mouseleave="state.buttonHover = false"
             @mouseover="state.buttonHover = true">
         <span class="p-4">
@@ -17,6 +18,7 @@ import {reactive} from "vue";
 
 interface Props {
     content: string;
+    disable?: boolean;
 }
 
 interface State {
@@ -24,6 +26,8 @@ interface State {
 }
 
 const props = defineProps<Props>();
+
+console.log(props.disable)
 
 const state = reactive<State>({
     buttonHover: false

@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  createReward,
-  deleteReward,
-  getAllRewards,
-  updateReward,
-} from "../controllers/reward.controller.js";
+import {createReward, deleteReward, getAllRewards, updateReward,} from "../controllers/reward.controller.js";
 
 const router = express.Router();
 
@@ -16,4 +11,4 @@ router.put("/:rewardIdentifier", updateReward);
 
 router.delete("/:rewardIdentifier", deleteReward);
 
-export { router as rewardRouter };
+export {router as rewardRouter};

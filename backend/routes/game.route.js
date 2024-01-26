@@ -1,14 +1,20 @@
 import express from "express";
-import { createGame, getAllGames, addCharacterToGame, removeCharacterToGame, deleteGame } from "../controllers/game.controller.js";
+import {
+    addCharacterToGame,
+    createGame,
+    deleteGame,
+    getGame,
+    removeCharacterToGame
+} from "../controllers/game.controller.js";
 
 const router = express.Router();
 
-router.get("/:id", createGame);
-router.get("/", getAllGames);
+router.put("/", createGame);
+router.get("/", getGame);
 
 router.get("/:gameId/:characterId", addCharacterToGame);
 router.delete("/:gameId/:characterId", removeCharacterToGame);
 
 router.delete("/:gameId", deleteGame);
 
-export { router as gameRouter };
+export {router as gameRouter};

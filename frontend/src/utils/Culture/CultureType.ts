@@ -1,6 +1,6 @@
 import {ModifierParam} from "../MapModifiers";
 import {DescribableName, PossibleChoose} from "../helpers";
-import {CulturalAdvantage, CulturalAdvantageToInstance} from "../Culture/CulturalAdvantage";
+import {CulturalAdvantage, CulturalAdvantageToInstance} from "./CulturalAdvantage";
 
 export type CultureTypeEnum =
     "bardide"

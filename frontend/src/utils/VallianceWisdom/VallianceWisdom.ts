@@ -1,5 +1,5 @@
-import {Virtue} from "../VallianceWisdom/Virtues";
-import {Reward} from "../VallianceWisdom/Rewards";
+import {Virtue} from "./Virtues";
+import {Reward} from "./Rewards";
 import {ModifierParam} from "../MapModifiers";
 import {IDictionary} from "../helpers";
 

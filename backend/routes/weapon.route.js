@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  createWeapon,
-  deleteWeapon,
-  getAllWeapons,
-  getOneWeapon,
-  updateWeapon,
+    createWeapon,
+    deleteWeapon,
+    getAllWeapons,
+    getOneWeapon,
+    updateWeapon,
 } from "../controllers/weapon.controller.js";
 
 const router = express.Router();
@@ -18,4 +18,4 @@ router.put("/:weaponId", updateWeapon);
 
 router.delete("/:weaponId", deleteWeapon);
 
-export { router as weaponRouter };
+export {router as weaponRouter};

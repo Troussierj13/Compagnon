@@ -1,11 +1,11 @@
 import express from "express";
 import {
-  createArmor,
-  deleteArmor,
-  getAllArmors,
-  getOneArmor,
-  populateDb,
-  updateArmor,
+    createArmor,
+    deleteArmor,
+    getAllArmors,
+    getOneArmor,
+    populateDb,
+    updateArmor,
 } from "../controllers/armor.controller.js";
 
 const router = express.Router();
@@ -20,4 +20,4 @@ router.put("/:armorId", updateArmor);
 
 router.delete("/:armorId", deleteArmor);
 
-export { router as armorRouter };
+export {router as armorRouter};

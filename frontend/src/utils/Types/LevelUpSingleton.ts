@@ -1,4 +1,4 @@
-import {CallbackParam, IDictionary} from "../../utils/helpers";
+import {CallbackParam, IDictionary} from "../helpers";
 
 export class LevelUpSingleton {
     private static instance: IDictionary<LevelUpSingleton> = {};

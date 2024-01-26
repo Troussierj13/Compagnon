@@ -4,14 +4,8 @@ meta {
   seq: 1
 }
 
-get {
+put {
   url: http://localhost:8000/api/game/
-  body: json
+  body: none
   auth: none
-}
-
-body:json {
-  {
-    "isRunning": true
-  }
 }

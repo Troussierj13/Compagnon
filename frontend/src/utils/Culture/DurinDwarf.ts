@@ -3,7 +3,7 @@ import {
     DefaultCombatSkill,
     DerivedCharacteristics,
     SimpleAttributesValuesType,
-} from "../Culture/CultureType";
+} from "./CultureType";
 import {PossibleChoose} from "../helpers";
 
 class DurinDwarfType extends CultureType {

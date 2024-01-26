@@ -1,5 +1,4 @@
-import {ArmorIdentifier, IdentifiedValue} from "../../utils/Types/IdentifiedType";
-
+import {ArmorIdentifier, IdentifiedValue} from "./IdentifiedType";
 export class ArmorType {
     identifier: ArmorIdentifier;
     name: string;

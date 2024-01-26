@@ -1,0 +1,18 @@
+meta {
+  name: ShowState
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/event/showState
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "identifier": "PlayerSheet",
+    "value": ""
+  }
+}

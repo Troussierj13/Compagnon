@@ -1,4 +1,4 @@
-import {Identifier} from "../Types/IdentifiedType";
+import {Identifier} from "./IdentifiedType";
 import {Modifiers} from "../MapModifiers";
 import {Reward} from "../VallianceWisdom/Rewards";
 import {IDictionary} from "../helpers";

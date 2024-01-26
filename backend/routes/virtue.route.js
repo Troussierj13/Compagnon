@@ -1,10 +1,5 @@
 import express from "express";
-import {
-  createVirtue,
-  deleteVirtue,
-  getAllVirtues,
-  updateVirtue,
-} from "../controllers/virtue.controller.js";
+import {createVirtue, deleteVirtue, getAllVirtues, updateVirtue,} from "../controllers/virtue.controller.js";
 
 const router = express.Router();
 
@@ -16,4 +11,4 @@ router.put("/:virtueIdentifier", updateVirtue);
 
 router.delete("/:virtueIdentifier", deleteVirtue);
 
-export { router as virtueRouter };
+export {router as virtueRouter};

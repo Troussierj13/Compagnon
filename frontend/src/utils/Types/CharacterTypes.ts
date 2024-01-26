@@ -1,4 +1,4 @@
-import {IdentifiedValue} from "../../utils/Types/IdentifiedType";
+import {IdentifiedValue} from "./IdentifiedType";
 
 export class AttributesValuesType {
     strength: IdentifiedValue;
