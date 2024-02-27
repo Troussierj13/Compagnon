@@ -57,7 +57,7 @@ const dwarfRule: Rule = {
 
 //Ajouter ici tte les règles à appliquer sous forme de constante de type Rule, puis ajouter ces règles au tableau 'rules'
 
-const rules = [dwarfRule];
+const defaultRules = [dwarfRule];
 
 const SetModifiers = (player: PlayerType) => {
     const deriveRace = player.culture.derivedCharacteristics;
@@ -69,6 +69,13 @@ const SetModifiers = (player: PlayerType) => {
             deriveRace.modParade,
         ],
     };
+
+    let rules: Array<Rule> = [] ;
+
+    defaultRules.map(r => {
+        rules.push(r);
+    })
+
     rules.push(modAttr);
 
     rules.map((ru) => {

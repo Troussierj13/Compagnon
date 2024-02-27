@@ -7,24 +7,24 @@
             class="absolute -bottom-14 h-16 w-full bg-bottomSheet bg-cover bg-clip-border bg-center bg-origin-border"></div>
         <div class="flex h-full w-[74.2%] flex-col border-l-18 border-red/0">
             <div class="h-24 w-full">
-                <HeaderPlayerSheet :values="state.character.getHeaderValues()"/>
+                <HeaderPlayerSheet :values="props.character.getHeaderValues()"/>
             </div>
             <div class="relative flex flex-col w-full grow">
                 <RightDoubleLine/>
                 <div class="flex flex-col h-full w-full">
                     <div class="relative flex grow">
                         <div class="flex flex-col h-full w-1/3">
-                            <StrengthColumn :player="state.character"/>
+                            <StrengthColumn :player="props.character"/>
                         </div>
                         <div class="flex flex-col h-full w-1/3">
-                            <HeartColumn :player="state.character"/>
+                            <HeartColumn :player="props.character"/>
                         </div>
                         <div class="flex flex-col h-full w-1/3">
-                            <MindColumn :player="state.character"/>
+                            <MindColumn :player="props.character"/>
                         </div>
                     </div>
                     <div class="relative flex h-1/5 w-full pt-1">
-                        <WarGear :player="state.character"/>
+                        <WarGear :player="props.character"/>
                     </div>
                 </div>
             </div>
@@ -34,13 +34,13 @@
                 <div class="simple-border h-full w-full"/>
             </div>
             <div class="flex grow flex-col">
-                <XpSecondaryPoints :player="state.character"/>
+                <XpSecondaryPoints :player="props.character"/>
             </div>
             <div class="flex h-1/6">
-                <States :player="state.character"/>
+                <States :player="props.character"/>
             </div>
             <div class="relative flex h-1/5 flex-col">
-                <TravelEquipment :player="state.character"/>
+                <TravelEquipment :player="props.character"/>
             </div>
         </div>
     </div>
@@ -65,12 +65,12 @@ interface State {
 }
 
 const props = defineProps<{
-    characterId: string;
+    character: PlayerType;
 }>();
 
-const state = reactive<State>({
+/*const state = reactive<State>({
     character: await APIRequests.Character.getCharacter(props.characterId)
-})
+})*/
 
 </script>
 

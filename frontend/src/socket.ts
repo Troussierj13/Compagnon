@@ -16,6 +16,7 @@ interface StateSocket {
     connected: boolean;
     ennemyAppearEvents: Array<NtagData>;
     visibilityChangeEvents: IDictionary<VisibilityEntity>;
+    characterSheetEvent: Array<string>;
     showStateEvent: ShowState;
 }
 
@@ -23,6 +24,7 @@ export const stateSocket = reactive<StateSocket>({
     connected: false,
     ennemyAppearEvents: new Array<NtagData>,
     visibilityChangeEvents: {},
+    characterSheetEvent: [""],
     showStateEvent: {
         identifier: "None",
         value: ""
@@ -55,8 +57,12 @@ socket.on("visibilityChange", (arg) => {
     }
 });
 
+socket.on("characterSheet", (arg) => {
+    stateSocket.characterSheetEvent[0] = arg.id;
+    console.log(stateSocket.characterSheetEvent[0]);
+});
+
 socket.on("showState", (arg: ShowState) => {
     stateSocket.showStateEvent.identifier = arg.identifier;
     stateSocket.showStateEvent.value = arg.value;
-    console.log(stateSocket.showStateEvent)
 });

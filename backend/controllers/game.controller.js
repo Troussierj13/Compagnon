@@ -28,10 +28,9 @@ export const getGame = async (req, res) => {
 export const addCharacterToGame = async (req, res) => {
     try {
         const characterId = req.params.characterId;
-        const gameId = req.params.gameId;
 
         const character = await Character.findById(characterId);
-        let game = await Game.findById(gameId);
+        let game = await Game.find();
 
         if(!character) {
             res.status(409).json({message: "Character not find"});
@@ -49,6 +48,34 @@ export const addCharacterToGame = async (req, res) => {
         res.status(409).json({message: error.message});
     }
 };
+
+export const addEventToGame = async (req, res) => {
+    try {
+        let game = await Game.find();
+
+        game[0].events.push(req.body);
+
+        await game[0].save();
+        res.status(200).json(game[0]);
+
+    } catch (error) {
+        res.status(409).json({message: error.message});
+    }
+}
+
+export const resetEventsToGame = async (req, res) => {
+    try {
+        let game = await Game.find();
+
+        game[0].events = [];
+
+        await game[0].save();
+        res.status(200).json(game[0]);
+
+    } catch (error) {
+        res.status(409).json({message: error.message});
+    }
+}
 
 export const removeCharacterToGame = async (req, res) => {
     try {

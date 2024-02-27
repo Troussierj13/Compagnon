@@ -7,6 +7,7 @@
 import app from "../app.js";
 import http from "http";
 import {Server} from "socket.io";
+import Game from "../models/Game.model.js";
 
 /**
  * Get port from environment and store in Express.
@@ -29,6 +30,13 @@ export const io = new Server(server, {cors: {origin: "*"}});
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
+
+io.on("connection", async (socket) => {
+    let game = await Game.find();
+    game[0].events.map((event) => {
+        socket.emit(event.emit, JSON.parse(event.body));
+    })
+});
 
 /**
  * Normalize a port into a number, string, or false.

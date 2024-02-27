@@ -11,7 +11,8 @@ const gameSchema = mongoose.Schema(
         ],
         events: [
             {
-                emit: mongoose.Schema.Types.String
+                emit: mongoose.Schema.Types.String,
+                body: mongoose.Schema.Types.String
             }
         ]
     },

@@ -1,60 +1,94 @@
 <template>
     <div class="flex flex-col relative h-full w-full justify-center items-center">
-        <div id="spectator-screen" class="flex justify-center items-center w-full h-[90%]">
-            <div
-                v-show="state.showState.identifier == 'Entities'"
-                id="entities">
-                <div v-if="state.ennAppear.length > 0" class="grid grid-cols-3 gap-4 justify-center">
-                    <CardEnnemy :entity="state.ennAppear[0]" :visibility="state.ennVisibility[0]" class="cursor-pointer justify-center justify-self-center mx-auto"/>
-                </div>
+        <div id="spectator-screen" class="relative w-full h-[90%]">
+            <div class="absolute scale-50 inset-0 -top-[25%] -left-[25%] flex border h-full w-full border-red"
+                 ref="specCharacters"
+                 @mouseenter.ctrl.exact="hoverCtrl('characters')">
+                <Spectator :showState="{identifier: 'PlayerSheet', value: ''}"></Spectator>
             </div>
             <div
-                v-show="state.showState.identifier == 'PlayerSheet'"
-                id="playersheet"
-                class="flex justify-center items-center w-full">
-                <PlayerSheet
-                    id="sheet"
-                    :player="players[0]"
-                    @load="setupWidth()"
-                    class="flex rounded scale-100"/>
+                class="absolute scale-50 inset-0 -top-[25%] left-[25%] flex border h-full w-full border-red"
+                ref="specEntities"
+                @mouseenter.ctrl.exact="hoverCtrl('entities')">
+                <Spectator :showState="{identifier: 'Entities', value: ''}"></Spectator>
+            </div>
+            <div
+                class="absolute scale-50 inset-0 top-[25%] -left-[25%] flex border h-full w-full border-red"
+                ref="specScenes"
+                @mouseenter.ctrl.exact="hoverCtrl('scenes')">
+                <Spectator :showState="{identifier: 'None', value: ''}"></Spectator>
+            </div>
+            <div
+                class="absolute scale-50 inset-0 top-[25%] left-[25%] flex border h-full w-full border-red"
+                ref="specMap"
+                @mouseenter.ctrl.exact="hoverCtrl('map')">
+                <Spectator :showState="{identifier: 'None', value: ''}"></Spectator>
+            </div>
+            <div
+                v-show="state.currentHover != null && state.currentHover == specRef['characters']?.value"
+                class="absolute scale-50 inset-0 -top-[25%] -left-[25%] flex border h-full w-full border-red cursor-pointer bg-white/10"
+                @click="APIRequests.Event.sendShowState({identifier: 'PlayerSheet', value:''})"
+                @mouseleave="hoverLeave()">
+            </div>
+            <div
+                v-show="state.currentHover != null && state.currentHover == specRef['entities']?.value"
+                class="absolute scale-50 inset-0 -top-[25%] left-[25%] flex border h-full w-full border-red cursor-pointer bg-white/10"
+                @click="APIRequests.Event.sendShowState({identifier: 'Entities', value:''})"
+                @mouseleave="hoverLeave()">
+            </div>
+            <div
+                v-show="state.currentHover != null && state.currentHover == specRef['scenes']?.value"
+                class="absolute scale-50 inset-0 top-[25%] -left-[25%] flex border h-full w-full border-red cursor-pointer bg-white/10"
+                @click="APIRequests.Event.sendShowState({identifier: 'None', value:''})"
+                @mouseleave="hoverLeave()">
+            </div>
+            <div
+                v-show="state.currentHover != null && state.currentHover == specRef['map']?.value"
+                class="absolute scale-50 inset-0 top-[25%] left-[25%] flex border h-full w-full border-red cursor-pointer bg-white/10"
+                @click="APIRequests.Event.sendShowState({identifier: 'None', value:''})"
+                @mouseleave="hoverLeave()">
             </div>
         </div>
         <div id="keeper-screen" class="border-t border-red w-full h-[10%]">
             <button class="rounded bg-amber-50 px-2 m-2" @click="APIRequests.Event.sendTestEnnemy()">Appear</button>
+            <button class="rounded bg-amber-50 px-2 m-2" @click="APIRequests.Games.resetEventsGame()">ResetEvents</button>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import {reactive, onUpdated} from 'vue';
-import {PlayerType} from "../utils/Types/PlayerType";
 import {APIRequests} from "../utils/apiurls";
-import CardEnnemy from "../components/ComponentCardEnnemy/CardEnnemy.vue";
-import {stateSocket} from "../socket";
-import {NtagData} from "../utils/EncryptNtag";
-import {VisibilityEntity} from "../utils/Types/Entity";
+import Spectator from "./Spectator.vue";
+import {reactive, Ref, ref} from "vue";
 import {IDictionary} from "../utils/helpers";
-import PlayerSheet from "../components/ComponentsPlayerSheet/PlayerSheet.vue";
-import {ShowState} from "../utils/Types/socketType";
-
-let players = reactive<Array<PlayerType>>(
-    await APIRequests.Character.getAllCharacters()
-) as Array<PlayerType>;
 
 interface State {
-    ennAppear: Array<NtagData>;
-    ennVisibility: IDictionary<VisibilityEntity>;
-    showState: ShowState
-    sheetScale: number;
+    currentHover: Ref;
 }
 
 const state = reactive<State>({
-    ennAppear: stateSocket.ennemyAppearEvents,
-    ennVisibility: stateSocket.visibilityChangeEvents,
-    showState: stateSocket.showStateEvent,
-    sheetScale: 1
-});
+    currentHover: ref<HTMLElement | null>(null)
+})
 
+const specRef:IDictionary<Ref> = {};
+const specCharacters = ref<HTMLElement | null>(null)
+const specEntities = ref<HTMLElement | null>(null)
+const specScenes = ref<HTMLElement | null>(null)
+const specMap = ref<HTMLElement | null>(null)
+
+specRef["characters"] = specCharacters;
+specRef["entities"] = specEntities;
+specRef["scenes"] = specScenes;
+specRef["map"] = specMap;
+
+
+const hoverCtrl = (id: string) => {
+    state.currentHover = specRef[id];
+}
+
+const hoverLeave = () => {
+    state.currentHover = ref<HTMLElement | null>(null);
+}
 
 </script>
 <style scoped>
