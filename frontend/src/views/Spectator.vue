@@ -9,32 +9,27 @@
             </div>
         </div>
         <div v-show="state.showState.identifier == 'PlayerSheet'"
-             class="relative flex flex-col justify-between items-center w-full h-full">
-            <div
-                class="absolute flex justify-center gap-5 items-center h-full w-full">
-                <div
-                    v-for="(player, playerIndex) in state.game.players" :key="playerIndex"
-                    class="mt-auto flex justify-center items-center cursor-pointer h-[8%] hover:h-[10%] w-32 bg-amber-50 rounded-t transition-all"
-                    :class="{'h-[10%]': player == state.currentCharacter[0]}"
-                    @click="APIRequests.Games.emitCharacterSheet(player).then()">
-                    {{state.characters[player].name}}
+             class="relative flex justify-between w-full h-full">
+            <div class="absolute flex h-full w-[15%] -left-1">
+                <div class="w-full h-full gradient-mask bg-gradient-to-t from-black/80 to-black/40 backdrop-blur">
+                    <ChatMessage/>
                 </div>
             </div>
             <div
                 v-if="state.characters[state.currentCharacter[0]]"
                 ref="sheet"
-                class="absolute flex justify-center items-center w-full h-[90%]">
+                class="absolute flex justify-center items-center w-[85%] h-full right-0 mt-auto">
                 <PlayerSheet
                     :character="state.characters[state.currentCharacter[0]]"
                     @load="setupWidthHeight()"
-                    class="flex rounded scale-100 opacity-0"/>
+                    class="flex rounded scale-100"/>
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import {ref, onUpdated, onMounted, reactive} from 'vue';
+import {onMounted, onUpdated, reactive, ref} from 'vue';
 import CardEnnemy from "../components/ComponentCardEnnemy/CardEnnemy.vue";
 import {stateSocket} from "../socket";
 import {NtagData} from "../utils/EncryptNtag";
@@ -45,6 +40,7 @@ import {ShowState} from "../utils/Types/socketType";
 import {GameType} from "../utils/Types/GameType";
 import {APIRequests} from "../utils/apiurls";
 import {PlayerType} from "../utils/Types/PlayerType";
+import ChatMessage from "../components/ComponentsSpectatorSheet/ChatMessage.vue";
 
 interface Props {
     showState?: ShowState
@@ -83,7 +79,6 @@ const setupWidthHeight = () => {
         if (state.sheetScale < 1.2) {
             sh.style.setProperty('--tw-scale-x', state.sheetScale + '');
             sh.style.setProperty('--tw-scale-y', state.sheetScale + '');
-            sh.className += 'opacity-100'
         }
     } else {
         setTimeout(setupWidthHeight, 50);
@@ -104,5 +99,10 @@ onUpdated(() => {
 });
 
 </script>
+
 <style scoped>
+.gradient-mask {
+    //-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 25%);
+}
 </style>

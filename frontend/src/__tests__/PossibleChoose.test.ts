@@ -71,7 +71,7 @@ describe("PossibleChoose Test", () => {
 
         const modHabHearth = new DescribableNameWithModifier(
             "Habilité",
-            "Réduisez le SR de CORPS de 1",
+            "Réduisez le SR de COEUR de 1",
             [
                 {identifier: 'heartSR', op: '+', mod: -1}
             ]
@@ -79,7 +79,7 @@ describe("PossibleChoose Test", () => {
 
         const modHabMind = new DescribableNameWithModifier(
             "Habilité",
-            "Réduisez le SR de CORPS de 1",
+            "Réduisez le SR de ESPRIT de 1",
             [
                 {identifier: 'mindSR', op: '+', mod: -1}
             ]

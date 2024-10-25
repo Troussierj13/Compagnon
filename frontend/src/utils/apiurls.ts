@@ -13,12 +13,21 @@ export const APISettings = {
         Accept: "application/json",
         "Content-Type": "application/json"
     }),
-    baseURL: "http://192.168.1.24:8000/api/",
-    socketURL: "http://192.168.1.24:8000",
+    baseURL: "http://192.168.1.149:8000/api/",
+    socketURL: "http://192.168.1.149:8000",
 };
 
 export const APIRequests = {
     Games: {
+        addEvent: async(_body: string) => {
+            const response = await fetch(APISettings.baseURL + "game/addEvent/", {
+                method: "POST",
+                headers: APISettings.headers,
+                body: _body
+            });
+
+            return await response.json();
+        },
         createGame: async (gameName: string) => {
             const response = await fetch(APISettings.baseURL + "game/", {
                 method: "PUT",
@@ -34,9 +43,15 @@ export const APIRequests = {
                 headers: APISettings.headers,
             });
 
+            console.log(response);
+
             return await response.json() as GameType;
         },
         emitCharacterSheet: async(_id: string) => {
+            const res = await APIRequests.Games.addEvent(JSON.stringify({emit: "characterSheet", body: "{\"id\": \""+_id+"\"}"}))
+
+            console.log(res);
+
             const response = await fetch(APISettings.baseURL + "event/characterSheet/", {
                 method: "POST",
                 headers: APISettings.headers,
@@ -49,6 +64,7 @@ export const APIRequests = {
                 method: "PUT",
                 headers: APISettings.headers,
             });
+
             return await response.json();
         },
     },
@@ -164,6 +180,9 @@ export const APIRequests = {
     },
     Event: {
         sendTestEnnemy: async () => {
+            const res = await APIRequests.Games.addEvent(JSON.stringify({emit: "ennemyAppear", body: "{\"data\": \"010100010001010d556b6d617273205672616767650e50696c6c6575722064752053756405527573c3a907566973696575780104010f010200010401010102010305486163686501030104011201010b506572666f726174696f6e0c4c616e636520636f7572746501020103010f01010b506572666f726174696f6e0c4c616e636520636f7572746501010102010201010c4c616e636520636f7572746501023946c3a9726f63653a2044c3a970656e73652031707420646520766f6c6f6e74c3a92c202d3164206c6f7273206427756e6520617474617175653946c3a9726f63653a2044c3a970656e73652031707420646520766f6c6f6e74c3a92c202d3164206c6f7273206427756e652061747461717565774c6f727320646573206c6f6e6773206869766572732c206c657320486f6d6d6573206475205375642073652072617373656d626c656e742065742070617274656e7420c3a0206c61207265636865726368652064652070726f707269c3a97461697265732069736f6cc3a97320c3a02070696c6c65722e\"}"}))
+            console.log(res);
+
             const response = await fetch(APISettings.baseURL + "event/ennemyAppear/", {
                 method: "POST",
                 headers: APISettings.headers,
@@ -172,12 +191,26 @@ export const APIRequests = {
             return await response.json();
         },
         sendShowState: async (s: ShowState) => {
+            const res = await APIRequests.Games.addEvent(JSON.stringify({emit: "showState", body: JSON.stringify(s)}))
+            console.log(res);
+
             const responseShow = await fetch(APISettings.baseURL + "event/showState/", {
                 method: "POST",
                 headers: APISettings.headers,
                 body: JSON.stringify(s)
             });
             return await responseShow.json();
-        }
+        },
+        sendMessage: async(_name: string, _message: string) => {
+            const res = await APIRequests.Games.addEvent(JSON.stringify({emit: "sendMessage", body: "{\"name\": \""+_name+"\", \"message\": \""+_message+"\"}"}))
+            console.log(res);
+
+            const response = await fetch(APISettings.baseURL + "event/sendMessage/", {
+                method: "POST",
+                headers: APISettings.headers,
+                body: JSON.stringify({name: _name, message: _message})
+            });
+            return await response.json();
+        },
     }
 };

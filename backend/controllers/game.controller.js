@@ -1,7 +1,5 @@
-import {io} from "../bin/www.js";
 import Character from "../models/Character.model.js";
 import Game from "../models/Game.model.js";
-import EncryptedNtag from "../models/EncryptedNtag.model.js";
 
 export const createGame = async (req, res) => {
     try {
@@ -70,7 +68,7 @@ export const resetEventsToGame = async (req, res) => {
         game[0].events = [];
 
         await game[0].save();
-        res.status(200).json(game[0]);
+        res.status(200).json(Game);
 
     } catch (error) {
         res.status(409).json({message: error.message});
