@@ -118,7 +118,7 @@
                                         content="Add" @click="weapon.specialDamage.push('')"></Button>
                             </div>
                             <div v-for="(spe, indexSpe) in weapon.specialDamage" :key="indexSpe" class="mb-2">
-                                <input v-model=weapon.specialDamage[indexSpe]/ type="text">
+                                <input v-model="weapon.specialDamage[indexSpe]" type="text">
                             </div>
                         </div>
                         <!-- Add similar sections for specialWeapons -->
