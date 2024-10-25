@@ -11,6 +11,7 @@ import {
     VisibilityEntityBuilder
 } from "./utils/Types/Entity";
 import {ShowState} from "./utils/Types/socketType";
+import {ChatMessage} from "./utils/Types/ChatMessageType";
 
 interface StateSocket {
     connected: boolean;
@@ -18,9 +19,10 @@ interface StateSocket {
     visibilityChangeEvents: IDictionary<VisibilityEntity>;
     characterSheetEvent: Array<string>;
     showStateEvent: ShowState;
+    chatMessageEvent: Array<ChatMessage>;
 }
 
-export const stateSocket = reactive<StateSocket>({
+export const defaultSocketState: StateSocket = {
     connected: false,
     ennemyAppearEvents: new Array<NtagData>,
     visibilityChangeEvents: {},
@@ -28,8 +30,11 @@ export const stateSocket = reactive<StateSocket>({
     showStateEvent: {
         identifier: "None",
         value: ""
-    }
-});
+    },
+    chatMessageEvent: new Array<ChatMessage>(),
+};
+
+export const stateSocket = reactive<StateSocket>(defaultSocketState);
 
 export const socket = io(APISettings.socketURL);
 
@@ -59,10 +64,14 @@ socket.on("visibilityChange", (arg) => {
 
 socket.on("characterSheet", (arg) => {
     stateSocket.characterSheetEvent[0] = arg.id;
-    console.log(stateSocket.characterSheetEvent[0]);
 });
 
 socket.on("showState", (arg: ShowState) => {
     stateSocket.showStateEvent.identifier = arg.identifier;
     stateSocket.showStateEvent.value = arg.value;
 });
+
+socket.on("sendMessage", (arg: ChatMessage) => {
+    stateSocket.chatMessageEvent.push(arg);
+    console.log("Add message ->  " + arg.name + ' : ' + arg.message);
+})

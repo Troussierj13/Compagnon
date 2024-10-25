@@ -98,7 +98,7 @@ export class StrengthSkillsType {
         );
         this.athletics = new SkillType(
             {
-                name: 'Athélisme',
+                name: 'Athlétisme',
                 favored: payload?.athletics?.favored,
                 rank: payload?.athletics?.rank
             }
