@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   // Trouver la session par code
   const { data: session, error: sessionError } = await admin
     .from('sessions')
-    .select('*, campaign:campaigns(*), active_scene:scenes(*)')
+    .select('id, join_code, status, active_scene_id, campaign_id, campaign:campaigns(name, system)')
     .eq('join_code', body.join_code.toUpperCase())
     .neq('status', 'ended')
     .single()

@@ -25,11 +25,21 @@ async function createCampaign() {
   if (!newCampaignName.value.trim()) return
   creating.value = true
 
-  const { data } = await supabase
+  const { data, error: insertError } = await supabase
     .from('campaigns')
-    .insert({ name: newCampaignName.value.trim(), description: newCampaignDesc.value.trim() || null })
+    .insert({
+      name: newCampaignName.value.trim(),
+      description: newCampaignDesc.value.trim() || null,
+      gm_user_id: user.value!.id,
+    })
     .select()
     .single()
+
+  if (insertError) {
+    console.error('Erreur création campagne:', insertError)
+    creating.value = false
+    return
+  }
 
   if (data) {
     campaigns.value.unshift(data as Campaign)

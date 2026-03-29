@@ -98,10 +98,14 @@ export function useGMSession() {
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'session_participants', filter: `session_id=eq.${sessionId}` },
-        (payload) => {
-          const participant = payload.new as SessionParticipant
-          if (!participants.value.find(p => p.id === participant.id)) {
-            participants.value.push(participant)
+        async (payload) => {
+          const { data: fullParticipant } = await supabase
+            .from('session_participants')
+            .select('*, character:characters(*)')
+            .eq('id', payload.new.id)
+            .single()
+          if (fullParticipant && !participants.value.find(p => p.id === fullParticipant.id)) {
+            participants.value.push(fullParticipant as SessionParticipant)
           }
         },
       )

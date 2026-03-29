@@ -64,18 +64,21 @@ export function usePlayerSession() {
       participantId.value = participant_id
       playerName.value = player_name
 
-      const { data, error: err } = await supabase
-        .from('sessions')
-        .select('*, campaign:campaigns(*), active_scene:scenes(*)')
-        .eq('id', session_id)
-        .single()
+      const result = await $fetch<{
+        session: GameSession
+        active_scene: Scene | null
+        scene_entities: SceneEntity[]
+      }>(`/api/session/${session_id}/state?participant_id=${participant_id}`).catch(() => null)
 
-      if (err || !data || (data as GameSession).status === 'ended') {
+      if (!result || result.session.status === 'ended') {
         clearSession()
         return false
       }
 
-      session.value = data as GameSession
+      session.value = result.session
+      activeScene.value = result.active_scene
+      sceneEntities.value = result.scene_entities
+
       await loadSessionState(session_id, character_id)
       return true
     } catch {
@@ -117,22 +120,17 @@ export function usePlayerSession() {
   }
 
   async function loadActiveScene(sceneId: string) {
-    const { data: sceneData } = await supabase
-      .from('scenes')
-      .select('*')
-      .eq('id', sceneId)
-      .single()
+    if (!session.value || !participantId.value) return
 
-    if (sceneData) {
-      activeScene.value = sceneData as Scene
+    const result = await $fetch<{
+      session: GameSession
+      active_scene: Scene | null
+      scene_entities: SceneEntity[]
+    }>(`/api/session/${session.value.id}/state?participant_id=${participantId.value}`).catch(() => null)
 
-      const { data: entitiesData } = await supabase
-        .from('scene_entities')
-        .select('*')
-        .eq('scene_id', sceneId)
-        .eq('visible_to_players', true)
-
-      sceneEntities.value = (entitiesData as SceneEntity[]) ?? []
+    if (result) {
+      activeScene.value = result.active_scene
+      sceneEntities.value = result.scene_entities
     }
   }
 
@@ -142,6 +140,8 @@ export function usePlayerSession() {
     if (!session.value) return () => {}
 
     const sessionId = session.value.id
+
+    let currentSceneUnsub: (() => void) | null = null
 
     const channel = supabase
       .channel(`player-session-${sessionId}`)
@@ -155,7 +155,8 @@ export function usePlayerSession() {
 
           if (updated.active_scene_id && updated.active_scene_id !== activeScene.value?.id) {
             await loadActiveScene(updated.active_scene_id)
-            subscribeToSceneEntities(updated.active_scene_id)
+            currentSceneUnsub?.()
+            currentSceneUnsub = subscribeToSceneEntities(updated.active_scene_id)
           } else if (!updated.active_scene_id) {
             activeScene.value = null
             sceneEntities.value = []
@@ -165,14 +166,13 @@ export function usePlayerSession() {
       .subscribe()
 
     // S'abonner aux entités de la scène active courante
-    let unsubEntities = () => {}
     if (session.value.active_scene_id) {
-      unsubEntities = subscribeToSceneEntities(session.value.active_scene_id)
+      currentSceneUnsub = subscribeToSceneEntities(session.value.active_scene_id)
     }
 
     return () => {
       supabase.removeChannel(channel)
-      unsubEntities()
+      currentSceneUnsub?.()
     }
   }
 

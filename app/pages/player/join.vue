@@ -26,8 +26,10 @@ async function lookupSession() {
 }
 
 async function handleJoin() {
-  if (!joinCode.value.trim() || !playerName.value.trim()) return
-  const ok = await join(joinCode.value, playerName.value)
+  const code = joinCode.value.trim()
+  const name = playerName.value.trim()
+  if (!code || !name) return
+  const ok = await join(code, name)
   if (ok) {
     await navigateTo('/player/scene')
   }
@@ -83,7 +85,7 @@ async function handleJoin() {
           type="submit"
           block
           :loading="loading"
-          :disabled="!joinCode || !playerName"
+          :disabled="!joinCode.trim() || !playerName.trim()"
         >
           Rejoindre la partie
         </UButton>
