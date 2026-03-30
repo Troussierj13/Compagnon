@@ -1,11 +1,17 @@
 meta {
-  name: AddEvent
+  name: AddEvent [LEGACY]
   type: http
   seq: 4
 }
 
 post {
-  url: 
+  url:
   body: json
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+  Les événements (visibilité, apparition) sont maintenant gérés via Supabase Realtime
+  depuis le dashboard MJ dans l'UI (pages /gm/campaigns/:id/session/:sessionId).
 }

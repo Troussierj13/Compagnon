@@ -11,6 +11,7 @@ const {
   session,
   participants,
   loading: sessionLoading,
+  error,
   loadSession,
   setActiveScene,
   endSession,
@@ -120,6 +121,11 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
 
 <template>
   <div class="min-h-screen p-4 flex flex-col gap-4">
+    <!-- Debug erreur -->
+    <div v-if="error" class="bg-red-900 text-red-200 text-sm p-3 rounded">
+      Erreur : {{ error }}
+    </div>
+
     <!-- Header session -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -128,12 +134,20 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
         </NuxtLink>
         <div>
           <h1 class="font-bold text-lg">Session en cours</h1>
-          <div class="flex items-center gap-2 text-sm">
+          <div class="flex items-center gap-2 text-sm flex-wrap">
             <span class="text-gray-400">Code joueurs :</span>
             <UBadge color="primary" variant="solid" class="font-mono text-base tracking-widest">
               {{ session?.join_code }}
             </UBadge>
-            <span class="text-gray-500">— partagez ce code avec vos joueurs</span>
+            <span class="text-gray-500 hidden sm:inline">—</span>
+            <NuxtLink
+              :to="`/display/${sessionId}`"
+              target="_blank"
+              class="text-gray-500 hover:text-gray-300 flex items-center gap-1 text-xs"
+            >
+              <UIcon name="i-heroicons-tv" />
+              Affichage TV
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -296,11 +310,11 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
     </div>
 
     <!-- Modal nouvelle scène -->
-    <UModal v-model="showNewScene" title="Nouvelle scène">
+    <UModal v-model:open="showNewScene" title="Nouvelle scène">
       <template #body>
-        <UFormGroup label="Nom de la scène" required>
+        <UFormField label="Nom de la scène" required>
           <UInput v-model="newSceneName" placeholder="La Taverne du Poney Fringant..." />
-        </UFormGroup>
+        </UFormField>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
@@ -311,10 +325,10 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
     </UModal>
 
     <!-- Modal ajouter entité -->
-    <UModal v-model="showAddEntity" title="Ajouter une entité">
+    <UModal v-model:open="showAddEntity" title="Ajouter une entité">
       <template #body>
         <div class="space-y-4">
-          <UFormGroup label="Type">
+          <UFormField label="Type">
             <USelect
               v-model="entityType"
               :options="[
@@ -324,16 +338,16 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
                 { label: 'Zone', value: 'zone' },
               ]"
             />
-          </UFormGroup>
-          <UFormGroup label="Nom" required>
+          </UFormField>
+          <UFormField label="Nom" required>
             <UInput v-model="entityName" placeholder="Gobelin, Épée de Lumière..." />
-          </UFormGroup>
-          <UFormGroup v-if="entityType === 'enemy'" label="Endurance">
+          </UFormField>
+          <UFormField v-if="entityType === 'enemy'" label="Endurance">
             <UInput v-model.number="entityEndurance" type="number" min="1" />
-          </UFormGroup>
-          <UFormGroup label="Visible par les joueurs">
+          </UFormField>
+          <UFormField label="Visible par les joueurs">
             <UToggle v-model="entityVisible" />
-          </UFormGroup>
+          </UFormField>
         </div>
       </template>
       <template #footer>
@@ -345,7 +359,7 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
     </UModal>
 
     <!-- Modal confirmation fin de session -->
-    <UModal v-model="showEndConfirm" title="Terminer la session ?">
+    <UModal v-model:open="showEndConfirm" title="Terminer la session ?">
       <template #body>
         <p class="text-gray-300">
           La session sera marquée comme terminée. Les joueurs ne pourront plus la rejoindre.

@@ -1,5 +1,5 @@
 meta {
-  name: GetGame
+  name: GetGame [LEGACY]
   type: http
   seq: 2
 }
@@ -8,4 +8,13 @@ get {
   url: http://localhost:8000/api/game/
   body: none
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+
+  Équivalent dans la nouvelle architecture Nuxt :
+  → GET {{baseUrl}}/api/session/:code  (preview)
+  → GET {{baseUrl}}/api/session/:id/state  (état complet joueur)
+  (voir dossier Session/)
 }

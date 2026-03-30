@@ -1,5 +1,5 @@
 meta {
-  name: Get all virtues
+  name: Get all virtues [LEGACY]
   type: http
   seq: 2
 }
@@ -8,4 +8,10 @@ get {
   url: localhost:8000/api/virtue/
   body: none
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+  Ces données sont maintenant stockées dans Supabase et gérées via l'UI MJ (Nuxt).
+  Aucun endpoint HTTP public équivalent dans la nouvelle architecture.
 }

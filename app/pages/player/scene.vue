@@ -164,7 +164,7 @@ const npcs = computed(() =>
     </div>
 
     <!-- Feuille de perso en plein écran -->
-    <USlideover v-model="showCharacterSheet" side="right" class="w-full max-w-3xl">
+    <USlideover v-model:open="showCharacterSheet" side="right" class="w-full max-w-3xl">
       <template #header>
         <div class="flex items-center justify-between">
           <h2 class="font-bold text-lg">{{ selectedCharacter?.name }}</h2>

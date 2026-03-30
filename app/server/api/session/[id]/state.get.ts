@@ -1,4 +1,6 @@
+import type { SceneEntity } from '~/types/rpg'
 import { useSupabaseAdmin } from '~/server/utils/supabaseAdmin'
+import { validateParticipant } from '~/server/utils/validateParticipant'
 
 /**
  * GET /api/session/:id/state?participant_id=xxx
@@ -9,32 +11,15 @@ export default defineEventHandler(async (event) => {
   const sessionId = getRouterParam(event, 'id')
   const participantId = getQuery(event).participant_id as string | undefined
 
-  if (!sessionId) {
-    throw createError({ statusCode: 400, message: 'session id requis' })
-  }
-  if (!participantId) {
-    throw createError({ statusCode: 400, message: 'participant_id requis' })
-  }
+  await validateParticipant(sessionId, participantId)
 
   const admin = useSupabaseAdmin()
 
-  // Vérifier que le participant appartient bien à cette session
-  const { data: participant, error: participantError } = await admin
-    .from('session_participants')
-    .select('id')
-    .eq('id', participantId)
-    .eq('session_id', sessionId)
-    .single()
-
-  if (participantError || !participant) {
-    throw createError({ statusCode: 403, message: 'Participant non autorisé pour cette session' })
-  }
-
-  // Charger la session
+  // Charger la session — champs joueur uniquement, sans gm_user_id ni timestamps internes
   const { data: session, error: sessionError } = await admin
     .from('sessions')
-    .select('*, campaign:campaigns(*)')
-    .eq('id', sessionId)
+    .select('id, status, active_scene_id, join_code, campaign_id, campaign:campaigns(id, name, system)')
+    .eq('id', sessionId!)
     .single()
 
   if (sessionError || !session) {
@@ -43,12 +28,12 @@ export default defineEventHandler(async (event) => {
 
   // Charger la scène active si présente
   let active_scene = null
-  let scene_entities: unknown[] = []
+  let scene_entities: SceneEntity[] = []
 
   if (session.active_scene_id) {
     const { data: sceneData } = await admin
       .from('scenes')
-      .select('*')
+      .select('id, session_id, name, description, battlemap_url')
       .eq('id', session.active_scene_id)
       .single()
 
@@ -57,11 +42,11 @@ export default defineEventHandler(async (event) => {
 
       const { data: entitiesData } = await admin
         .from('scene_entities')
-        .select('*')
+        .select('id, scene_id, type, name, data, position, visible_to_players')
         .eq('scene_id', session.active_scene_id)
         .eq('visible_to_players', true)
 
-      scene_entities = entitiesData ?? []
+      scene_entities = (entitiesData ?? []) as SceneEntity[]
     }
   }
 

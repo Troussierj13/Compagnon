@@ -1,5 +1,5 @@
 meta {
-  name: ShowState
+  name: ShowState [LEGACY]
   type: http
   seq: 4
 }
@@ -15,4 +15,10 @@ body:json {
     "identifier": "PlayerSheet",
     "value": ""
   }
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+  Équivalent dans la nouvelle architecture : le MJ active/change la scène depuis
+  l'UI (/gm/campaigns/:id/session/:sessionId), propagé aux joueurs via Supabase Realtime.
 }

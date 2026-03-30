@@ -1,25 +1,41 @@
 # Architecture — Compagnon JdR
 
+> Référence principale : [`vision/README.md`](./vision/README.md)
+> Ce document décrit les décisions techniques d'implémentation. En cas de contradiction avec `/vision`, `/vision` a priorité.
+
+---
+
 ## Vue d'ensemble
 
-Application web de support pour les parties de jeu de rôle, construite avec Nuxt 3 et Supabase. Elle sert deux types d'utilisateurs avec des parcours distincts.
+Application web de support pour les parties de jeu de rôle sur table. Elle couvre deux phases : la **préparation** (back-office entre les sessions) et le **jeu en live** (panneau MJ + affichage TV + vue joueur téléphone).
+
+## Les 4 surfaces
+
+| Surface | URL | Identité | Temps réel |
+|---|---|---|---|
+| Back-office MJ | `/gm/**` | Supabase Auth | Partiel (session live) |
+| Panneau session MJ | `/gm/.../session/[id]` | Supabase Auth | ✅ Complet |
+| Affichage TV | `/display/[sessionId]` | Aucune (UUID = secret d'URL) | ✅ Complet |
+| Vue joueur téléphone | `/player/**` | `join_code` + localStorage | ✅ Complet |
 
 ## Modèle d'identité
 
 | Acteur | Identité | Credential |
 |---|---|---|
-| MJ (Game Master) | Supabase Auth (`auth.uid()`) | Email + mot de passe |
-| Joueur | Anonyme | `join_code` de session (6 chars) + `participant_id` (UUID, localStorage) |
-
-Cette asymétrie est le principe central qui gouverne toutes les décisions d'accès aux données.
+| MJ | Supabase Auth (`auth.uid()`) | Email + mot de passe |
+| Joueur | Anonyme | `join_code` (6 chars) + `participant_id` (UUID, localStorage) |
+| TV | Aucune | UUID de session dans l'URL |
+| Raspberry Pi Pico | Token statique | `NFC_SECRET` (variable d'environnement) |
 
 ## Stack technique
 
 - **Nuxt 3** — framework full-stack (SSR + server endpoints via Nitro)
-- **@nuxtjs/supabase** — intégration Supabase Auth pour le MJ, client anon pour les joueurs
+- **@nuxtjs/supabase** — Auth MJ + client anon Realtime
 - **@nuxt/ui** — composants UI
-- **Supabase** — Postgres (données), RLS (sécurité), Realtime (temps réel), Storage (battlemaps)
+- **Supabase** — Postgres (données), RLS (sécurité), Realtime (temps réel), Storage (images, sons)
 - **TypeScript strict**
+
+---
 
 ## Parcours MJ
 
@@ -27,78 +43,162 @@ Cette asymétrie est le principe central qui gouverne toutes les décisions d'ac
 Login (Supabase Auth)
   └─ Dashboard campagnes (/gm)
       └─ Détail campagne (/gm/campaigns/[id])
-          ├─ Gestion personnages (/gm/campaigns/[id]/characters/[charId])
+          ├─ Fiches personnages joueurs
+          ├─ Fiches PNJ
+          ├─ Fiches ennemis + encodage NFC
           └─ Session live (/gm/campaigns/[id]/session/[sessionId])
-              ├─ Gestion scènes + entités
-              ├─ Vue participants temps réel
-              └─ Upload battlemaps (Supabase Storage)
+              ├─ Gestion scènes + entités + tokens
+              ├─ Contrôle affichage TV (mode, overlays, fil d'initiative)
+              ├─ Gestion loot + distribution joueurs
+              ├─ Gestion inventaire PNJ en live
+              └─ Réception spawns NFC
 ```
 
-Le middleware `gm.ts` protège toutes les routes `/gm/**` en vérifiant la session Supabase Auth.
-
-## Parcours Joueur
+## Parcours TV (affichage spectateur)
 
 ```
-Page d'accueil (/)
-  └─ Rejoindre (/player/join)
-      └─ [Saisit le join_code à 6 chars]
-          └─ Scène en temps réel (/player/scene)
-              └─ Feuille de personnage (/player/sheet)
+URL /display/[sessionId] ouverte dans le navigateur TV
+  └─ Modes d'affichage (piloté par sessions.display_mode) :
+      ├─ Waiting Screen  — fond d'écran + nom campagne
+      ├─ Battlemap       — carte + tokens + fil d'initiative
+      └─ Voyage          — carte monde + marqueurs + règles
+  └─ Overlay (par-dessus n'importe quel mode)
+      └─ Fiches, artworks, textes libres poussés par le MJ
 ```
 
-Le middleware `player-session.ts` vérifie la présence de l'état local (`session_id + participant_id` dans localStorage). Le joueur n'a aucun compte Supabase.
+## Parcours Joueur (téléphone)
+
+```
+/player/join  →  Saisie join_code + nom + choix personnage
+  └─ /player/scene  →  Scène active + inventaire + fiche perso
+      └─ /player/sheet  →  Feuille de perso plein écran (tablette)
+```
+
+---
 
 ## Accès aux données
 
 ### MJ (authentifié)
+Lit et écrit directement via `useSupabaseClient()`. RLS autorise toutes les opérations sur les ressources dont `gm_user_id = auth.uid()`.
 
-Le MJ utilise le client Supabase front-end (`useSupabaseClient()`). Le RLS autorise toutes les opérations sur les ressources dont `gm_user_id = auth.uid()`.
+### TV (anonyme, URL secrète)
+La TV appelle `/api/display/[id]/state` — endpoint Nitro sans `participant_id`. L'UUID de session fait office de secret. Retourne uniquement les entités `visible_to_players = true`. Utilise `useSupabaseAdmin()`.
 
 ### Joueur (anonyme)
+Le joueur ne lit **jamais** directement les tables Supabase depuis le front-end. Toutes ses lectures transitent par des server endpoints Nitro qui :
+1. Valident le `participant_id` via `validateParticipant()`
+2. Utilisent `useSupabaseAdmin()` pour contourner le RLS
+3. Retournent uniquement les champs nécessaires
 
-> Voir aussi : [ADR-001 — Pattern d'accès joueur](./adr/001-player-access-pattern.md)
+### Raspberry Pi Pico (NFC)
+Appelle `/api/nfc/trigger` avec un token statique dans le header `Authorization: Bearer <NFC_SECRET>`. Le endpoint décode le payload base64, extrait les données de l'ennemi, crée l'entité dans la scène active.
 
-Le joueur ne lit **jamais** directement les tables Supabase depuis le front-end. Toutes ses lectures transitent par des server endpoints Nuxt qui :
-1. Valident le `participant_id` (correspondance `session_participants.id + session_id`)
-2. Utilisent `useSupabaseAdmin()` (clé `service_role`) pour contourner le RLS
-3. Retournent uniquement les champs nécessaires à l'UI joueur
-
-```
-Client joueur (anon)
-  └─ $fetch('/api/session/[id]/state?participant_id=xxx')
-      └─ Server endpoint (Nitro)
-          ├─ Valide participant_id ↔ session_id
-          ├─ useSupabaseAdmin() ← service_role, contourne RLS
-          └─ Retourne { session, active_scene, scene_entities (visible uniquement) }
-```
+---
 
 ## Realtime
 
-Supabase Realtime est activé sur trois tables : `sessions`, `scenes`, `scene_entities`.
+Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlays`, `map_markers`.
 
-### Côté MJ (`useGMSession`, `useScene`)
-- Souscription directe via le client Supabase (authentifié, RLS autorise)
-- Sur INSERT de `session_participants` : **refetch le participant complet** avec `character:characters(*)` (le payload Realtime ne contient pas les relations jointes)
+### TV (`useDisplaySession`)
+- Écoute `sessions` (changement de `display_mode`, `active_scene_id`)
+- Écoute `scene_entities` de la scène active (spawn, déplacement, visibilité)
+- Écoute `overlays` de la session (ajout, mise en évidence, suppression)
 
-### Côté joueur (`usePlayerSession`)
-- Souscription directe via le client Supabase anon — **exception justifiée** : les subscriptions Realtime ne passent pas par RLS SELECT de la même façon. Le canal est établi après validation côté serveur.
-- Sur changement de `active_scene_id` : nettoyage de l'ancienne subscription avant création de la nouvelle (éviter les memory leaks)
+### MJ (`useGMSession`, `useScene`)
+- Souscription directe via client Supabase Auth
+- Sur INSERT `session_participants` : refetch le participant complet (le payload Realtime ne contient pas les relations jointes)
+
+### Joueur (`usePlayerSession`)
+- Exception documentée : souscription directe via client anon pour `sessions` et `scene_entities`
+- Sur changement `active_scene_id` : nettoyage de l'ancienne subscription avant création de la nouvelle
+
+---
 
 ## Schéma de base de données
 
-Tables principales :
+### Tables existantes
 
 | Table | Description | RLS |
 |---|---|---|
 | `campaigns` | Campagnes du MJ | MJ owner uniquement |
-| `characters` | Personnages (feuille JSONB) | MJ CRUD, lecture joueur via server endpoint |
-| `sessions` | Sessions de jeu | MJ CRUD, lecture joueur via server endpoint |
-| `session_participants` | Joueurs d'une session | Contrôlé côté serveur |
-| `scenes` | Scènes d'une session | MJ CRUD, lecture joueur via server endpoint |
-| `scene_entities` | Entités d'une scène | MJ CRUD, lecture joueur filtrée `visible_to_players` |
+| `characters` | Personnages joueurs (feuille JSONB) | MJ CRUD, lecture joueur via server endpoint |
+| `sessions` | Sessions de jeu | MJ CRUD, lecture TV/joueur via server endpoints |
+| `session_participants` | Joueurs d'une session | Géré côté serveur |
+| `scenes` | Scènes d'une session | MJ CRUD, lecture TV/joueur via server endpoints |
+| `scene_entities` | Entités d'une scène | MJ CRUD, lecture filtrée `visible_to_players` |
 
-Le schéma complet avec indexes, triggers `updated_at` et configuration Realtime est dans `supabase/migrations/001_initial_schema.sql`.
+### Tables à créer
 
-## Génération des join_codes
+| Table | Description |
+|---|---|
+| `enemies` | Fiches ennemis (stats, rareté, artwork, table de loot, config spawn NFC) |
+| `npcs` | Fiches PNJ (stats légères, portrait, inventaire) |
+| `map_markers` | Marqueurs sur la carte monde (mode Voyage) |
+| `overlays` | Overlays actifs sur la TV pour une session |
 
-Les codes de session sont générés côté serveur (`server/utils/generateJoinCode.ts`) avec `crypto.randomInt` (Node.js), pas `Math.random()`. L'espace est `32^6 ≈ 1 milliard` de combinaisons avec un alphabet sans ambiguïté (pas de `0/O`, `1/I`).
+### Champs à ajouter sur les tables existantes
+
+| Table | Champ | Type | Usage |
+|---|---|---|---|
+| `campaigns` | `wallpaper_url` | text | Fond d'écran fallback |
+| `campaigns` | `world_map_url` | text | Carte du mode Voyage |
+| `campaigns` | `travel_rules` | text (markdown) | Règles de voyage |
+| `sessions` | `wallpaper_url` | text | Fond d'écran fallback session |
+| `sessions` | `display_mode` | enum | Mode TV actif : `waiting` / `battlemap` / `travel` |
+| `scenes` | `wallpaper_url` | text | Fond d'écran spécifique à la scène |
+| `scene_entities` | `initiative` | integer\|null | Valeur d'initiative |
+| `scene_entities` | `in_combat` | boolean | Participe au fil d'initiative |
+| `scene_entities` | `is_current_turn` | boolean | C'est son tour |
+| `characters` | `portrait_url` | text | Image token battlemap |
+
+---
+
+## Système NFC
+
+### Flux complet
+```
+Figurine posée → Pico lit la puce → POST /api/nfc/trigger { payload: base64, scene_id }
+  → Nitro vérifie NFC_SECRET → décode base64 → crée scene_entity
+  → Supabase Realtime → TV joue animation selon rareté
+```
+
+### Encodage
+Les données d'un ennemi sont encodées en base64 par un programme Node externe. La rareté fait partie des données encodées et est extraite côté serveur pour déterminer l'animation de spawn.
+
+### Animations par rareté
+Configurables dans les paramètres de l'app. Sons issus d'une bibliothèque intégrée (pas d'upload). Voir `vision/feature-display-tv.md` pour le détail.
+
+---
+
+## Utilitaires serveur
+
+### `server/utils/supabaseAdmin.ts`
+Singleton Nitro : instance `service_role` créée une seule fois. Ne pas recréer manuellement.
+
+### `server/utils/validateParticipant.ts`
+Validation `participant_id ↔ session_id`. À appeler en premier dans tout endpoint joueur. Lance 400 ou 403 selon le cas.
+
+### `server/utils/generateJoinCode.ts`
+Génère un code 6 chars avec `crypto.randomInt`. Alphabet sans ambiguïté (`0/O`, `1/I` exclus). Espace ~1 milliard de combinaisons.
+
+## Utilitaires client
+
+### `utils/entityDisplay.ts`
+Constantes `ENTITY_TOKEN_COLOR` et `ENTITY_TOKEN_ICON` typées par `EntityType`. Auto-importées. À utiliser dans tous les composants affichant un token.
+
+---
+
+## Pièges connus
+
+### Jointures Supabase ambiguës (PostgREST)
+Quand deux FK existent entre deux tables, spécifier la FK explicitement :
+```typescript
+.select('*, active_scene:scenes!active_scene_id(*)')  // ✅
+.select('*, active_scene:scenes(*)')                   // ❌ ambigu
+```
+
+### Realtime — payload INSERT sans relations jointes
+Sur un événement INSERT de `postgres_changes`, `payload.new` ne contient que les colonnes directes. Faire un fetch ciblé après pour récupérer les relations.
+
+### Refs des composables — isolation d'état
+Les refs sont déclarées à l'intérieur de la fonction composable — chaque appel crée une instance isolée. Pour partager l'état entre composants, utiliser `provide/inject` depuis un parent commun.

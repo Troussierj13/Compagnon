@@ -1,3 +1,4 @@
+import { serverSupabaseClient } from '#supabase/server'
 import { generateJoinCode } from '~/server/utils/generateJoinCode'
 import { useSupabaseAdmin } from '~/server/utils/supabaseAdmin'
 
@@ -8,7 +9,7 @@ import { useSupabaseAdmin } from '~/server/utils/supabaseAdmin'
  */
 export default defineEventHandler(async (event) => {
   // Vérifier l'auth MJ via le token Supabase dans les cookies
-  const supabase = await useSupabaseServer(event)
+  const supabase = await serverSupabaseClient(event)
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {

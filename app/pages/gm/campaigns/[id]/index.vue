@@ -103,15 +103,15 @@ onMounted(fetchData)
             </UButton>
           </div>
 
-          <UModal v-model="showNewCharacter" title="Nouveau personnage">
+          <UModal v-model:open="showNewCharacter" title="Nouveau personnage">
             <template #body>
               <div class="space-y-4">
-                <UFormGroup label="Nom du personnage" required>
+                <UFormField label="Nom du personnage" required>
                   <UInput v-model="newCharName" placeholder="Gandalf le Gris" />
-                </UFormGroup>
-                <UFormGroup label="Nom du joueur">
+                </UFormField>
+                <UFormField label="Nom du joueur">
                   <UInput v-model="newPlayerName" placeholder="Tolkien" />
-                </UFormGroup>
+                </UFormField>
               </div>
             </template>
             <template #footer>

@@ -1,5 +1,5 @@
 meta {
-  name: visibilityChange
+  name: visibilityChange [LEGACY]
   type: http
   seq: 2
 }
@@ -18,4 +18,11 @@ body:json {
     "weapon": 7,
     "spe": 3
   }
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+  Équivalent dans la nouvelle architecture : la visibilité d'une entité (visible_to_players)
+  est modifiée par le MJ depuis l'UI, enregistrée en base Supabase et propagée aux joueurs
+  via Supabase Realtime (table scene_entities).
 }

@@ -44,7 +44,7 @@ watchEffect(() => {
       </template>
 
       <form class="space-y-4" @submit.prevent="login">
-        <UFormGroup label="Email">
+        <UFormField label="Email">
           <UInput
             v-model="email"
             type="email"
@@ -52,16 +52,16 @@ watchEffect(() => {
             autocomplete="email"
             required
           />
-        </UFormGroup>
+        </UFormField>
 
-        <UFormGroup label="Mot de passe">
+        <UFormField label="Mot de passe">
           <UInput
             v-model="password"
             type="password"
             autocomplete="current-password"
             required
           />
-        </UFormGroup>
+        </UFormField>
 
         <UAlert
           v-if="error"

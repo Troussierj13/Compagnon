@@ -1,0 +1,34 @@
+meta {
+  name: Create session (MJ)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/session/create
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "campaign_id": "{{campaign_id}}"
+  }
+}
+
+docs {
+  Authentification MJ requise (token Supabase Auth).
+  Crée une nouvelle session pour la campagne indiquée et génère un join_code unique à 6 caractères.
+  
+  Comment obtenir mj_token :
+  Après login Supabase, récupérer le access_token via supabase.auth.getSession() dans la console navigateur.
+  
+  Réponse :
+  {
+    "id": "uuid",
+    "campaign_id": "uuid",
+    "join_code": "ABC123",
+    "status": "waiting",
+    "campaign": { "id": "...", "name": "...", "system": "..." }
+  }
+}

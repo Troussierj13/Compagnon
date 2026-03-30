@@ -1,0 +1,27 @@
+meta {
+  name: Preview session
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/session/{{session_code}}
+  body: none
+  auth: none
+}
+
+docs {
+  Public. Retourne le nom de campagne et le statut d'une session à partir du join_code (6 caractères).
+  Utilisé sur la page /player/join avant de rejoindre.
+
+  Paramètre de route :
+  - session_code : le code à 6 caractères affiché par le MJ (ex: ABC123)
+
+  Réponse :
+  {
+    "id": "uuid",
+    "status": "waiting | active | ended",
+    "join_code": "ABC123",
+    "campaign": { "name": "...", "system": "..." }
+  }
+}

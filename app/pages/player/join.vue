@@ -47,7 +47,7 @@ async function handleJoin() {
       </template>
 
       <form class="space-y-4" @submit.prevent="handleJoin">
-        <UFormGroup label="Code de session">
+        <UFormField label="Code de session">
           <UInput
             v-model="joinCode"
             placeholder="XK7P2M"
@@ -55,7 +55,7 @@ async function handleJoin() {
             class="font-mono text-center text-lg tracking-widest uppercase"
             @input="joinCode = joinCode.toUpperCase(); lookupSession()"
           />
-        </UFormGroup>
+        </UFormField>
 
         <!-- Prévisualisation campagne -->
         <div v-if="previewLoading" class="text-center text-sm text-gray-500">
@@ -69,9 +69,9 @@ async function handleJoin() {
           icon="i-heroicons-check-circle"
         />
 
-        <UFormGroup label="Votre prénom / pseudo">
+        <UFormField label="Votre prénom / pseudo">
           <UInput v-model="playerName" placeholder="Bilbon" />
-        </UFormGroup>
+        </UFormField>
 
         <UAlert
           v-if="error"

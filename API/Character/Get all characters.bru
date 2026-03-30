@@ -1,5 +1,5 @@
 meta {
-  name: Get all characters
+  name: Get all characters [LEGACY]
   type: http
   seq: 3
 }
@@ -8,4 +8,14 @@ get {
   url: http://localhost:8000/api/character
   body: none
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+
+  Équivalent dans la nouvelle architecture Nuxt (joueur anonyme) :
+  → GET {{baseUrl}}/api/session/{{session_id}}/characters?participant_id={{participant_id}}
+  (expose uniquement id, name, player_name — voir dossier Session/)
+
+  Pour le MJ : accès direct via Supabase (client authentifié) depuis l'UI.
 }

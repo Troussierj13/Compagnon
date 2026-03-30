@@ -1,5 +1,5 @@
 meta {
-  name: Delete one weapon
+  name: Delete one weapon [LEGACY]
   type: http
   seq: 5
 }
@@ -8,4 +8,10 @@ delete {
   url: localhost:8000/api/weapon/:weaponId
   body: json
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+  Ces données sont maintenant stockées dans Supabase et gérées via l'UI MJ (Nuxt).
+  Aucun endpoint HTTP public équivalent dans la nouvelle architecture.
 }

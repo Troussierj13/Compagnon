@@ -1,11 +1,18 @@
 meta {
-  name: CreateGame
+  name: CreateGame [LEGACY]
   type: http
   seq: 1
 }
 
-put {
+post {
   url: http://localhost:8000/api/game/
   body: none
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+
+  Équivalent dans la nouvelle architecture Nuxt :
+  → POST {{baseUrl}}/api/session/create  (voir dossier Session/)
 }

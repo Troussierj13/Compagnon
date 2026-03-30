@@ -78,15 +78,15 @@ function removeWeapon(idx: number) {
         <section>
           <h2 class="section-title">Identité</h2>
           <div class="grid grid-cols-2 gap-4">
-            <UFormGroup label="Culture">
+            <UFormField label="Culture">
               <UInput v-model="data.culture" />
-            </UFormGroup>
-            <UFormGroup label="Vocation">
+            </UFormField>
+            <UFormField label="Vocation">
               <UInput v-model="data.vocation" />
-            </UFormGroup>
-            <UFormGroup label="Niveau de vie">
+            </UFormField>
+            <UFormField label="Niveau de vie">
               <UInput v-model="data.standard_of_living" />
-            </UFormGroup>
+            </UFormField>
           </div>
         </section>
 
@@ -94,15 +94,15 @@ function removeWeapon(idx: number) {
         <section>
           <h2 class="section-title">Attributs principaux</h2>
           <div class="grid grid-cols-3 gap-4">
-            <UFormGroup label="Force">
+            <UFormField label="Force">
               <UInput v-model.number="data.attributes.strength" type="number" min="1" max="7" />
-            </UFormGroup>
-            <UFormGroup label="Cœur">
+            </UFormField>
+            <UFormField label="Cœur">
               <UInput v-model.number="data.attributes.heart" type="number" min="1" max="7" />
-            </UFormGroup>
-            <UFormGroup label="Esprit">
+            </UFormField>
+            <UFormField label="Esprit">
               <UInput v-model.number="data.attributes.mind" type="number" min="1" max="7" />
-            </UFormGroup>
+            </UFormField>
           </div>
         </section>
 
@@ -110,24 +110,24 @@ function removeWeapon(idx: number) {
         <section>
           <h2 class="section-title">Attributs secondaires</h2>
           <div class="grid grid-cols-3 gap-4">
-            <UFormGroup label="Endurance max">
+            <UFormField label="Endurance max">
               <UInput v-model.number="data.endurance_max" type="number" min="1" />
-            </UFormGroup>
-            <UFormGroup label="Endurance actuelle">
+            </UFormField>
+            <UFormField label="Endurance actuelle">
               <UInput v-model.number="data.endurance_current" type="number" min="0" :max="data.endurance_max" />
-            </UFormGroup>
-            <UFormGroup label="Espoir max">
+            </UFormField>
+            <UFormField label="Espoir max">
               <UInput v-model.number="data.hope_max" type="number" min="1" />
-            </UFormGroup>
-            <UFormGroup label="Espoir actuel">
+            </UFormField>
+            <UFormField label="Espoir actuel">
               <UInput v-model.number="data.hope_current" type="number" min="0" :max="data.hope_max" />
-            </UFormGroup>
-            <UFormGroup label="Ombre">
+            </UFormField>
+            <UFormField label="Ombre">
               <UInput v-model.number="data.shadow" type="number" min="0" />
-            </UFormGroup>
-            <UFormGroup label="Parade">
+            </UFormField>
+            <UFormField label="Parade">
               <UInput v-model.number="data.parry" type="number" min="0" />
-            </UFormGroup>
+            </UFormField>
           </div>
         </section>
 
@@ -183,12 +183,12 @@ function removeWeapon(idx: number) {
         <section>
           <h2 class="section-title">Progression</h2>
           <div class="grid grid-cols-2 gap-4">
-            <UFormGroup label="Expérience">
+            <UFormField label="Expérience">
               <UInput v-model.number="data.experience" type="number" min="0" />
-            </UFormGroup>
-            <UFormGroup label="Avancement">
+            </UFormField>
+            <UFormField label="Avancement">
               <UInput v-model.number="data.advancement" type="number" min="0" />
-            </UFormGroup>
+            </UFormField>
           </div>
         </section>
       </div>

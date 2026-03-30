@@ -1,0 +1,30 @@
+meta {
+  name: Get session characters (joueur)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/session/{{session_id}}/characters
+  body: none
+  auth: inherit
+}
+
+params:query {
+  participant_id: {{participant_id}}
+}
+
+docs {
+  Joueur anonyme — participant_id requis (obtenu via Join session).
+  Retourne la liste des personnages de la campagne liée à la session.
+  Expose uniquement id, name et player_name — pas les données sensibles (stats, etc.).
+  
+  Paramètre de route : session_id (UUID)
+  Query param      : participant_id (UUID, depuis localStorage)
+  
+  Réponse :
+  [
+    { "id": "uuid", "name": "Adrahil", "player_name": "Julien" },
+    ...
+  ]
+}

@@ -1,0 +1,42 @@
+meta {
+  name: Get session state (joueur)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/session/{{session_id}}/state
+  body: json
+  auth: none
+}
+
+params:query {
+  participant_id: {{participant_id}}
+}
+
+body:json {
+  {
+    participant_id: "{{participant_id}}"
+  }
+}
+
+docs {
+  Joueur anonyme — participant_id requis (obtenu via Join session).
+  Retourne l'état complet de la session visible par le joueur :
+  session, scène active, et entités visibles (visible_to_players = true).
+  
+  Paramètre de route : session_id (UUID)
+  Query param      : participant_id (UUID, depuis localStorage)
+  
+  Réponse :
+  {
+    "session": {
+      "id": "...", "status": "...", "active_scene_id": "...",
+      "campaign": { "id": "...", "name": "...", "system": "..." }
+    },
+    "active_scene": { "id": "...", "name": "...", "description": "...", "battlemap_url": "..." } | null,
+    "scene_entities": [
+      { "id": "...", "type": "...", "name": "...", "data": {}, "position": {}, "visible_to_players": true }
+    ]
+  }
+}

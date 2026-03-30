@@ -81,15 +81,15 @@ onMounted(fetchCampaigns)
     </div>
 
     <!-- Modal nouvelle campagne -->
-    <UModal v-model="showNewCampaign" title="Nouvelle campagne">
+    <UModal v-model:open="showNewCampaign" title="Nouvelle campagne">
       <template #body>
         <div class="space-y-4">
-          <UFormGroup label="Nom de la campagne" required>
+          <UFormField label="Nom de la campagne" required>
             <UInput v-model="newCampaignName" placeholder="La Quête de l'Anneau Unique..." />
-          </UFormGroup>
-          <UFormGroup label="Description">
+          </UFormField>
+          <UFormField label="Description">
             <UTextarea v-model="newCampaignDesc" placeholder="Notes sur la campagne..." rows="3" />
-          </UFormGroup>
+          </UFormField>
         </div>
       </template>
       <template #footer>

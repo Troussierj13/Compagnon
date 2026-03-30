@@ -1,0 +1,37 @@
+meta {
+  name: Join session (joueur)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/session/join
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "join_code": "CLW97H",
+    "player_name": "Joueur Test",
+    "character_id": null
+  }
+}
+
+docs {
+  Anonyme — aucune auth requise.
+  Permet à un joueur de rejoindre une session via le join_code affiché par le MJ.
+  
+  Corps :
+  - join_code (requis) : code à 6 caractères, insensible à la casse
+  - player_name (requis) : nom affiché en session
+  - character_id (optionnel) : UUID d'un personnage de la campagne à associer
+  
+  Réponse :
+  {
+    "session": { "id": "...", "status": "...", "campaign": { ... } },
+    "participant_id": "uuid"
+  }
+  
+  → Stocker participant_id dans le localStorage pour les appels suivants.
+}

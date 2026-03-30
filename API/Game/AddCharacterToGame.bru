@@ -1,11 +1,19 @@
 meta {
-  name: AddCharacterToGame
+  name: AddCharacterToGame [LEGACY]
   type: http
   seq: 3
 }
 
 get {
-  url: http://192.168.1.24:8000/api/game/65b30b504b4d5c2a7bb4d182/63f0dac641dde983a59c1b0b
+  url: http://localhost:8000/api/game/:gameId/:characterId
   body: none
   auth: none
+}
+
+docs {
+  ⚠️  LEGACY — Backend Express (backend/) désactivé.
+
+  Équivalent dans la nouvelle architecture Nuxt :
+  → POST {{baseUrl}}/api/session/join  avec character_id dans le body
+  (voir dossier Session/)
 }

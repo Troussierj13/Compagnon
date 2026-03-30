@@ -37,7 +37,7 @@ export function useGMSession() {
     loading.value = true
     const { data, error: err } = await supabase
       .from('sessions')
-      .select('*, campaign:campaigns(*), active_scene:scenes(*)')
+      .select('*, campaign:campaigns(*), active_scene:scenes!active_scene_id(*)')
       .eq('id', sessionId)
       .single()
 

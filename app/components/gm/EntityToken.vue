@@ -1,25 +1,12 @@
 <script setup lang="ts">
-import type { SceneEntity, EntityPosition } from '~/types/rpg'
+import type { SceneEntity } from '~/types/rpg'
+import { ENTITY_TOKEN_COLOR, ENTITY_TOKEN_ICON } from '~/utils/entityDisplay'
 
 const props = defineProps<{ entity: SceneEntity }>()
 const emit = defineEmits<{
   update: [patch: Partial<SceneEntity>]
   remove: []
 }>()
-
-const colorMap: Record<string, string> = {
-  enemy: 'bg-red-600',
-  npc: 'bg-blue-600',
-  item: 'bg-yellow-500',
-  zone: 'bg-green-700',
-}
-
-const iconMap: Record<string, string> = {
-  enemy: 'i-heroicons-skull',
-  npc: 'i-heroicons-user',
-  item: 'i-heroicons-gift',
-  zone: 'i-heroicons-map-pin',
-}
 
 const showMenu = ref(false)
 
@@ -40,11 +27,11 @@ const style = computed(() => ({
     <div
       class="w-8 h-8 rounded-full flex items-center justify-center text-white shadow-lg border-2 transition"
       :class="[
-        colorMap[entity.type],
+        ENTITY_TOKEN_COLOR[entity.type],
         entity.visible_to_players ? 'border-white' : 'border-gray-500 opacity-60',
       ]"
     >
-      <UIcon :name="iconMap[entity.type]" class="text-sm" />
+      <UIcon :name="ENTITY_TOKEN_ICON[entity.type]" class="text-sm" />
     </div>
 
     <!-- Label -->

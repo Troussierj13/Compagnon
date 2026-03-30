@@ -2,6 +2,12 @@ import type { GameSession, Character, Scene, SceneEntity, JoinSessionResponse } 
 
 const STORAGE_KEY = 'compagnon_player_session'
 
+type SessionStateResponse = {
+  session: GameSession
+  active_scene: Scene | null
+  scene_entities: SceneEntity[]
+}
+
 /**
  * Gestion de session côté joueur.
  * Le joueur rejoint via un join_code. Son état est persisté dans localStorage.
@@ -47,7 +53,8 @@ export function usePlayerSession() {
       character_id: characterId ?? null,
     }))
 
-    await loadSessionState(result.session.id, characterId)
+    // Charger la scène active + les personnages en un passage
+    await fetchFullState(result.session.id, result.participant_id, characterId)
     loading.value = false
     return true
   }
@@ -64,24 +71,29 @@ export function usePlayerSession() {
       participantId.value = participant_id
       playerName.value = player_name
 
-      const result = await $fetch<{
-        session: GameSession
-        active_scene: Scene | null
-        scene_entities: SceneEntity[]
-      }>(`/api/session/${session_id}/state?participant_id=${participant_id}`).catch(() => null)
+      // Un seul appel à /state pour récupérer session + scène + entités
+      const state = await $fetch<SessionStateResponse>(
+        `/api/session/${session_id}/state?participant_id=${participant_id}`,
+      ).catch(() => null)
 
-      if (!result || result.session.status === 'ended') {
+      if (!state || state.session.status === 'ended') {
         clearSession()
         return false
       }
 
-      session.value = result.session
-      activeScene.value = result.active_scene
-      sceneEntities.value = result.scene_entities
+      session.value = state.session
+      activeScene.value = state.active_scene
+      sceneEntities.value = state.scene_entities
 
-      await loadSessionState(session_id, character_id)
+      await fetchAvailableCharacters(session_id)
+      if (character_id) {
+        selectedCharacter.value = availableCharacters.value.find(c => c.id === character_id) ?? null
+      }
+
       return true
-    } catch {
+    } catch (err) {
+      console.error('Erreur lors de la restauration de session:', err)
+      error.value = 'Erreur lors du chargement de votre session'
       clearSession()
       return false
     }
@@ -100,40 +112,46 @@ export function usePlayerSession() {
     localStorage.removeItem(STORAGE_KEY)
   }
 
-  // ─── Charger l'état de la session ────────────────────────────────────────
+  // ─── Chargement interne ───────────────────────────────────────────────────
 
-  async function loadSessionState(sessionId: string, characterId?: string | null) {
-    // Personnages disponibles dans la campagne — via server endpoint (règle ADR joueur anonyme)
-    if (participantId.value) {
-      const characters = await $fetch<Character[]>(
-        `/api/session/${sessionId}/characters?participant_id=${participantId.value}`,
-      ).catch(() => [])
-      availableCharacters.value = characters
+  // Charge état de session + personnages disponibles en un seul passage
+  async function fetchFullState(sessionId: string, pid: string, characterId?: string | null) {
+    const state = await $fetch<SessionStateResponse>(
+      `/api/session/${sessionId}/state?participant_id=${pid}`,
+    ).catch(() => null)
+
+    if (state) {
+      session.value = state.session
+      activeScene.value = state.active_scene
+      sceneEntities.value = state.scene_entities
     }
 
-    // Personnage sélectionné
+    await fetchAvailableCharacters(sessionId)
     if (characterId) {
       selectedCharacter.value = availableCharacters.value.find(c => c.id === characterId) ?? null
     }
-
-    // Scène active
-    if (session.value?.active_scene_id) {
-      await loadActiveScene(session.value.active_scene_id)
-    }
   }
 
-  async function loadActiveScene(sceneId: string) {
+  // Charge uniquement les personnages disponibles dans la campagne
+  async function fetchAvailableCharacters(sessionId: string) {
+    if (!participantId.value) return
+    const characters = await $fetch<Character[]>(
+      `/api/session/${sessionId}/characters?participant_id=${participantId.value}`,
+    ).catch(() => [])
+    availableCharacters.value = characters
+  }
+
+  // Recharge la scène active depuis /state — utilisé par le Realtime quand la scène change
+  async function refreshActiveScene() {
     if (!session.value || !participantId.value) return
 
-    const result = await $fetch<{
-      session: GameSession
-      active_scene: Scene | null
-      scene_entities: SceneEntity[]
-    }>(`/api/session/${session.value.id}/state?participant_id=${participantId.value}`).catch(() => null)
+    const state = await $fetch<SessionStateResponse>(
+      `/api/session/${session.value.id}/state?participant_id=${participantId.value}`,
+    ).catch(() => null)
 
-    if (result) {
-      activeScene.value = result.active_scene
-      sceneEntities.value = result.scene_entities
+    if (state) {
+      activeScene.value = state.active_scene
+      sceneEntities.value = state.scene_entities
     }
   }
 
@@ -143,12 +161,10 @@ export function usePlayerSession() {
     if (!session.value) return () => {}
 
     const sessionId = session.value.id
-
     let currentSceneUnsub: (() => void) | null = null
 
     const channel = supabase
       .channel(`player-session-${sessionId}`)
-      // Changement de scène active
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'sessions', filter: `id=eq.${sessionId}` },
@@ -157,10 +173,12 @@ export function usePlayerSession() {
           session.value = { ...session.value!, ...updated }
 
           if (updated.active_scene_id && updated.active_scene_id !== activeScene.value?.id) {
-            await loadActiveScene(updated.active_scene_id)
+            // Le MJ a changé la scène active → recharger et changer la subscription
+            await refreshActiveScene()
             currentSceneUnsub?.()
             currentSceneUnsub = subscribeToSceneEntities(updated.active_scene_id)
           } else if (!updated.active_scene_id) {
+            // Le MJ a retiré la scène active
             currentSceneUnsub?.()
             currentSceneUnsub = null
             activeScene.value = null
@@ -186,12 +204,7 @@ export function usePlayerSession() {
       .channel(`player-entities-${sceneId}`)
       .on(
         'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'scene_entities',
-          filter: `scene_id=eq.${sceneId}`,
-        },
+        { event: 'INSERT', schema: 'public', table: 'scene_entities', filter: `scene_id=eq.${sceneId}` },
         (payload) => {
           const entity = payload.new as SceneEntity
           if (entity.visible_to_players && !sceneEntities.value.find(e => e.id === entity.id)) {
@@ -201,12 +214,7 @@ export function usePlayerSession() {
       )
       .on(
         'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'scene_entities',
-          filter: `scene_id=eq.${sceneId}`,
-        },
+        { event: 'UPDATE', schema: 'public', table: 'scene_entities', filter: `scene_id=eq.${sceneId}` },
         (payload) => {
           const updated = payload.new as SceneEntity
           const idx = sceneEntities.value.findIndex(e => e.id === updated.id)
@@ -220,12 +228,7 @@ export function usePlayerSession() {
       )
       .on(
         'postgres_changes',
-        {
-          event: 'DELETE',
-          schema: 'public',
-          table: 'scene_entities',
-          filter: `scene_id=eq.${sceneId}`,
-        },
+        { event: 'DELETE', schema: 'public', table: 'scene_entities', filter: `scene_id=eq.${sceneId}` },
         (payload) => {
           sceneEntities.value = sceneEntities.value.filter(
             e => e.id !== (payload.old as SceneEntity).id,
