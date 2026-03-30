@@ -120,7 +120,9 @@ export function useScene(sessionId: string) {
     return true
   }
 
-  // ─── Realtime (lecture pour les joueurs) ─────────────────────────────────
+  // ─── Realtime (synchronisation MJ — toutes entités, y compris cachées) ─────
+  // Pour la version joueur (entités filtrées par visible_to_players), voir
+  // usePlayerSession.ts > subscribeToSceneEntities.
   // Subscribes aux changements d'entités d'une scène spécifique.
   function subscribeToEntities(sceneId: string) {
     const channel = supabase

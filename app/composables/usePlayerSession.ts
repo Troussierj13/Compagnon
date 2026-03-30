@@ -92,20 +92,23 @@ export function usePlayerSession() {
     participantId.value = null
     playerName.value = null
     selectedCharacter.value = null
+    availableCharacters.value = []
+    activeScene.value = null
+    sceneEntities.value = []
+    error.value = null
+    loading.value = false
     localStorage.removeItem(STORAGE_KEY)
   }
 
   // ─── Charger l'état de la session ────────────────────────────────────────
 
   async function loadSessionState(sessionId: string, characterId?: string | null) {
-    // Personnages disponibles dans la campagne
-    if (session.value?.campaign_id) {
-      const { data } = await supabase
-        .from('characters')
-        .select('*')
-        .eq('campaign_id', session.value.campaign_id)
-
-      availableCharacters.value = (data as Character[]) ?? []
+    // Personnages disponibles dans la campagne — via server endpoint (règle ADR joueur anonyme)
+    if (participantId.value) {
+      const characters = await $fetch<Character[]>(
+        `/api/session/${sessionId}/characters?participant_id=${participantId.value}`,
+      ).catch(() => [])
+      availableCharacters.value = characters
     }
 
     // Personnage sélectionné
@@ -158,6 +161,8 @@ export function usePlayerSession() {
             currentSceneUnsub?.()
             currentSceneUnsub = subscribeToSceneEntities(updated.active_scene_id)
           } else if (!updated.active_scene_id) {
+            currentSceneUnsub?.()
+            currentSceneUnsub = null
             activeScene.value = null
             sceneEntities.value = []
           }

@@ -15,7 +15,8 @@
 
 ### `characters`
 - `characters_gm_all` : MJ CRUD complet (`auth.uid() = gm_user_id` via la campagne)
-- Pas de policy SELECT anon — les feuilles de personnage ne sont jamais accessibles directement par les joueurs
+- `characters_player_read` : lecture anonyme restreinte — permet à un joueur de lire uniquement le personnage qui lui est assigné via `session_participants` (`sp.character_id = characters.id`), dans une session dont le statut est `active`. Cette policy ne donne pas accès à l'ensemble des personnages de la campagne.
+- Malgré l'existence de `characters_player_read`, les composables joueur passent toujours par le server endpoint `/api/session/[id]/characters` (client admin) afin de contrôler précisément les champs exposés : uniquement `id`, `name`, `player_name` — jamais `data` (feuille de perso complète) ni les timestamps internes.
 
 ### `sessions`
 - `sessions_gm_all` : MJ CRUD complet
