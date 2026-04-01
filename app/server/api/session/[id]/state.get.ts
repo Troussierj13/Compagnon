@@ -31,21 +31,21 @@ export default defineEventHandler(async (event) => {
   let scene_entities: SceneEntity[] = []
 
   if (session.active_scene_id) {
-    const { data: sceneData } = await admin
-      .from('scenes')
-      .select('id, session_id, name, description, battlemap_url')
-      .eq('id', session.active_scene_id)
-      .single()
-
-    if (sceneData) {
-      active_scene = sceneData
-
-      const { data: entitiesData } = await admin
+    const [{ data: sceneData }, { data: entitiesData }] = await Promise.all([
+      admin
+        .from('scenes')
+        .select('id, session_id, name, description, battlemap_url')
+        .eq('id', session.active_scene_id)
+        .single(),
+      admin
         .from('scene_entities')
         .select('id, scene_id, type, name, data, position, visible_to_players')
         .eq('scene_id', session.active_scene_id)
-        .eq('visible_to_players', true)
+        .eq('visible_to_players', true),
+    ])
 
+    if (sceneData) {
+      active_scene = sceneData
       scene_entities = (entitiesData ?? []) as SceneEntity[]
     }
   }

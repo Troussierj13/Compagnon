@@ -58,7 +58,7 @@ export default defineEventHandler(async (event) => {
   const { data: session, error } = await admin
     .from('sessions')
     .insert({ campaign_id: body.campaign_id, join_code: joinCode, status: 'waiting' })
-    .select('*, campaign:campaigns(*)')
+    .select('*, campaign:campaigns(id, name, system)')
     .single()
 
   if (error) {

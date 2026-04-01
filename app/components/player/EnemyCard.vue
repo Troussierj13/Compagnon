@@ -32,9 +32,9 @@ const hpColor = computed(() => {
         :style="{ width: `${hpPercent}%` }"
       />
     </div>
-    <div v-if="data.parry || data.armor" class="flex gap-3 mt-1.5 text-xs text-gray-500">
-      <span v-if="data.parry">Parade {{ data.parry }}</span>
-      <span v-if="data.armor">Armure {{ data.armor }}</span>
+    <div v-if="data.parry != null || data.armor != null" class="flex gap-3 mt-1.5 text-xs text-gray-500">
+      <span v-if="data.parry != null">Parade {{ data.parry }}</span>
+      <span v-if="data.armor != null">Armure {{ data.armor }}</span>
     </div>
   </div>
 </template>

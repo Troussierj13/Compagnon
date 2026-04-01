@@ -153,6 +153,22 @@ Voir `app/.env.example`. Les clés sensibles (`SUPABASE_SERVICE_KEY`, `SESSION_S
 - `app/docs/vision/README.md` — vision globale du projet (**source de vérité**)
 - `app/docs/vision/feature-display-tv.md` — spec complète de l'affichage TV
 
+### Skills installés
+
+Tous les skills sont dans `.claude/skills/`.
+
+| Skill | Quand l'utiliser |
+|---|---|
+| `supabase-postgres-best-practices` | Toute modification du schéma, queries, RLS, policies |
+| `nuxt-ui` | Utilisation ou modification de composants @nuxt/ui |
+| `nuxt` | Routes serveur, middleware, composables Nuxt, config Nitro |
+| `vue` | Composants .vue, Composition API, composables |
+| `nuxt-better-auth` | Implémentation auth avec @onmax/nuxt-better-auth |
+| `nuxt-content` | Contenu Nuxt Content v3, markdown, collections |
+| `nuxt-modules` | Création de modules Nuxt |
+| `ts-library` | Bibliothèques TypeScript / packages npm |
+| `writing-web-documentation` | Rédaction ou amélioration de documentation |
+
 ### Documentation technique
 
 - `app/docs/architecture.md` — architecture détaillée et décisions de design

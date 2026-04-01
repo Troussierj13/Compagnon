@@ -11,6 +11,7 @@ const showNewCampaign = ref(false)
 const newCampaignName = ref('')
 const newCampaignDesc = ref('')
 const creating = ref(false)
+const createError = ref<string | null>(null)
 
 async function fetchCampaigns() {
   const { data } = await supabase
@@ -36,10 +37,11 @@ async function createCampaign() {
     .single()
 
   if (insertError) {
-    console.error('Erreur création campagne:', insertError)
+    createError.value = insertError.message ?? 'Erreur lors de la création de la campagne'
     creating.value = false
     return
   }
+  createError.value = null
 
   if (data) {
     campaigns.value.unshift(data as Campaign)
@@ -90,11 +92,18 @@ onMounted(fetchCampaigns)
           <UFormField label="Description">
             <UTextarea v-model="newCampaignDesc" placeholder="Notes sur la campagne..." rows="3" />
           </UFormField>
+          <UAlert
+            v-if="createError"
+            color="red"
+            variant="soft"
+            :title="createError"
+            icon="i-heroicons-exclamation-circle"
+          />
         </div>
       </template>
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton variant="ghost" @click="showNewCampaign = false">Annuler</UButton>
+          <UButton variant="ghost" @click="showNewCampaign = false; createError = null">Annuler</UButton>
           <UButton :loading="creating" @click="createCampaign">Créer</UButton>
         </div>
       </template>

@@ -1,7 +1,5 @@
 import type { GameSession, Character, Scene, SceneEntity, JoinSessionResponse } from '~/types/rpg'
 
-const STORAGE_KEY = 'compagnon_player_session'
-
 type SessionStateResponse = {
   session: GameSession
   active_scene: Scene | null
@@ -46,7 +44,7 @@ export function usePlayerSession() {
     playerName.value = name
 
     // Persister en localStorage pour survie au refresh
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    localStorage.setItem(PLAYER_SESSION_STORAGE_KEY, JSON.stringify({
       session_id: result.session.id,
       participant_id: result.participant_id,
       player_name: name,
@@ -63,7 +61,7 @@ export function usePlayerSession() {
 
   async function restore(): Promise<boolean> {
     if (typeof window === 'undefined') return false
-    const stored = localStorage.getItem(STORAGE_KEY)
+    const stored = localStorage.getItem(PLAYER_SESSION_STORAGE_KEY)
     if (!stored) return false
 
     try {
@@ -71,10 +69,13 @@ export function usePlayerSession() {
       participantId.value = participant_id
       playerName.value = player_name
 
-      // Un seul appel à /state pour récupérer session + scène + entités
-      const state = await $fetch<SessionStateResponse>(
-        `/api/session/${session_id}/state?participant_id=${participant_id}`,
-      ).catch(() => null)
+      // Charger état de session + personnages disponibles en parallèle
+      const [state] = await Promise.all([
+        $fetch<SessionStateResponse>(
+          `/api/session/${session_id}/state?participant_id=${participant_id}`,
+        ).catch(() => null),
+        fetchAvailableCharacters(session_id),
+      ])
 
       if (!state || state.session.status === 'ended') {
         clearSession()
@@ -85,7 +86,6 @@ export function usePlayerSession() {
       activeScene.value = state.active_scene
       sceneEntities.value = state.scene_entities
 
-      await fetchAvailableCharacters(session_id)
       if (character_id) {
         selectedCharacter.value = availableCharacters.value.find(c => c.id === character_id) ?? null
       }
@@ -109,16 +109,19 @@ export function usePlayerSession() {
     sceneEntities.value = []
     error.value = null
     loading.value = false
-    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(PLAYER_SESSION_STORAGE_KEY)
   }
 
   // ─── Chargement interne ───────────────────────────────────────────────────
 
-  // Charge état de session + personnages disponibles en un seul passage
+  // Charge état de session + personnages disponibles en parallèle
   async function fetchFullState(sessionId: string, pid: string, characterId?: string | null) {
-    const state = await $fetch<SessionStateResponse>(
-      `/api/session/${sessionId}/state?participant_id=${pid}`,
-    ).catch(() => null)
+    const [state] = await Promise.all([
+      $fetch<SessionStateResponse>(
+        `/api/session/${sessionId}/state?participant_id=${pid}`,
+      ).catch(() => null),
+      fetchAvailableCharacters(sessionId),
+    ])
 
     if (state) {
       session.value = state.session
@@ -126,7 +129,6 @@ export function usePlayerSession() {
       sceneEntities.value = state.scene_entities
     }
 
-    await fetchAvailableCharacters(sessionId)
     if (characterId) {
       selectedCharacter.value = availableCharacters.value.find(c => c.id === characterId) ?? null
     }

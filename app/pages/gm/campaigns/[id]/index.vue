@@ -17,6 +17,8 @@ const { characters, fetchAll: fetchCharacters, create: createCharacter, remove: 
 const showNewCharacter = ref(false)
 const newCharName = ref('')
 const newPlayerName = ref('')
+const showDeleteConfirm = ref(false)
+const charToDelete = ref<string | null>(null)
 
 async function fetchData() {
   const [{ data: campaignData }, { data: sessionsData }] = await Promise.all([
@@ -45,6 +47,13 @@ async function handleCreateCharacter() {
   newCharName.value = ''
   newPlayerName.value = ''
   showNewCharacter.value = false
+}
+
+async function confirmDeleteCharacter() {
+  if (!charToDelete.value) return
+  await removeCharacter(charToDelete.value)
+  charToDelete.value = null
+  showDeleteConfirm.value = false
 }
 
 const activeSession = computed(() =>
@@ -148,7 +157,7 @@ onMounted(fetchData)
                   color="red"
                   variant="ghost"
                   icon="i-heroicons-trash"
-                  @click="removeCharacter(char.id)"
+                  @click="charToDelete = char.id; showDeleteConfirm = true"
                 />
               </div>
             </UCard>
@@ -177,5 +186,20 @@ onMounted(fetchData)
         </section>
       </div>
     </template>
+
+    <!-- Modal confirmation suppression personnage -->
+    <UModal v-model:open="showDeleteConfirm" title="Supprimer le personnage ?">
+      <template #body>
+        <p class="text-gray-300">
+          Cette action est irréversible. Le personnage et toutes ses données seront définitivement supprimés.
+        </p>
+      </template>
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <UButton variant="ghost" @click="showDeleteConfirm = false; charToDelete = null">Annuler</UButton>
+          <UButton color="red" @click="confirmDeleteCharacter">Supprimer</UButton>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>

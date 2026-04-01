@@ -14,26 +14,16 @@ export default defineEventHandler(async (event) => {
 
   const admin = useSupabaseAdmin()
 
-  // Récupérer la session pour obtenir le campaign_id
-  const { data: session, error: sessionError } = await admin
+  // Récupérer session + personnages en une seule requête via jointure
+  const { data, error } = await admin
     .from('sessions')
-    .select('campaign_id')
+    .select('campaign:campaigns(characters(id, name, player_name))')
     .eq('id', sessionId!)
     .single()
 
-  if (sessionError || !session) {
+  if (error || !data) {
     throw createError({ statusCode: 404, message: 'Session introuvable' })
   }
 
-  // Récupérer les personnages de la campagne — champs publics uniquement, pas `data`
-  const { data: characters, error: charactersError } = await admin
-    .from('characters')
-    .select('id, name, player_name')
-    .eq('campaign_id', session.campaign_id)
-
-  if (charactersError) {
-    throw createError({ statusCode: 500, message: 'Erreur lors de la récupération des personnages' })
-  }
-
-  return characters ?? []
+  return (data.campaign as { characters: { id: string; name: string; player_name: string | null }[] } | null)?.characters ?? []
 })

@@ -152,7 +152,7 @@ function removeWeapon(idx: number) {
             >
               <UInput v-model="skill.name" placeholder="Nom" class="flex-1" />
               <UInput v-model.number="skill.rank" type="number" min="0" max="6" class="w-16" />
-              <UToggle v-model="skill.favoured" />
+              <USwitch v-model="skill.favoured" />
               <span class="text-xs text-gray-500">Fav.</span>
               <UButton size="xs" color="red" variant="ghost" icon="i-heroicons-trash" @click="removeSkill(group as 'skills_strength' | 'skills_heart' | 'skills_mind', idx)" />
             </div>

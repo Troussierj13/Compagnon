@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "skills": {
+    "nuxt": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "e814b473cac8105db33cbd6ddc5ac9d000faf4d4f3e28df4aa7a8113bb668f8e"
+    },
+    "nuxt-better-auth": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "e35f17abf74dae1fe90b9d28834f4ac5fba13f5a65e3d94338df0df1ae634fc7"
+    },
+    "nuxt-content": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "9d5e16da7f37310d26cebaec959dffd09679a37f7501fe1611af0a92a733336c"
+    },
+    "nuxt-modules": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "f7ae266745c7b11396afea8ab7d2f0443e11764c5592f0d7f6385b9249864324"
+    },
+    "nuxt-ui": {
+      "source": "nuxt/ui",
+      "sourceType": "github",
+      "computedHash": "1cca5c9f8cdad65c6fe24d06adbb1fa649451d329d23d33521e386ea51248283"
+    },
+    "supabase-postgres-best-practices": {
+      "source": "supabase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "e3ba3d760c5f4cc43b02a91fb8924f726c7818f95cc35d79d0a606ca622b72f5"
+    },
+    "ts-library": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "5bcf87721302cb40e3e760271279bd72c106c085b8c4a82196dd5d8cabe4e0dc"
+    },
+    "vue": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "30afec05f0f4127ab4d8789ee07d8b7b009edc5aa674d48ba30a7b6869c5e3f1"
+    },
+    "writing-web-documentation": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "computedHash": "eaa80590f1f7ed97cc1af6657821eab4dfc8400a45033747a48c3d1e5d2b8957"
+    }
+  }
+}

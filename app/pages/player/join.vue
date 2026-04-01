@@ -15,6 +15,7 @@ if (route.query.code) {
 // Prévisualisation de la session
 const sessionPreview = ref<{ id: string; status: string; campaign: { name: string } } | null>(null)
 const previewLoading = ref(false)
+let lookupTimer: ReturnType<typeof setTimeout> | null = null
 
 async function lookupSession() {
   const code = joinCode.value.trim().toUpperCase()
@@ -23,6 +24,11 @@ async function lookupSession() {
   previewLoading.value = true
   sessionPreview.value = await $fetch(`/api/session/${code}`).catch(() => null) as typeof sessionPreview.value
   previewLoading.value = false
+}
+
+function debouncedLookup() {
+  if (lookupTimer) clearTimeout(lookupTimer)
+  lookupTimer = setTimeout(lookupSession, 300)
 }
 
 async function handleJoin() {
@@ -53,7 +59,7 @@ async function handleJoin() {
             placeholder="XK7P2M"
             maxlength="6"
             class="font-mono text-center text-lg tracking-widest uppercase"
-            @input="joinCode = joinCode.toUpperCase(); lookupSession()"
+            @input="joinCode = joinCode.toUpperCase(); debouncedLookup()"
           />
         </UFormField>
 
@@ -85,7 +91,7 @@ async function handleJoin() {
           type="submit"
           block
           :loading="loading"
-          :disabled="!joinCode.trim() || !playerName.trim()"
+          :disabled="joinCode.trim().length < 6 || !playerName.trim()"
         >
           Rejoindre la partie
         </UButton>

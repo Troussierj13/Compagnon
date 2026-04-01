@@ -346,7 +346,7 @@ const hiddenEntities = computed(() => entities.value.filter(e => !e.visible_to_p
             <UInput v-model.number="entityEndurance" type="number" min="1" />
           </UFormField>
           <UFormField label="Visible par les joueurs">
-            <UToggle v-model="entityVisible" />
+            <USwitch v-model="entityVisible" />
           </UFormField>
         </div>
       </template>

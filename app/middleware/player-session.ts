@@ -8,8 +8,7 @@ export default defineNuxtRouteMiddleware((to) => {
   // La page côté client prendra le relais avec restore()
   if (import.meta.server) return
 
-  const STORAGE_KEY = 'compagnon_player_session'
-  const stored = localStorage.getItem(STORAGE_KEY)
+  const stored = localStorage.getItem(PLAYER_SESSION_STORAGE_KEY)
 
   if (!stored && to.path !== '/player/join') {
     return navigateTo('/player/join')
