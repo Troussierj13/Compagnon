@@ -4,7 +4,7 @@
 > Tous les autres documents (`/docs/*.md`) doivent rester cohérents avec ce qui est défini ici.
 > En cas de contradiction, ce dossier a priorité.
 
-**Dernière mise à jour** : 2026-03-30
+**Dernière mise à jour** : 2026-03-31
 
 ---
 

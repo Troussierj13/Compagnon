@@ -2,6 +2,31 @@
 
 Guide pour Claude Code sur ce repo. Lis ce fichier avant toute intervention.
 
+## ⚠️ Règle absolue — Vision avant tout
+
+> **Aucune modification de code n'est autorisée tant que la documentation de vision n'est pas complète.**
+
+Le dossier `app/docs/vision/` est la **référence principale du projet**. Avant d'écrire la moindre ligne de code, de modifier un fichier existant, ou de proposer une implémentation :
+
+1. **Lire `app/docs/vision/README.md`** — vue d'ensemble du projet, les 4 surfaces, le système NFC, le système de loot
+2. **Lire tous les fichiers `app/docs/vision/feature-*.md`** — specs détaillées de chaque feature
+3. **Vérifier que la feature demandée est entièrement spécifiée** — si un `feature-xxx.md` manque ou est incomplet, demander au MJ de compléter la spec avant toute implémentation
+
+En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`architecture.md`, `CLAUDE.md`, etc.), **`app/docs/vision/` a priorité**.
+
+### Documents de vision existants
+
+| Fichier | Contenu |
+|---|---|
+| `app/docs/vision/README.md` | Vision globale : acteurs, 4 surfaces, NFC, loot, temps réel |
+| `app/docs/vision/feature-display-tv.md` | Affichage spectateur TV : modes, overlays, animations NFC, fil d'initiative |
+| `app/docs/vision/feature-nfc.md` | Puces NFC : système de types, encodage, pages back-office, endpoint trigger |
+| `app/docs/vision/feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (**à définir — bloquant pour l'implémentation NFC**) |
+
+> Si une feature n'a pas encore son fichier `feature-xxx.md`, elle n'est **pas prête à être implémentée**.
+
+---
+
 ## Structure du monorepo
 
 ```
@@ -122,6 +147,13 @@ app/
 Voir `app/.env.example`. Les clés sensibles (`SUPABASE_SERVICE_KEY`, `SESSION_SECRET`) ne sont jamais exposées côté client (`runtimeConfig` sans `public`).
 
 ## Documentation
+
+### Vision (à lire en priorité absolue)
+
+- `app/docs/vision/README.md` — vision globale du projet (**source de vérité**)
+- `app/docs/vision/feature-display-tv.md` — spec complète de l'affichage TV
+
+### Documentation technique
 
 - `app/docs/architecture.md` — architecture détaillée et décisions de design
 - `app/docs/security.md` — modèle de sécurité RLS et patterns d'accès
