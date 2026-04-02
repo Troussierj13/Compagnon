@@ -3,7 +3,7 @@
 > Référence principale : [`vision/README.md`](./vision/README.md)
 > Pour les fonctionnalités à implémenter, voir [`roadmap.md`](./roadmap.md).
 
-**Dernière mise à jour** : 2026-03-30
+**Dernière mise à jour** : 2026-04-03
 
 ---
 
@@ -88,6 +88,14 @@ type EntityPayload =
   | { type: 'zone';  data: ZoneData  }
   | { type: 'npc';   data: NPCData   }
 ```
+
+### Champ `wounds` absent de `TORCharacterData`
+Le popover PJ (feature `feature-live-stats-dragdrop.md`) expose un champ "Blessures" qui n'est pas encore défini dans `TORCharacterData`.
+**À définir** dans `feature-characters.md` (fiche personnage complète) avant d'implémenter le popover PJ.
+
+### `NPCData` non défini dans `rpg.ts`
+Les PNJ ont un type `EntityData` générique. Un type `NPCData` (endurance, endurance_max, portrait_url) est nécessaire pour le type discriminant et les popovers.
+**À ajouter** dans `types/rpg.ts` lors de l'implémentation des fiches PNJ.
 
 ---
 

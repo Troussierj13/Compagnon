@@ -3,7 +3,7 @@
 > Référence principale : [`vision/README.md`](./vision/README.md)
 > Pour le détail des features, voir les fichiers dédiés dans `/vision/`.
 
-**Dernière mise à jour** : 2026-03-30
+**Dernière mise à jour** : 2026-04-03
 
 ---
 
@@ -89,16 +89,27 @@
 - Décodage base64 → création entité dans la scène active
 - Animation de spawn selon rareté sur la TV
 
-*Spec détaillée : à écrire dans `vision/feature-nfc.md`*
+*Spec détaillée : `vision/feature-nfc.md` + `vision/feature-nfc-encoding.md`*
 
-#### B1 — Modification des stats en live
-- Modifier l'endurance d'un ennemi depuis `GMEntityBadge`
-- Drag & drop des tokens sur la battlemap + sync Realtime
+#### B1 — Stats en live + Drag & drop tokens
+- Drag & drop libre des tokens sur la battlemap, sync temps réel TV (throttle ~30/s, update direct Supabase client MJ)
+- Entités cachées (`visible_to_players = false`) : semi-transparentes sur la map MJ, absentes de la TV ; révélation manuelle par le MJ
+- Position stockée en % (0–100) dans `scene_entities.position`
+- Popover édition endurance pour ennemis et PNJ
+- Popover édition rapide PJ : endurance, espoir, blessures (via server endpoint sur `characters.data`)
+
+*Spec détaillée : `vision/feature-live-stats-dragdrop.md`*
 
 #### B5 — Fil d'initiative
-- Démarrer un combat : sélection participants + valeurs d'initiative
-- Bandeau sur la TV, avancement du tour depuis le panneau MJ
-- Champs `in_combat`, `initiative`, `is_current_turn` sur `scene_entities`
+- Démarrer un combat : modal de préparation drag & drop, toutes les entités de la scène incluses (items/zones exclus)
+- Ajout d'entités à la volée pendant le combat (invocations, embuscades)
+- Bandeau TV style BG3 en bas de la battlemap : portrait, nom, endurance PJ visible, ennemis/PNJ masqués
+- Entité active mise en avant, compteur de rounds discret
+- Entités à 0 endurance grisées, tour sauté automatiquement
+- Fin de combat déclenchée par le MJ (ou auto si tous les ennemis à 0)
+- Champs ajoutés : `sessions.combat_active`, `sessions.combat_round`, `scene_entities.in_combat`, `scene_entities.initiative_order`, `scene_entities.is_current_turn`
+
+*Spec détaillée : `vision/feature-initiative.md`*
 
 ---
 

@@ -4,7 +4,7 @@
 > Tous les autres documents (`/docs/*.md`) doivent rester cohérents avec ce qui est défini ici.
 > En cas de contradiction, ce dossier a priorité.
 
-**Dernière mise à jour** : 2026-03-31
+**Dernière mise à jour** : 2026-04-03
 
 ---
 
@@ -139,8 +139,8 @@ Figurine posée sur table
 Raspberry Pi Pico lit la puce
         │
 POST /api/nfc/trigger
-  { payload: "<base64>", scene_id: "<id>" }
-  Header: Authorization: Bearer <token_secret>
+  { "data": "<base64>" }
+  Header: Authorization: Bearer <NFC_SECRET>
         │
 Server endpoint Nitro
   1. Vérifie le token secret (partagé avec le Pico)
@@ -223,6 +223,8 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 | `feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (**à définir — bloquant pour l'implémentation NFC**) |
 | `feature-media-library.md` | Bibliothèque d'images : upload centralisé par campagne, Image Picker transverse, mappings images NFC |
 | `feature-loot.md` | Système de loot et objets : catalogue par campagne, types, tables de drop probabilistes, overlay de distribution, inventaires, composants de craft |
+| `feature-initiative.md` | Fil d'initiative : démarrage combat, drag & drop ordre, bandeau TV style BG3, tour suivant, fin de combat |
+| `feature-live-stats-dragdrop.md` | Stats en live + drag & drop tokens : positionnement libre temps réel, popover édition endurance/espoir, entités cachées semi-transparentes |
 
 ---
 

@@ -4,8 +4,8 @@
     {
       "name": "Nuxt App (active)",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["--prefix", "app", "dev"],
-      "port": 3000
+      "runtimeArgs": ["--cwd", "app", "dev"],
+      "port": 3001
     },
     {
       "name": "Backend Express (legacy)",

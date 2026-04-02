@@ -81,6 +81,8 @@ URL /display/[sessionId] ouverte dans le navigateur TV
 ### MJ (authentifié)
 Lit et écrit directement via `useSupabaseClient()`. RLS autorise toutes les opérations sur les ressources dont `gm_user_id = auth.uid()`.
 
+**Exception drag & drop tokens** : les mises à jour de position (`scene_entities.position`) pendant un drag se font directement via le client Supabase MJ authentifié (pas via server endpoint) pour garantir la fluidité temps réel. Throttle côté client à ~30 updates/s. Voir `vision/feature-live-stats-dragdrop.md`.
+
 ### TV (anonyme, URL secrète)
 La TV appelle `/api/display/[id]/state` — endpoint Nitro sans `participant_id`. L'UUID de session fait office de secret. Retourne uniquement les entités `visible_to_players = true`. Utilise `useSupabaseAdmin()`.
 
@@ -100,8 +102,8 @@ Appelle `/api/nfc/trigger` avec un token statique dans le header `Authorization:
 Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlays`, `map_markers`.
 
 ### TV (`useDisplaySession`)
-- Écoute `sessions` (changement de `display_mode`, `active_scene_id`)
-- Écoute `scene_entities` de la scène active (spawn, déplacement, visibilité)
+- Écoute `sessions` (changement de `display_mode`, `active_scene_id`, `combat_active`, `combat_round`)
+- Écoute `scene_entities` de la scène active (spawn, déplacement, visibilité, `initiative_order`, `is_current_turn`)
 - Écoute `overlays` de la session (ajout, mise en évidence, suppression)
 
 ### MJ (`useGMSession`, `useScene`)
@@ -145,11 +147,16 @@ Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlay
 | `campaigns` | `travel_rules` | text (markdown) | Règles de voyage |
 | `sessions` | `wallpaper_url` | text | Fond d'écran fallback session |
 | `sessions` | `display_mode` | enum | Mode TV actif : `waiting` / `battlemap` / `travel` |
+| `sessions` | `combat_active` | boolean | Un combat est en cours |
+| `sessions` | `combat_round` | integer | Numéro du round en cours (0 = hors combat) |
 | `scenes` | `wallpaper_url` | text | Fond d'écran spécifique à la scène |
-| `scene_entities` | `initiative` | integer\|null | Valeur d'initiative |
 | `scene_entities` | `in_combat` | boolean | Participe au fil d'initiative |
-| `scene_entities` | `is_current_turn` | boolean | C'est son tour |
+| `scene_entities` | `initiative_order` | integer\|null | Position dans le fil (1 = premier, null = hors combat) |
+| `scene_entities` | `is_current_turn` | boolean | C'est son tour (un seul `true` par scène à la fois) |
 | `characters` | `portrait_url` | text | Image token battlemap |
+| `enemies` | `artwork_url` | text | Image du token battlemap + overlay TV |
+| `enemies` | `rarity` | enum | `common` / `uncommon` / `rare` / `legendary` |
+| `npcs` | `portrait_url` | text | Image du token battlemap + overlay TV |
 
 ---
 
@@ -202,3 +209,6 @@ Sur un événement INSERT de `postgres_changes`, `payload.new` ne contient que l
 
 ### Refs des composables — isolation d'état
 Les refs sont déclarées à l'intérieur de la fonction composable — chaque appel crée une instance isolée. Pour partager l'état entre composants, utiliser `provide/inject` depuis un parent commun.
+
+### Position tokens — convention pourcentage
+`scene_entities.position` (`{ x, y }`) est stocké en **pourcentage** de la battlemap (0–100), pas en pixels. Conversion à l'affichage : `left: ${x}%`, `top: ${y}%`. Cela rend les positions indépendantes de la résolution de la TV et du panneau MJ.

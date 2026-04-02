@@ -21,9 +21,11 @@ En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`archite
 | `app/docs/vision/README.md` | Vision globale : acteurs, 4 surfaces, NFC, loot, temps réel |
 | `app/docs/vision/feature-display-tv.md` | Affichage spectateur TV : modes, overlays, animations NFC, fil d'initiative |
 | `app/docs/vision/feature-nfc.md` | Puces NFC : système de types, encodage, pages back-office, endpoint trigger |
-| `app/docs/vision/feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (**à définir — bloquant pour l'implémentation NFC**) |
+| `app/docs/vision/feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (CBOR, versioning, transport, gestion d'erreurs) — ✅ complet |
 | `app/docs/vision/feature-media-library.md` | Bibliothèque d'images : upload centralisé par campagne, Image Picker transverse, mappings images NFC |
 | `app/docs/vision/feature-loot.md` | Système de loot et objets : catalogue par campagne, types, tables de drop probabilistes, overlay de distribution, inventaires, composants de craft |
+| `app/docs/vision/feature-initiative.md` | Fil d'initiative : démarrage combat, drag & drop ordre, bandeau TV style BG3, tour suivant, fin de combat |
+| `app/docs/vision/feature-live-stats-dragdrop.md` | Stats en live + drag & drop tokens : positionnement libre temps réel, popover édition endurance/espoir, entités cachées semi-transparentes |
 
 > Si une feature n'a pas encore son fichier `feature-xxx.md`, elle n'est **pas prête à être implémentée**.
 

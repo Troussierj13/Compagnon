@@ -90,7 +90,7 @@ Figurine posée sur le lecteur NFC
 Pico (ou autre matériel) lit la puce → extrait le base64
         │
 POST /api/nfc/trigger
-  { payload: "<base64>" }
+  { "data": "<base64>" }
   Header: Authorization: Bearer <nfc_secret>
         │
 Server endpoint Nitro

@@ -195,7 +195,7 @@ Les fonds sont des images choisies depuis la **bibliothèque d'images de la camp
 | `sessions` | `wallpaper_url` | text | Fond d'écran fallback session |
 | `sessions` | `display_mode` | enum | Mode TV actif : `waiting` / `battlemap` / `travel` |
 | `scenes` | `wallpaper_url` | text | Fond d'écran spécifique à la scène |
-| `scene_entities` | `initiative` | integer\|null | Valeur d'initiative (null = hors combat) |
+| `scene_entities` | `initiative_order` | integer\|null | Position dans le fil d'initiative (null = hors combat) |
 | `scene_entities` | `in_combat` | boolean | Participe au fil d'initiative |
 | `scene_entities` | `is_current_turn` | boolean | C'est son tour actuellement |
 | `characters` | `portrait_url` | text | Image du token battlemap + overlay |
