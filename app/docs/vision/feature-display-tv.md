@@ -36,14 +36,15 @@ Affiché quand aucune scène n'est active, ou quand le MJ veut cacher ce qui se 
 Mode principal pour les scènes de combat, d'exploration ou de partage de loot.
 
 #### Image de fond
-- Battlemap uploadée par le MJ sur la scène, affichée en `object-contain` plein écran
+- Battlemap choisie par le MJ depuis la bibliothèque de la campagne (catégorie `battlemap`), affichée en `object-contain` plein écran
 
 #### Tokens des entités
 - Chaque entité visible a un token positionné sur la carte (`position.x / position.y` en %)
-- Le token affiche une **image** :
-  - Personnage joueur → `characters.portrait_url`
-  - Ennemi → `enemies.artwork_url`
-  - PNJ → portrait de la fiche PNJ
+- Le token affiche une **image** choisie depuis la bibliothèque d'images de la campagne (voir [`feature-media-library.md`](./feature-media-library.md)) :
+  - Personnage joueur → `characters.portrait_url` (URL stockée via le picker)
+  - Ennemi → `enemies.artwork_url` (URL stockée via le picker, ou résolue depuis les mappings NFC)
+  - PNJ → `npcs.portrait_url` (URL stockée via le picker)
+  - Objet → artwork de l'objet (`campaign_items.media_id`)
   - Fallback si pas d'image : icône colorée par type (comportement actuel)
 - Taille des tokens adaptée à un grand écran (plus grands qu'en vue téléphone)
 
@@ -80,7 +81,7 @@ Le MJ désactive le fil depuis son panneau — le bandeau disparaît de la TV.
 Mode dédié aux phases de déplacement entre les lieux.
 
 #### Carte interactive
-- Carte du monde ou de région — image uploadée au niveau campagne ou session
+- Carte du monde ou de région — image choisie depuis la bibliothèque de la campagne (catégorie `map`)
 - **Marqueur de groupe** : position actuelle du groupe, déplaçable par le MJ depuis son panneau
 - Le groupe se déplace toujours ensemble (un seul marqueur)
 
@@ -178,7 +179,7 @@ Applicable au Waiting Screen et en fond des modes Voyage / Battlemap si aucune c
 4. Fond noir (défaut)
 ```
 
-Les fonds sont des images uploadées dans Supabase Storage.
+Les fonds sont des images choisies depuis la **bibliothèque d'images de la campagne** (voir [`feature-media-library.md`](./feature-media-library.md)). La catégorie `background` est proposée en premier dans le picker, mais toute image de la bibliothèque peut être utilisée.
 
 ---
 
@@ -227,8 +228,8 @@ Overlays actifs sur la TV pour une session donnée.
 | `id` | uuid | Identifiant |
 | `session_id` | uuid FK | Session concernée |
 | `type` | enum | `character` / `enemy` / `npc` / `item` / `text` / `image` |
-| `reference_id` | uuid\|null | ID de l'entité référencée (si type lié) |
-| `content` | jsonb\|null | Contenu libre (texte, URL image) |
+| `reference_id` | uuid\|null | ID de l'entité référencée selon le type : `characters.id` / `enemies.id` / `npcs.id` / `campaign_items.id` |
+| `content` | jsonb\|null | Contenu libre (texte, URL image) — utilisé pour les types `text` et `image` |
 | `is_featured` | boolean | Mis en évidence (au premier plan) |
 | `position` | integer | Ordre dans la pile |
 | `created_at` | timestamp | Pour tri |

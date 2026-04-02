@@ -166,22 +166,26 @@ Le Pico envoie les données brutes (base64). Le décodage se fait dans le server
 ## Système de loot — Modèle
 
 ```
-Fiche ennemi (back-office)     Scène (MJ en live)
-  └─ drop[] : Item[]        +   └─ objets ajoutés manuellement
+Fiche ennemi (back-office)          Scène (MJ en live)
+  └─ enemy_loot_table               └─ objets ajoutés manuellement
+     (→ campaign_items)                (depuis le catalogue)
               │                              │
               └──────────────┬──────────────┘
                              ▼
-              Objets dans la scène (visible_to_players: false)
+              Résolution du drop (tirage probabiliste + override MJ)
+                             │
+                             ▼
+              Objets dans la scène (scene_entities, visible_to_players: false)
                              │
               Le MJ révèle ce qu'il veut quand il veut
                              │
                              ▼
               Joueurs voient les objets (TV + téléphones)
                              │
-              MJ distribue un objet à un personnage
+              MJ distribue un objet à un personnage (overlay de distribution)
                              │
                              ▼
-              Inventaire du personnage mis à jour (temps réel)
+              character_inventory mis à jour (temps réel)
 ```
 
 ---
@@ -207,6 +211,18 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 - Gestion des règles du jeu (calcul automatique des jets de dés, etc.) — l'app assiste, elle ne joue pas à la place du MJ
 - Système de messagerie complexe — au plus des annonces MJ → joueurs
 - Multi-MJ / collaboration — une campagne = un MJ
+
+---
+
+## Documents de vision features
+
+| Fichier | Contenu |
+|---|---|
+| `feature-display-tv.md` | Affichage spectateur TV : modes, overlays, animations NFC, fil d'initiative |
+| `feature-nfc.md` | Puces NFC : système de types, encodage, pages back-office, endpoint trigger |
+| `feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (**à définir — bloquant pour l'implémentation NFC**) |
+| `feature-media-library.md` | Bibliothèque d'images : upload centralisé par campagne, Image Picker transverse, mappings images NFC |
+| `feature-loot.md` | Système de loot et objets : catalogue par campagne, types, tables de drop probabilistes, overlay de distribution, inventaires, composants de craft |
 
 ---
 

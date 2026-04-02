@@ -160,17 +160,21 @@ Deux options disponibles :
 
 ## Résolution des images
 
-Les images ne sont pas sur la puce. L'app les résout via une logique de fallback :
+Les images ne sont pas sur la puce. L'app les résout via une cascade de fallback définie dans [`feature-media-library.md`](./feature-media-library.md) :
 
 ```
-1. Image spécifique définie manuellement (si applicable)
-        ↓ (si absente)
-2. Image prédéfinie selon race + rareté + sexe
-        ↓ (si absente)
-3. Icône colorée par type (comportement actuel)
+1. Artwork défini directement sur la fiche de l'entité (ex: enemies.artwork_url)
+        ↓ (si absent)
+2. Mapping race + rareté + sexe → bibliothèque campagne
+        ↓ (si absent)
+3. Mapping race + rareté (sexe ignoré) → bibliothèque campagne
+        ↓ (si absent)
+4. Mapping rareté seule → bibliothèque campagne
+        ↓ (si absent)
+5. Icône colorée par type (comportement par défaut)
 ```
 
-Les images prédéfinies sont des assets intégrés à l'app, organisés par `race/rareté/sexe`.
+Le MJ configure les mappings race/rareté/sexe → image depuis la section *Images NFC* de la bibliothèque de sa campagne (`/gm/campaigns/[id]/media`).
 
 ---
 
