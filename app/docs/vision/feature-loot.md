@@ -178,28 +178,34 @@ Quand un objet est distribué à un joueur :
 
 ### Structure
 
-L'inventaire est une liste plate organisée en sections selon le type d'objet.
+L'inventaire des personnages joueurs est stocké dans le JSONB `characters.data.inventory` (voir `feature-characters.md` — `TORCharacterData.inventory`). C'est une liste d'`InventoryItem` :
 
-**Sections affichées :**
-- **Inventaire général** — objets, consommables
-- **Attirail de guerre** — armes, armures
-- **Trésor** — monnaies
-- **Réserve de craft** — composants de craft (groupés par rareté)
+```typescript
+interface InventoryItem {
+  item_id: string | null   // FK → catalogue items (null = objet saisi manuellement)
+  name: string             // Dénormalisé
+  quantity: number
+  skill_ref: SkillId | null
+  notes: string | null
+  source: 'manual' | 'loot'
+}
+```
 
-### Table `character_inventory`
+> **Pas de table `character_inventory` séparée** — tout est dans `characters.data`. Les updates utilisent `jsonb_set` ciblé pour éviter de réécrire toute la fiche.
 
-| Champ | Type | Description |
-|---|---|---|
-| `id` | uuid | Identifiant |
-| `character_id` | uuid FK | Personnage |
-| `item_id` | uuid FK | Objet depuis le catalogue |
-| `quantity` | integer | Quantité possédée |
-| `notes` | text\|null | Note libre du MJ sur cet objet |
-| `acquired_at` | timestamp | Date d'acquisition |
+**Sections affichées dans la fiche joueur :**
+- **Inventaire** — objets, consommables (onglet 7 de la fiche — voir `feature-player-view.md`)
+- **Attirail de guerre** — armes, armures (onglet 5 & 6)
+- **Trésor** — champ `data.treasure`
+- **Réserve de craft** — items avec type `crafting_component` (groupés dans l'inventaire général)
 
 Le MJ peut modifier les inventaires depuis :
 - La fiche personnage en back-office
 - Le panneau session (directement pendant la session)
+
+### Notification de réception (temps réel)
+
+Quand un objet est distribué à un joueur et que `characters.data` est mis à jour via Supabase Realtime, le téléphone du joueur détecte les nouveaux items et affiche un **toast de réception** (nom de l'objet + image si disponible). Voir `feature-player-view.md` — E3.
 
 ---
 
@@ -231,8 +237,9 @@ Les `craft_tags` permettent au système de craft (feature à détailler séparé
 |---|---|
 | `campaign_items` | Catalogue d'objets par campagne |
 | `enemy_loot_table` | Entrées de la table de loot par ennemi/PNJ (`combatant_id` FK → `combatants`) |
-| `character_inventory` | Inventaire des personnages joueurs |
-| `npc_inventory` | Inventaire des PNJ (même structure que `character_inventory`, avec `combatant_id` → `combatants` où `kind = 'npc'`) |
+| `npc_inventory` | Inventaire des PNJ (`combatant_id` FK → `combatants` où `kind = 'npc'`) |
+
+> **Inventaire des PJ** : stocké dans `characters.data.inventory` (JSONB) — pas de table séparée. Voir `feature-characters.md`.
 
 ### Champs à ajouter sur les tables existantes
 

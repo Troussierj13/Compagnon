@@ -457,22 +457,35 @@ Le mode level-up se termine quand le MJ change de scène (passe à une scène no
 
 ## 12. Surfaces d'affichage
 
-### 12.1 Vue joueur plein écran — `/player/sheet`
+### 12.1 Vue joueur téléphone — fiche via `/player/scene`
 
-Affichage complet de la fiche sur téléphone/tablette. Layout 3 colonnes (Corps / Cœur / Esprit) avec sections en bas (équipement, inventaire, états, points).
+La fiche est accessible depuis `/player/scene` via un bouton "Feuille de perso" qui ouvre un **slideover plein écran**. Elle est organisée en **7 onglets navigables par swipe** (voir `feature-player-view.md` — E2) :
+
+| # | Onglet | Contenu |
+|---|---|---|
+| 1 | Identité | Vocation, niveau de vie, garant, particularités, défauts |
+| 2 | Vitalité | Endurance, espoir, fatigue, ombres, séquelles, états |
+| 3 | Compétences | 18 compétences communes + attributs |
+| 4 | Sagesse & Vaillance | Vertus, récompenses, points |
+| 5 | Attirail de guerre | Armes (4 slots) + compétences de combat |
+| 6 | Défense | Armure, casque, bouclier, parade, protection |
+| 7 | Inventaire | Items, trésor |
+
+Un **overlay fixe** affiche en permanence (sur tous les onglets) : `current_endurance`, `current_hope`, états actifs.
 
 **Sections éditables par le joueur** (hors mode level-up) :
-- `current_endurance`, `current_hope` (popover +/−)
+- `current_endurance`, `current_hope`, `fatigue`, `shadows`, `sequels` (onglet Vitalité)
 - `states.hurt` + `states.injury`
 - `treasure`
 - `inventory` (ajout de notes, consommation)
-- Vertus/récompenses si `sagesse.rank < vaillance disponible` ou `vaillance.rank < récompenses disponibles`
 
-**Sections éditables en mode level-up** :
-- Rangs de toutes les compétences (si points suffisants)
-- Acquisition de vertus et récompenses
+**Sections éditables en mode level-up** (scène de type `community`) :
+- Rangs de toutes les compétences (si `progression_points` suffisants)
+- Acquisition de vertus et récompenses (si `adventure_points` suffisants)
 
-**Sections lecture seule** pour le joueur : attributs, stats dérivées, armes, armures (hors acquisition), infos d'en-tête
+**Sections lecture seule** pour le joueur : attributs, stats dérivées, armes, armures, en-tête identité
+
+> `/player/sheet` redirige vers `/player/scene` — la fiche n'est plus une page indépendante.
 
 ### 12.2 Overlay TV — déclenché par le MJ
 
@@ -563,7 +576,7 @@ alter publication supabase_realtime add table characters;
 |---|---|---|
 | `/gm/campaigns/[id]/characters` | MJ | Liste des personnages de la campagne |
 | `/gm/campaigns/[id]/characters/[charId]` | MJ | Fiche complète éditable |
-| `/player/sheet` | Joueur | Fiche plein écran (lecture + édition limitée) |
+| `/player/sheet` | Joueur | Redirige vers `/player/scene` (fiche dans slideover) |
 
 ### Server endpoints
 

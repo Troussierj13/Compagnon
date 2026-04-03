@@ -135,6 +135,30 @@ Les overlays sont empilés visuellement (légèrement décalés) pour indiquer q
 
 ---
 
+## Annonces MJ
+
+Le MJ peut envoyer des messages texte libres depuis le panneau session. Selon la cible choisie, l'annonce peut s'afficher sur la TV, sur les téléphones joueurs, ou les deux. Voir `feature-player-view.md` — E4 pour le comportement côté téléphone.
+
+### Affichage sur la TV
+
+**Toast d'annonce** :
+- Position : coin supérieur droit de l'écran (non bloquant)
+- Icône `megaphone` + texte du message
+- Durée d'affichage : 8 secondes, avec animation de sortie
+- Si plusieurs annonces arrivent rapidement : les toasts s'empilent verticalement
+
+**Historique des annonces** :
+- Un fil discret (coin inférieur droit ou bas de l'écran, hors bandeau initiative) liste les dernières annonces reçues
+- Affiche les N dernières annonces (N configurable, suggestion : 5)
+- Chaque entrée : horodatage relatif + texte (police petite, opacité réduite pour ne pas gêner la battlemap)
+- Le fil ne prend pas de place fixe — il s'affiche en overlay semi-transparent par-dessus le contenu
+
+### Condition d'affichage
+
+L'annonce est affichée sur la TV uniquement si `target IN ('tv', 'all')`. Filtrage appliqué côté client TV sur les événements Realtime de `session_announcements`.
+
+---
+
 ## Spawn NFC — Animations
 
 Quand un ennemi apparaît via une puce NFC (figurine posée sur la table), la TV joue une animation de spawn.
@@ -183,6 +207,10 @@ Les fonds sont des images choisies depuis la **bibliothèque d'images de la camp
 ---
 
 ## Données nécessaires — Base de données
+
+### Nouvelle table : `session_announcements`
+
+Définie dans `feature-player-view.md` — E4. La TV souscrit à cette table via Realtime (filtre `session_id`).
 
 ### Champs à ajouter
 
@@ -253,3 +281,4 @@ Overlays actifs sur la TV pour une session donnée.
 | Révéler un objet (loot) | Token objet apparaît sur la battlemap |
 | Déplacer le marqueur de groupe (mode Voyage) | Marqueur se déplace sur la carte |
 | Ajouter / modifier un marqueur de carte | Marqueur visible ou mis à jour sur la carte |
+| Envoyer une annonce (`target: 'tv'` ou `'all'`) | Toast en haut à droite + entrée dans l'historique |

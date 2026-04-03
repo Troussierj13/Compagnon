@@ -17,15 +17,7 @@
 
 ## 🟠 Phase 3 — Non bloquant pour Phase 2
 
-### `feature-player-view.md` — Vue joueur téléphone enrichie
-**Réf. roadmap** : E1, E2, E3, E4
-**Bloque** : toute la Phase 3
-
-À spécifier :
-- **E1** — Sélection de personnage au join : liste des persos disponibles après saisie du join_code + nom, persistance `character_id` en localStorage
-- **E2** — Feuille de perso interactive : modification endurance/espoir/blessures depuis `/player/scene`, prise de notes, transit obligatoire par server endpoint
-- **E3** — Inventaire temps réel : souscription Realtime sur `character_inventory`, toast de réception d'objet
-- **E4** — Annonces MJ → joueurs : messages narratifs/alertes envoyés depuis le panneau session, overlay toast sur téléphone + optionnellement sur TV
+> ✅ `feature-player-view.md` complétée le 2026-04-03
 
 ---
 
@@ -78,3 +70,4 @@ Peuvent être spécifiées à la demande, pas de fichier dédié pour l'instant.
 | `feature-characters.md` | 2026-04-03 |
 | `feature-game-system.md` | 2026-04-03 |
 | `feature-character-creation.md` | 2026-04-03 (phase future) |
+| `feature-player-view.md` | 2026-04-03 |

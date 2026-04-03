@@ -123,14 +123,18 @@ Quand le MJ affiche la fiche d'un PJ en grand sur la TV (feature future `feature
 
 ## Modifications du côté joueur (téléphone)
 
-Le joueur peut modifier sa propre fiche depuis `/player/sheet` ou `/player/scene` (fiche en slideover). Les modifications transitent obligatoirement par un **server endpoint** (jamais d'écriture directe Supabase côté joueur).
+Le joueur peut modifier sa propre fiche depuis la fiche en slideover dans `/player/scene`. Les modifications transitent obligatoirement par un **server endpoint** (jamais d'écriture directe Supabase côté joueur).
 
-Stats modifiables par le joueur :
-- Endurance courante
-- Espoir courant
-- Notes personnelles
+Stats modifiables par le joueur (onglet Vitalité) :
+- `current_endurance`, `current_hope`
+- `fatigue`, `shadows`, `sequels`
+- `states.hurt` (toggle) + `states.injury` (valeur + unité)
+- `treasure`
+- Notes sur les items de l'inventaire (onglet Inventaire)
 
-> Le détail complet est dans la feature fiche joueur (`feature-characters.md`).
+En **mode level-up** (scène de type `community`) : rangs de compétences, acquisition de vertus et récompenses.
+
+> Le détail complet de la fiche joueur est dans `feature-player-view.md` (E2) et `feature-characters.md`.
 
 ---
 
@@ -262,5 +266,5 @@ Le RLS `scene_entities_gm_all` autorise ces écritures. Supabase Realtime propag
 
 - Modification complète de la fiche personnage (compétences, inventaire, etc.) — voir `feature-characters.md`
 - Animations de révélation dramatique — `feature-display-tv.md`
-- Affichage des tokens sur les téléphones joueurs — hors scope (TV uniquement)
+- Drag & drop des tokens côté joueur — hors scope (le joueur voit les tokens en lecture seule, en mode spectateur)
 - Snap sur grille — non prévu (positionnement libre uniquement)

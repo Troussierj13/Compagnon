@@ -231,14 +231,13 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 | `feature-characters.md` | Fiche personnage joueur TOR : attributs, compétences, Sagesse/Vertus (ordinaires + culturelles), Vaillance/Récompenses, équipement, inventaire, états, mode level-up (scène de communauté), 4 surfaces, export NFC |
 | `feature-game-system.md` | CRUD système de jeu : cultures (stats de départ, vertus culturelles), vertus ordinaires, récompenses, armurerie par campagne (armes + armures/casques/boucliers) |
 | `feature-character-creation.md` | Wizard de création de personnage (phase future) : 7 étapes guidées depuis la culture, initialisation complète du JSONB TORCharacterData |
+| `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage (E1), fiche 7 onglets swipeable (E2), inventaire temps réel (E3), annonces MJ (E4) |
 
 ### ❌ À rédiger (bloquant pour l'implémentation)
 
 Voir **[`SPECS-RESTANTES.md`](./SPECS-RESTANTES.md)** pour le détail complet de ce qu'il reste à spécifier.
 
-| Fichier à créer | Feature | Réf. roadmap | Priorité |
-|---|---|---|---|
-| `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage au join, feuille perso interactive, inventaire temps réel, annonces MJ | E1, E2, E3, E4 | 🟠 Phase 3 |
+*Aucune spec bloquante restante pour la Phase 3.* Voir Phases 4+ dans `SPECS-RESTANTES.md`.
 
 ---
 

@@ -253,5 +253,5 @@ Aucune nouvelle subscription n'est nécessaire — les composables existants (`u
 - Raccourcis clavier globaux — feature dédiée à prévoir (`feature-shortcuts.md`)
 - Détail du layout du panneau MJ — `feature-session-panel.md` à créer
 - Résolution de loot post-combat — `feature-loot.md`
-- Affichage de l'endurance côté joueur (téléphone) — `feature-player-view.md` à créer
+- Affichage de l'endurance côté joueur (téléphone) — voir `feature-player-view.md` (onglet Vitalité + overlay persistant)
 - Statuts visuels (blessé, mort stylisé, effets) — Phase 4, `F2`

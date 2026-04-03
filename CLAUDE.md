@@ -34,6 +34,7 @@ En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`archite
 | `app/docs/vision/feature-characters.md` | Fiche personnage joueur TOR : attributs, compétences, Sagesse/Vertus, Vaillance/Récompenses, équipement, inventaire, états, mode level-up, 4 surfaces d'affichage, export NFC |
 | `app/docs/vision/feature-game-system.md` | CRUD système de jeu : cultures, vertus ordinaires, vertus culturelles, récompenses, armurerie par campagne (armes + armures) |
 | `app/docs/vision/feature-character-creation.md` | Wizard de création de personnage (phase future) : 7 étapes, initialisation depuis la culture, règles TOR |
+| `app/docs/vision/feature-player-view.md` | Vue joueur téléphone : sélection perso au join, fiche 7 onglets swipeable, inventaire temps réel, annonces MJ |
 
 > Si une feature n'a pas encore son fichier `feature-xxx.md`, elle n'est **pas prête à être implémentée**.
 
