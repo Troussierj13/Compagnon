@@ -50,22 +50,35 @@ Le MJ peut créer de nouveaux types d'entité NFC depuis le back-office sans tou
 
 ### Format `fields`
 
+Exemple complet pour le type `"ennemi"` (défini dans `feature-enemies.md`) :
+
 ```json
 [
-  { "name": "nom",        "type": "string",  "required": true  },
-  { "name": "race",       "type": "string",  "required": true  },
-  { "name": "surnom",     "type": "string",  "required": false },
-  { "name": "puissance",  "type": "int",     "required": true  },
-  { "name": "endurance",  "type": "int",     "required": true  },
-  { "name": "rareté",     "type": "enum",    "required": true, "values": ["common", "uncommon", "rare", "legendary"] },
-  { "name": "sexe",       "type": "enum",    "required": false, "values": ["m", "f", "n"] },
-  { "name": "compétences","type": "string[]","required": false }
+  { "name": "nom",                 "type": "string",  "required": true  },
+  { "name": "sous_nom",            "type": "string",  "required": false },
+  { "name": "famille",             "type": "string",  "required": true  },
+  { "name": "particularités",      "type": "string[]","required": false },
+  { "name": "rareté",              "type": "enum",    "required": true,  "values": ["common", "uncommon", "rare", "legendary"] },
+  { "name": "niveau_attribut",     "type": "int",     "required": true  },
+  { "name": "endurance",           "type": "int",     "required": true  },
+  { "name": "puissance",           "type": "int",     "required": true  },
+  { "name": "type_haine",          "type": "enum",    "required": true,  "values": ["haine", "détermination"] },
+  { "name": "valeur_haine",        "type": "int",     "required": true  },
+  { "name": "parade",              "type": "int",     "required": true  },
+  { "name": "armure",              "type": "int",     "required": true  },
+  { "name": "seuil_blessure",      "type": "int",     "required": true  },
+  { "name": "compétences_combat",  "type": "object[]","required": false },
+  { "name": "capacités_redoutables","type": "object[]","required": false }
 ]
 ```
 
-> La liste complète des champs d'un ennemi est à finaliser. Ce qui précède est un début de liste indicatif.
+**Champs exclus de la puce** : `artwork_url`, `notes` — l'image est résolue par la cascade `famille + rareté` (voir `feature-media-library.md`), les notes sont back-office uniquement.
 
-Types de champs supportés : `string`, `int`, `float`, `boolean`, `enum`, `string[]`, `int[]`.
+**Format des objets imbriqués** :
+- `compétences_combat` : `[{ "nom": "Lance", "niveau": 3, "dégâts": 2, "perforant": 16 }, ...]` — `perforant` absent si non perforant
+- `capacités_redoutables` : `[{ "nom": "Cri de guerre", "description": "..." }, ...]`
+
+Types de champs supportés : `string`, `int`, `float`, `boolean`, `enum`, `string[]`, `int[]`, `object[]`.
 
 ---
 

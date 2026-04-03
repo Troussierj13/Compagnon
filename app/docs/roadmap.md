@@ -3,7 +3,7 @@
 > Référence principale : [`vision/README.md`](./vision/README.md)
 > Pour le détail des features, voir les fichiers dédiés dans `/vision/`.
 
-**Dernière mise à jour** : 2026-04-03
+**Dernière mise à jour** : 2026-04-03 (mise à jour vision A1+A2)
 
 ---
 
@@ -115,16 +115,16 @@
 
 ### 🔴 Phase 2 — Loot & inventaires
 
-#### A1 — Fiche ennemi complète
-- Stats de combat (endurance, parade, armure, etc.)
-- Rareté (`common` / `uncommon` / `rare` / `legendary`)
-- Table de loot (objets droppables définis à l'avance)
-- Artwork uploadable (token battlemap + overlay TV)
-- Export données → base64 pour écriture sur puce NFC
+#### A1+A2 — Fiches ennemis & PNJ ✅ spec complète
+- Table unifiée `combatants` (`kind: 'enemy' | 'npc'`)
+- Stats TOR : niveau d'attribut, endurance, puissance, haine/détermination, parade, armure, seuil de blessure
+- Compétences de combat (tableau) + capacités redoutables (tableau)
+- Artwork uploadable, famille pour résolution image NFC
+- Table de loot sur la fiche (ennemis + PNJ optionnel)
+- Inventaire PNJ gérable en live depuis le panneau session
+- Export données ennemi → base64 pour puce NFC
 
-#### A2 — Fiche PNJ
-- Stats légères + portrait
-- Inventaire gérable en live depuis le panneau session
+*Spec détaillée : `vision/feature-enemies.md`*
 
 #### A3 — Fiche personnage joueur enrichie
 - Structure complète (stats, compétences, équipement)

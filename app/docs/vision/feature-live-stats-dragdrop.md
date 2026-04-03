@@ -67,25 +67,27 @@ Le MJ clique sur un token ou un badge d'entité dans le panneau session → un *
 
 ---
 
-### Popover — Ennemi
+### Popover — Ennemi & PNJ
 
-Stats modifiables :
+Le popover est identique pour les ennemis et les PNJ (tous deux stockés dans `combatants`). Stats modifiables :
 
-| Stat | Champ JSONB | Type |
-|---|---|---|
-| Endurance courante | `data.endurance` | integer |
+| Stat | Colonne | Type | Contrôle UI |
+|---|---|---|---|
+| Endurance courante | `scene_entities.endurance_current` | integer | `[−]` / `[+]` + saisie directe |
+| Blessures reçues | `scene_entities.wounds_received` | integer | Bouton `[Blesser]` (incrémente de 1) |
+| Haine / Détermination restante | `scene_entities.hatred_current` | integer | `[−]` / `[+]` |
 
-Interface : champ numérique avec boutons `+` / `−` + saisie directe. Indicateur visuel de l'endurance max (`data.endurance_max`) pour contextualiser.
+L'endurance max (`combatants.endurance`) est affichée en référence (non éditable dans le popover — modifiable uniquement en back-office).
 
 Comportement à 0 endurance :
 - Token grisé sur la battlemap et dans le fil d'initiative
 - Si un combat est actif, le tour de cette entité est sauté automatiquement (voir `feature-initiative.md`)
 
----
+Comportement quand `wounds_received >= combatants.wound_threshold` :
+- L'entité est considérée inconsciente/morte (indépendamment de l'endurance restante)
+- Même effet visuel qu'endurance à 0
 
-### Popover — PNJ
-
-Identique à l'ennemi : endurance courante uniquement.
+Pour les PNJ, un bouton supplémentaire **"Inventaire"** ouvre le panneau de gestion de l'inventaire PNJ (donner/prendre des objets).
 
 ---
 
@@ -130,12 +132,22 @@ Stats modifiables par le joueur :
 
 ## Modèle de données
 
-Aucune modification de schéma nécessaire pour cette feature :
+### Colonnes dédiées sur `scene_entities` (ajoutées via `feature-enemies.md`)
 
-- `scene_entities.position` existe déjà (`JSONB`, `{"x": 0, "y": 0}`) → passer à des **pourcentages** (convention à respecter à l'implémentation)
-- `scene_entities.data` existe déjà (JSONB) → `endurance`, `endurance_max` déjà dans `EnemyData`
-- `scene_entities.visible_to_players` existe déjà
-- `characters.data` existe déjà (JSONB) → `endurance_current`, `hope_current` dans `TORCharacterData`
+Les stats de combat des ennemis et PNJ utilisent des **colonnes dédiées** sur `scene_entities`, pas le JSONB `data` :
+
+| Colonne | Type | Description |
+|---|---|---|
+| `combatant_id` | uuid FK \| null | Référence vers `combatants` (null pour objets/zones) |
+| `endurance_current` | integer \| null | HP courants |
+| `wounds_received` | integer \| null | Blessures reçues |
+| `hatred_current` | integer \| null | Points haine/détermination restants |
+| `is_defeated` | boolean | Vaincu (déclenche le loot) |
+
+Colonnes existantes conservées :
+- `scene_entities.position` (`JSONB`, `{"x": 0, "y": 0}`) → coordonnées en **pourcentages** (0–100)
+- `scene_entities.visible_to_players` → déjà présent
+- `characters.data` (`JSONB`) → `endurance_current`, `hope_current` dans `TORCharacterData` (les PJ restent sur JSONB pour leur structure riche)
 
 ### Convention position en pourcentage
 
@@ -173,15 +185,24 @@ Authentifié MJ. Révèle ou masque une entité.
 
 Authentifié MJ. Met à jour les stats d'une entité de scène (ennemi / PNJ).
 
-**Body :**
+**Body (tous les champs optionnels — seuls les champs présents sont mis à jour) :**
 ```json
-{ "endurance": 8 }
+{
+  "endurance_current": 8,
+  "wounds_received": 1,
+  "hatred_current": 2,
+  "is_defeated": false
+}
 ```
 
 **Actions :**
-1. Validation : `endurance >= 0`
-2. Merge dans `scene_entities.data`
-3. Supabase Realtime propage
+1. Validation :
+   - `endurance_current >= 0` si présent
+   - `wounds_received >= 0` si présent
+   - `hatred_current >= 0` si présent
+2. Vérifie que l'entité possède un `combatant_id` (sinon 400 — pas de stats sur objets/zones)
+3. UPDATE des colonnes présentes sur `scene_entities`
+4. Supabase Realtime propage
 
 ---
 

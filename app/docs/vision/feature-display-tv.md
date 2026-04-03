@@ -42,8 +42,7 @@ Mode principal pour les scènes de combat, d'exploration ou de partage de loot.
 - Chaque entité visible a un token positionné sur la carte (`position.x / position.y` en %)
 - Le token affiche une **image** choisie depuis la bibliothèque d'images de la campagne (voir [`feature-media-library.md`](./feature-media-library.md)) :
   - Personnage joueur → `characters.portrait_url` (URL stockée via le picker)
-  - Ennemi → `enemies.artwork_url` (URL stockée via le picker, ou résolue depuis les mappings NFC)
-  - PNJ → `npcs.portrait_url` (URL stockée via le picker)
+  - Ennemi ou PNJ → `combatants.artwork_url` (URL stockée via le picker, ou résolue depuis les mappings NFC pour les ennemis)
   - Objet → artwork de l'objet (`campaign_items.media_id`)
   - Fallback si pas d'image : icône colorée par type (comportement actuel)
 - Taille des tokens adaptée à un grand écran (plus grands qu'en vue téléphone)
@@ -199,9 +198,8 @@ Les fonds sont des images choisies depuis la **bibliothèque d'images de la camp
 | `scene_entities` | `in_combat` | boolean | Participe au fil d'initiative |
 | `scene_entities` | `is_current_turn` | boolean | C'est son tour actuellement |
 | `characters` | `portrait_url` | text | Image du token battlemap + overlay |
-| `enemies` | `artwork_url` | text | Image du token battlemap + overlay |
-| `enemies` | `rarity` | enum | `common` / `uncommon` / `rare` / `legendary` |
-| `npcs` | `portrait_url` | text | Image du token battlemap + overlay |
+| `combatants` | `artwork_url` | text | Image du token battlemap + overlay (ennemis et PNJ) |
+| `combatants` | `rarity` | enum | `common` / `uncommon` / `rare` / `legendary` |
 
 ### Nouvelle table : `map_markers`
 
@@ -227,8 +225,8 @@ Overlays actifs sur la TV pour une session donnée.
 |---|---|---|
 | `id` | uuid | Identifiant |
 | `session_id` | uuid FK | Session concernée |
-| `type` | enum | `character` / `enemy` / `npc` / `item` / `text` / `image` |
-| `reference_id` | uuid\|null | ID de l'entité référencée selon le type : `characters.id` / `enemies.id` / `npcs.id` / `campaign_items.id` |
+| `type` | enum | `character` / `combatant` / `item` / `text` / `image` |
+| `reference_id` | uuid\|null | ID de l'entité référencée : `characters.id` / `combatants.id` / `campaign_items.id` selon le type |
 | `content` | jsonb\|null | Contenu libre (texte, URL image) — utilisé pour les types `text` et `image` |
 | `is_featured` | boolean | Mis en évidence (au premier plan) |
 | `position` | integer | Ordre dans la pile |

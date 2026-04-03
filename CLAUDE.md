@@ -14,6 +14,10 @@ Le dossier `app/docs/vision/` est la **référence principale du projet**. Avant
 
 En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`architecture.md`, `CLAUDE.md`, etc.), **`app/docs/vision/` a priorité**.
 
+### Specs restantes à rédiger
+
+> **`app/docs/vision/SPECS-RESTANTES.md`** — liste à jour des features sans spec. Consulter ce fichier en début de session pour savoir ce qu'il reste à définir avant d'implémenter.
+
 ### Documents de vision existants
 
 | Fichier | Contenu |
@@ -26,6 +30,7 @@ En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`archite
 | `app/docs/vision/feature-loot.md` | Système de loot et objets : catalogue par campagne, types, tables de drop probabilistes, overlay de distribution, inventaires, composants de craft |
 | `app/docs/vision/feature-initiative.md` | Fil d'initiative : démarrage combat, drag & drop ordre, bandeau TV style BG3, tour suivant, fin de combat |
 | `app/docs/vision/feature-live-stats-dragdrop.md` | Stats en live + drag & drop tokens : positionnement libre temps réel, popover édition endurance/espoir, entités cachées semi-transparentes |
+| `app/docs/vision/feature-enemies.md` | Fiches ennemis & PNJ (table unifiée `combatants`) : stats TOR, compétences de combat, capacités redoutables, haine/détermination, blessures, loot, inventaire PNJ, export NFC |
 
 > Si une feature n'a pas encore son fichier `feature-xxx.md`, elle n'est **pas prête à être implémentée**.
 

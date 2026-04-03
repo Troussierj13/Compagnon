@@ -216,15 +216,27 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 
 ## Documents de vision features
 
+### ✅ Spécifiés
+
 | Fichier | Contenu |
 |---|---|
 | `feature-display-tv.md` | Affichage spectateur TV : modes, overlays, animations NFC, fil d'initiative |
 | `feature-nfc.md` | Puces NFC : système de types, encodage, pages back-office, endpoint trigger |
-| `feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (**à définir — bloquant pour l'implémentation NFC**) |
+| `feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (CBOR, versioning, transport, gestion d'erreurs) |
 | `feature-media-library.md` | Bibliothèque d'images : upload centralisé par campagne, Image Picker transverse, mappings images NFC |
 | `feature-loot.md` | Système de loot et objets : catalogue par campagne, types, tables de drop probabilistes, overlay de distribution, inventaires, composants de craft |
 | `feature-initiative.md` | Fil d'initiative : démarrage combat, drag & drop ordre, bandeau TV style BG3, tour suivant, fin de combat |
 | `feature-live-stats-dragdrop.md` | Stats en live + drag & drop tokens : positionnement libre temps réel, popover édition endurance/espoir, entités cachées semi-transparentes |
+| `feature-enemies.md` | Fiches ennemis & PNJ (table unifiée `combatants`) : stats TOR, compétences de combat, capacités redoutables, haine/détermination, blessures, loot, inventaire PNJ, export NFC |
+
+### ❌ À rédiger (bloquant pour l'implémentation)
+
+Voir **[`SPECS-RESTANTES.md`](./SPECS-RESTANTES.md)** pour le détail complet de ce qu'il reste à spécifier.
+
+| Fichier à créer | Feature | Réf. roadmap | Priorité |
+|---|---|---|---|
+| `feature-characters.md` | Fiche personnage joueur enrichie : structure complète TOR, stats, compétences, inventaire, portrait, popover blessures | A3 | 🔴 Phase 2 |
+| `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage au join, feuille perso interactive, inventaire temps réel, annonces MJ | E1, E2, E3, E4 | 🟠 Phase 3 |
 
 ---
 

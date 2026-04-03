@@ -90,7 +90,7 @@ Chaque fiche ennemi dans le catalogue peut avoir une table de loot. Elle défini
 | Champ | Type | Description |
 |---|---|---|
 | `id` | uuid | Identifiant |
-| `enemy_id` | uuid FK | Ennemi concerné |
+| `combatant_id` | uuid FK | Ennemi ou PNJ concerné (référence `combatants.id`) |
 | `item_id` | uuid FK | Objet depuis le catalogue |
 | `probability` | integer | Probabilité de drop en % (1–100, défaut : 100) |
 | `quantity_min` | integer | Quantité minimale droppée (défaut : 1) |
@@ -230,16 +230,17 @@ Les `craft_tags` permettent au système de craft (feature à détailler séparé
 | Table | Rôle |
 |---|---|
 | `campaign_items` | Catalogue d'objets par campagne |
-| `enemy_loot_table` | Entrées de la table de loot par ennemi |
+| `enemy_loot_table` | Entrées de la table de loot par ennemi/PNJ (`combatant_id` FK → `combatants`) |
 | `character_inventory` | Inventaire des personnages joueurs |
-| `npc_inventory` | Inventaire des PNJ (même structure que `character_inventory`, avec `npc_id`) |
+| `npc_inventory` | Inventaire des PNJ (même structure que `character_inventory`, avec `combatant_id` → `combatants` où `kind = 'npc'`) |
 
 ### Champs à ajouter sur les tables existantes
 
 | Table | Champ | Type | Usage |
 |---|---|---|---|
 | `scene_entities` | `item_id` | uuid FK\|null | Référence à `campaign_items` pour les entités de type objet |
-| `npcs` | — | — | L'inventaire PNJ utilise une table dédiée `npc_inventory` (structure identique à `character_inventory` mais avec `npc_id` à la place de `character_id`) — pas de mutualisation pour éviter les FK ambiguës |
+
+> **Note** : les tables `enemies` et `npcs` n'existent pas en tant que tables séparées — tout passe par `combatants` (voir `feature-enemies.md`). `npc_inventory.combatant_id` référence `combatants.id` où `kind = 'npc'`.
 
 ---
 

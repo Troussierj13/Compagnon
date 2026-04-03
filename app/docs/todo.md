@@ -80,22 +80,20 @@ Pas de procédure de rotation définie. À prévoir avant la mise en production.
 
 ### Type discriminant pour EntityData
 `EntityData = EnemyData | ItemData | ZoneData | Record<string, unknown>` — le fallback `Record<string, unknown>` affaiblit la sûreté de type.
-**Solution** :
+
+Suite à la fusion enemy/npc en table `combatants`, la solution cible est :
 ```typescript
 type EntityPayload =
-  | { type: 'enemy'; data: EnemyData }
-  | { type: 'item';  data: ItemData  }
-  | { type: 'zone';  data: ZoneData  }
-  | { type: 'npc';   data: NPCData   }
+  | { type: 'combatant'; data: CombatantData }  // enemy + npc unifiés
+  | { type: 'item';      data: ItemData      }
+  | { type: 'zone';      data: ZoneData      }
 ```
+`CombatantData` expose les colonnes trackées en session : `endurance_current`, `wounds_received`, `hatred_current`, `is_defeated` (colonnes dédiées sur `scene_entities`, pas dans le JSONB `data`).
+**À revoir** lors de l'implémentation de `feature-enemies.md`.
 
 ### Champ `wounds` absent de `TORCharacterData`
 Le popover PJ (feature `feature-live-stats-dragdrop.md`) expose un champ "Blessures" qui n'est pas encore défini dans `TORCharacterData`.
-**À définir** dans `feature-characters.md` (fiche personnage complète) avant d'implémenter le popover PJ.
-
-### `NPCData` non défini dans `rpg.ts`
-Les PNJ ont un type `EntityData` générique. Un type `NPCData` (endurance, endurance_max, portrait_url) est nécessaire pour le type discriminant et les popovers.
-**À ajouter** dans `types/rpg.ts` lors de l'implémentation des fiches PNJ.
+**À définir** dans `feature-characters.md` (fiche personnage complète — spec non encore rédigée) avant d'implémenter le popover PJ.
 
 ---
 

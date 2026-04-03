@@ -55,8 +55,7 @@ Partout où une image est à définir dans l'app, un composant **Image Picker** 
 | Battlemap d'une scène | `scenes.battlemap_url` |
 | Carte du monde (mode Voyage) | `campaigns.world_map_url` |
 | Portrait d'un personnage joueur | `characters.portrait_url` |
-| Portrait d'un PNJ | `npcs.portrait_url` |
-| Artwork d'un ennemi | `enemies.artwork_url` |
+| Artwork d'un ennemi ou PNJ | `combatants.artwork_url` |
 | Image libre dans un overlay TV | `overlays.content.url` |
 | Mapping image pour résolution NFC | `nfc_image_mappings.media_id` |
 
@@ -66,31 +65,29 @@ Partout où une image est à définir dans l'app, un composant **Image Picker** 
 
 Les puces NFC ne stockent pas d'image. L'app résout l'image à afficher via une cascade de fallback. Avec la bibliothèque, le MJ peut **personnaliser ce mapping** depuis le back-office de la campagne.
 
-### Mapping race × rareté × sexe
+### Mapping famille × rareté
 
 Dans les paramètres de la campagne, section *Images NFC*, le MJ peut associer une combinaison de champs à une image de la bibliothèque :
 
 ```
-race: "Gobelin"  + rareté: "common"    + sexe: —  → [image bibliothèque]
-race: "Gobelin"  + rareté: "rare"      + sexe: —  → [image bibliothèque]
-race: "Dragon"   + rareté: "legendary" + sexe: —  → [image bibliothèque]
-race: —          + rareté: "legendary" + sexe: —  → [image générique légendaire]
+famille: "Gobelin"  + rareté: "common"    → [image bibliothèque]
+famille: "Gobelin"  + rareté: "rare"      → [image bibliothèque]
+famille: "Dragon"   + rareté: "legendary" → [image bibliothèque]
+famille: —          + rareté: "legendary" → [image générique légendaire]
 ```
 
-Le sexe est optionnel dans le mapping (une même image peut couvrir `m`, `f` et `n` si non précisé).
+> Le champ `famille` correspond à `combatants.family` — valeur libre saisie par le MJ sur la fiche (ex : `"Gobelin"`, `"Orc"`, `"Pillard"`).
 
 ### Cascade de résolution complète
 
 ```
-1. Artwork défini directement sur la fiche de l'entité (ex: enemies.artwork_url)
+1. Artwork défini directement sur la fiche (combatants.artwork_url)
         ↓ (si absent)
-2. Mapping race + rareté + sexe → bibliothèque campagne
+2. Mapping famille + rareté → bibliothèque campagne
         ↓ (si absent)
-3. Mapping race + rareté (sexe ignoré) → bibliothèque campagne
+3. Mapping rareté seule → bibliothèque campagne
         ↓ (si absent)
-4. Mapping rareté seule → bibliothèque campagne
-        ↓ (si absent)
-5. Icône colorée par type (comportement par défaut)
+4. Icône colorée par type (comportement par défaut)
 ```
 
 ---
@@ -149,12 +146,11 @@ Les URLs sont **publiques** (lecture sans auth) pour permettre l'affichage sur l
 |---|---|---|
 | `id` | uuid | Identifiant |
 | `campaign_id` | uuid FK | Campagne |
-| `race` | text\|null | Race de l'entité (`null` = toutes les races) |
+| `family` | text\|null | Famille de l'entité (`null` = toutes les familles) — correspond à `combatants.family` |
 | `rarity` | enum\|null | Rareté (`null` = toutes) |
-| `sex` | enum\|null | Sexe `m` / `f` / `n` (`null` = tous) |
 | `media_id` | uuid FK | Image dans `campaign_media` |
 
-Index unique sur `(campaign_id, race, rarity, sex)` pour éviter les doublons.
+Index unique sur `(campaign_id, family, rarity)` pour éviter les doublons.
 
 ---
 

@@ -54,11 +54,13 @@ La map contient tous les champs de l'entité avec leurs noms complets en clés s
 {
   "_t": "ennemi",
   "nom": "Gobelin des cavernes",
-  "race": "gobelin",
+  "famille": "gobelin",
   "puissance": 12,
   "endurance": 8,
   "rareté": "common",
-  "compétences": ["Esquive", "Furtivité"]
+  "compétences_combat": [
+    { "nom": "Cimeterre", "niveau": 2, "dégâts": 2, "perforant": 14 }
+  ]
 }
 ```
 
