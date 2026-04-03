@@ -95,12 +95,16 @@ Pour les PNJ, un bouton supplémentaire **"Inventaire"** ouvre le panneau de ges
 
 Le popover PJ expose les valeurs qui changent fréquemment en session :
 
-| Stat | Champ source | Type |
+| Stat | Champ source (`characters.data`) | Type |
 |---|---|---|
-| Endurance courante | `characters.data.endurance_current` | integer |
-| Espoir courant | `characters.data.hope_current` | integer |
-| Blessures | `characters.data.wounds` (à définir dans feature fiche PJ) | integer ou boolean[] |
+| Endurance courante | `current_endurance` | integer |
+| Espoir courant | `current_hope` | integer |
+| Blessé (toggle) | `states.hurt` | boolean |
+| Blessures | `states.injury` (`{ value, unit }`) | object \| null |
+| Fatigue | `fatigue` | integer |
+| Ombres | `shadows` | integer |
 
+> Voir `feature-characters.md` — `TORCharacterData` pour la structure complète du JSONB.
 > Ces valeurs sont sur la table `characters`, pas `scene_entities`. La modification passe par un **server endpoint** (pas d'écriture directe sur `characters` côté MJ client pour garder la cohérence avec les mises à jour joueur).
 
 Interface : un champ par stat avec `+` / `−` + saisie directe, max affiché en référence.
@@ -112,7 +116,7 @@ Interface : un champ par stat avec `+` / `−` + saisie directe, max affiché en
 Quand le MJ affiche la fiche d'un PJ en grand sur la TV (feature future `feature-display-tv.md` — overlay fiche), la fiche est éditable sur presque toutes ses valeurs :
 
 - Compétences, équipement, inventaire, vertus, récompenses, notes
-- Cette interface de modification complète est définie dans la feature dédiée aux fiches personnages (`feature-characters.md` — à créer)
+- Cette interface de modification complète est définie dans la feature dédiée aux fiches personnages (`feature-characters.md`)
 - Le MJ et le joueur peuvent modifier simultanément (le joueur depuis son téléphone, le MJ depuis le panneau)
 
 ---
@@ -126,7 +130,7 @@ Stats modifiables par le joueur :
 - Espoir courant
 - Notes personnelles
 
-> Le détail complet est dans la feature fiche joueur (`feature-characters.md` — à créer).
+> Le détail complet est dans la feature fiche joueur (`feature-characters.md`).
 
 ---
 
@@ -256,7 +260,7 @@ Le RLS `scene_entities_gm_all` autorise ces écritures. Supabase Realtime propag
 
 ## Ce qui n'est PAS dans cette feature
 
-- Modification complète de la fiche personnage (compétences, inventaire, etc.) — `feature-characters.md` à créer
+- Modification complète de la fiche personnage (compétences, inventaire, etc.) — voir `feature-characters.md`
 - Animations de révélation dramatique — `feature-display-tv.md`
 - Affichage des tokens sur les téléphones joueurs — hors scope (TV uniquement)
 - Snap sur grille — non prévu (positionnement libre uniquement)

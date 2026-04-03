@@ -228,6 +228,9 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 | `feature-initiative.md` | Fil d'initiative : démarrage combat, drag & drop ordre, bandeau TV style BG3, tour suivant, fin de combat |
 | `feature-live-stats-dragdrop.md` | Stats en live + drag & drop tokens : positionnement libre temps réel, popover édition endurance/espoir, entités cachées semi-transparentes |
 | `feature-enemies.md` | Fiches ennemis & PNJ (table unifiée `combatants`) : stats TOR, compétences de combat, capacités redoutables, haine/détermination, blessures, loot, inventaire PNJ, export NFC |
+| `feature-characters.md` | Fiche personnage joueur TOR : attributs, compétences, Sagesse/Vertus (ordinaires + culturelles), Vaillance/Récompenses, équipement, inventaire, états, mode level-up (scène de communauté), 4 surfaces, export NFC |
+| `feature-game-system.md` | CRUD système de jeu : cultures (stats de départ, vertus culturelles), vertus ordinaires, récompenses, armurerie par campagne (armes + armures/casques/boucliers) |
+| `feature-character-creation.md` | Wizard de création de personnage (phase future) : 7 étapes guidées depuis la culture, initialisation complète du JSONB TORCharacterData |
 
 ### ❌ À rédiger (bloquant pour l'implémentation)
 
@@ -235,7 +238,6 @@ Voir **[`SPECS-RESTANTES.md`](./SPECS-RESTANTES.md)** pour le détail complet de
 
 | Fichier à créer | Feature | Réf. roadmap | Priorité |
 |---|---|---|---|
-| `feature-characters.md` | Fiche personnage joueur enrichie : structure complète TOR, stats, compétences, inventaire, portrait, popover blessures | A3 | 🔴 Phase 2 |
 | `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage au join, feuille perso interactive, inventaire temps réel, annonces MJ | E1, E2, E3, E4 | 🟠 Phase 3 |
 
 ---

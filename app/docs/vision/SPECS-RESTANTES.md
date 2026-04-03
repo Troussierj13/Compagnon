@@ -10,17 +10,8 @@
 
 ## 🔴 Phase 2 — Bloquant
 
-### `feature-characters.md` — Fiche personnage joueur enrichie
-**Réf. roadmap** : A3
-**Bloque** : distribution de loot vers inventaire joueur, popover blessures/espoir MJ, vue joueur téléphone
-
-À spécifier :
-- Structure complète de la fiche TOR : stats (Corps, Cœur, Esprit), compétences, vertus, récompenses, équipement
-- Champ `espoir` (équivalent mana/ressource narrative) + règle de blessures côté PJ
-- `portrait_url` pour le token battlemap
-- Inventaire : géré par le MJ (attribution loot) et le joueur (notes, consommables)
-- Popover édition rapide MJ : endurance courante, espoir courant, blessures (lien avec `feature-live-stats-dragdrop.md`)
-- Structure du JSONB `characters.data` (`TORCharacterData`) — à finaliser pour typage TypeScript
+> ✅ `feature-characters.md` complétée le 2026-04-03
+> ✅ `feature-game-system.md` complétée le 2026-04-03
 
 ---
 
@@ -84,3 +75,6 @@ Peuvent être spécifiées à la demande, pas de fichier dédié pour l'instant.
 | `feature-initiative.md` | 2026-04-03 |
 | `feature-live-stats-dragdrop.md` | 2026-04-03 |
 | `feature-enemies.md` | 2026-04-03 |
+| `feature-characters.md` | 2026-04-03 |
+| `feature-game-system.md` | 2026-04-03 |
+| `feature-character-creation.md` | 2026-04-03 (phase future) |

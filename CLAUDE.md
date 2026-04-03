@@ -31,6 +31,9 @@ En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`archite
 | `app/docs/vision/feature-initiative.md` | Fil d'initiative : démarrage combat, drag & drop ordre, bandeau TV style BG3, tour suivant, fin de combat |
 | `app/docs/vision/feature-live-stats-dragdrop.md` | Stats en live + drag & drop tokens : positionnement libre temps réel, popover édition endurance/espoir, entités cachées semi-transparentes |
 | `app/docs/vision/feature-enemies.md` | Fiches ennemis & PNJ (table unifiée `combatants`) : stats TOR, compétences de combat, capacités redoutables, haine/détermination, blessures, loot, inventaire PNJ, export NFC |
+| `app/docs/vision/feature-characters.md` | Fiche personnage joueur TOR : attributs, compétences, Sagesse/Vertus, Vaillance/Récompenses, équipement, inventaire, états, mode level-up, 4 surfaces d'affichage, export NFC |
+| `app/docs/vision/feature-game-system.md` | CRUD système de jeu : cultures, vertus ordinaires, vertus culturelles, récompenses, armurerie par campagne (armes + armures) |
+| `app/docs/vision/feature-character-creation.md` | Wizard de création de personnage (phase future) : 7 étapes, initialisation depuis la culture, règles TOR |
 
 > Si une feature n'a pas encore son fichier `feature-xxx.md`, elle n'est **pas prête à être implémentée**.
 

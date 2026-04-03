@@ -99,7 +99,7 @@ Appelle `/api/nfc/trigger` avec un token statique dans le header `Authorization:
 
 ## Realtime
 
-Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlays`, `map_markers`.
+Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlays`, `map_markers`, `characters`.
 
 ### TV (`useDisplaySession`)
 - Écoute `sessions` (changement de `display_mode`, `active_scene_id`, `combat_active`, `combat_round`)
@@ -133,10 +133,15 @@ Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlay
 
 | Table | Description |
 |---|---|
-| `enemies` | Fiches ennemis (stats, rareté, artwork, table de loot, config spawn NFC) |
-| `npcs` | Fiches PNJ (stats légères, portrait, inventaire) |
+| `combatants` | Fiches ennemis & PNJ unifiées (stats TOR, rareté, artwork, capacités, loot) — `feature-enemies.md` |
 | `map_markers` | Marqueurs sur la carte monde (mode Voyage) |
 | `overlays` | Overlays actifs sur la TV pour une session |
+| `cultures` | Cultures joueurs (stats de départ, compétences initiales) — `feature-game-system.md` |
+| `virtues` | Vertus ordinaires (Sagesse) avec variantes et modifiers — `feature-game-system.md` |
+| `cultural_virtues` | Vertus culturelles liées à une culture (disponibles à partir de Sagesse rang 2) — `feature-game-system.md` |
+| `rewards` | Récompenses (Vaillance) avec cibles et modifiers — `feature-game-system.md` |
+| `campaign_weapons` | Catalogue d'armes par campagne — `feature-game-system.md` |
+| `campaign_armors` | Catalogue armures/casques/boucliers par campagne — `feature-game-system.md` |
 
 ### Champs à ajouter sur les tables existantes
 
@@ -150,6 +155,7 @@ Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlay
 | `sessions` | `combat_active` | boolean | Un combat est en cours |
 | `sessions` | `combat_round` | integer | Numéro du round en cours (0 = hors combat) |
 | `scenes` | `wallpaper_url` | text | Fond d'écran spécifique à la scène |
+| `scenes` | `scene_type` | enum | `normal` / `community` — type `community` active le mode level-up pour les joueurs |
 | `scene_entities` | `in_combat` | boolean | Participe au fil d'initiative |
 | `scene_entities` | `initiative_order` | integer\|null | Position dans le fil (1 = premier, null = hors combat) |
 | `scene_entities` | `is_current_turn` | boolean | C'est son tour (un seul `true` par scène à la fois) |

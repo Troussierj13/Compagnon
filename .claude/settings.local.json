@@ -11,7 +11,8 @@
       "Bash(yarn dev:*)",
       "mcp__Claude_Preview__preview_start",
       "Bash(yarn --prefix app dev)",
-      "Bash(yarn --prefix app run dev)"
+      "Bash(yarn --prefix app run dev)",
+      "Bash(grep -E \"\\\\.\\(ts|js\\)$\")"
     ]
   },
   "enabledPlugins": {
