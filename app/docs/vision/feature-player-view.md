@@ -154,8 +154,8 @@ Lecture seule pour le joueur (ces données sont créées et éditées par le MJ 
 C'est l'onglet principal pour les modifications en cours de jeu.
 
 **Lecture seule :**
-- Endurance max (calculée : `strength` + modifiers `resistance`)
-- Espoir max (calculé : `heart` + modifiers `assurance`)
+- Endurance max (calculée : `strength + culture.endurance_bonus + Σ modifiers`)
+- Espoir max (calculé : `heart + culture.hope_bonus + Σ modifiers`)
 - Charge totale (poids armes + armure + casque + bouclier, après modifiers `clever`)
 
 **Modifiable par le joueur :**
@@ -231,7 +231,7 @@ Lecture seule pour le joueur.
 - **Armure** : nom, protection (Xd), poids, récompenses
 - **Casque** : nom, protection (Xd), poids, récompenses
 - **Bouclier** : nom, bonus parade, poids, récompenses
-- **Parade totale** : calculée (`mind` + bonus bouclier + modifiers)
+- **Parade totale** : calculée (`mind + culture.parade_bonus` + bonus bouclier + modifiers)
 - Emplacement vide = case grisée
 
 ### 4.8 Onglet 7 — Inventaire

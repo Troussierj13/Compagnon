@@ -56,8 +56,9 @@ Chaque **6** obtenu sur un dé de Succès est un **succès remarquable** qui peu
 |---|---|
 | **Coup puissant** (Heavy Blow) | +Corps en dégâts supplémentaires |
 | **Coup perforant** (Piercing Blow) | Si total ≥ seuil de blessure de l'arme → Blessure |
-| **Parer** (Fend Off) | +bonus temporaire à la Parade |
-| **Coup d'écu** (Shield Thrust) | Repousser un ennemi, avantage tactique |
+| **Parer** (Fend Off) | −1 dé de Succès à la prochaine attaque ennemie |
+| **Coup d'écu** (Shield Thrust) | Repousser un ennemi, avantage tactique (requiert bouclier) |
+| **Riposte** (Parry) | Annuler une attaque ennemie déclarée |
 
 > **Note app** : les 6 sont des résultats actifs — l'UI doit permettre au joueur de choisir comment les dépenser pendant un combat.
 

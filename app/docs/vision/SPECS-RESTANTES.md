@@ -4,7 +4,19 @@
 > Aucune implémentation ne peut démarrer sans que la spec correspondante soit complète.
 > Mettre à jour ce fichier au fur et à mesure que les specs sont rédigées.
 
-**Dernière mise à jour** : 2026-04-03
+**Dernière mise à jour** : 2026-04-04
+
+---
+
+## 🟠 Features créées — à finaliser
+
+Ces fichiers existent mais sont marqués incomplets. Ils doivent être finalisés avant implémentation.
+
+| Fichier | Priorité | Ce qu'il manque |
+|---|---|---|
+| `feature-journey.md` | Haute | Modèle de données, layout panneau session voyage, interface hex back-office, vue joueur téléphone |
+| `feature-campaign-management.md` | Haute | Layout hub, gestion joueurs/personnages, havres, chronologie campagne |
+| `feature-session-history.md` | Basse (Phase 4) | Modèle de données, interface affichage, format export |
 
 ---
 
@@ -50,8 +62,8 @@ Peuvent être spécifiées à la demande, pas de fichier dédié pour l'instant.
 |---|---|---|
 | Mode préparation de session | F1 | Préparer scènes et entités avant de lancer la session |
 | Statuts visuels sur tokens | F2 | Icônes ou couleurs : blessé, mort, effet de statut |
-| Dés virtuels | F3 | Interface de lancer de dés sur téléphone, résultats publics ou privés |
-| Historique de session | F4 | Log des événements clés — utile pour le compte-rendu post-session |
+| ~~Dés virtuels~~ | ~~F3~~ | ~~Hors scope — les joueurs lancent des dés physiques~~ |
+| Historique de session | F4 | → Voir `feature-session-history.md` (créé, à finaliser) |
 
 ---
 

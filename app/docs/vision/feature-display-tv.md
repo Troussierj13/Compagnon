@@ -54,6 +54,8 @@ Mode principal pour les scènes de combat, d'exploration ou de partage de loot.
 | Ennemi | ✅ | ❌ — maintenir le mystère |
 | PNJ | ✅ | ❌ par défaut (paramétrable par PNJ) |
 
+> **Calcul de l'Endurance max affichée** : la valeur max est `strength + culture.endurance_bonus + Σ modifiers`. Elle est calculée depuis `characters.data` — jamais stockée en colonne propre. Voir `feature-characters.md` section 2.2 pour les formules complètes (Endurance, Espoir, Parade).
+
 #### Fil d'initiative
 
 Bandeau affiché en bas de l'écran TV pour suivre l'ordre de jeu pendant un combat. Optionnel — le MJ l'active quand un combat commence.

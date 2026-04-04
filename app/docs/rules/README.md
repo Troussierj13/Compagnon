@@ -13,14 +13,17 @@
 | [dice-system.md](./dice-system.md) | Système de dés : dé du Destin, dés de Succès, seuils, résultats spéciaux |
 | [attributes-stats.md](./attributes-stats.md) | Attributs (Corps/Cœur/Esprit), stats dérivées (Endurance, Espoir, Parade), SR |
 | [skills.md](./skills.md) | 18 compétences communes + 4 compétences de combat, rangs, favorisées |
-| [combat.md](./combat.md) | Phases de combat, postures, attaques, blessures, ennemis |
-| [conditions.md](./conditions.md) | États automatiques et manuels : Épuisé, Mélancolique, Blessé, Mort |
-| [progression.md](./progression.md) | Points d'Aventure / de Progression, Sagesse, Vaillance, phase de Communauté |
+| [combat.md](./combat.md) | Phases de combat, postures, attaques, succès remarquables, blessures, ennemis |
+| [conditions.md](./conditions.md) | États automatiques et manuels : Épuisé, Mélancolique, Blessé, Bout de Folie |
+| [fear-morale.md](./fear-morale.md) | Peur (jets, seuils, Vaillance), Corruption, Ombre, Chemin de l'Ombre |
+| [progression.md](./progression.md) | Points d'Aventure / de Progression, Sagesse, Vaillance |
+| [fellowship-phase.md](./fellowship-phase.md) | Phase de Communauté : activités, récupération, Yule, Havre |
 | [cultures.md](./cultures.md) | Les 6 cultures : attributs de départ, compétences, stats dérivées |
 | [vocations.md](./vocations.md) | Les 6 vocations : compétences bonus, particularités, défauts |
 | [equipment.md](./equipment.md) | Armes, armures, casques, boucliers — valeurs et règles de charge |
 | [virtues-rewards.md](./virtues-rewards.md) | Vertus (Sagesse) et Récompenses (Vaillance) avec effets mécaniques |
 | [journey.md](./journey.md) | Règles de Voyage : rôles, Fatigue, jets de Hasard, saisons |
+| [creatures-adversaries.md](./creatures-adversaries.md) | Créatures et adversaires : stats, Haine/Détermination, créatures de référence |
 
 ---
 

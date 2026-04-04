@@ -63,6 +63,8 @@ Les différences entre les deux types sont minimes et purement sémantiques :
 
 **Règle blessures** : une blessure est infligée lors d'un coup perforant (jet de protection raté). Quand `wounds_received` atteint `wound_threshold`, l'entité est inconsciente/morte — indépendamment de l'endurance restante.
 
+> ⚠️ **Extension maison** : le mécanisme `wound_threshold` / `wounds_received` sur les ennemis est une **adaptation propre à cette app**, absente des règles TOR 2e standard. Dans le livre de base, les blessures (Piercing Blows) s'appliquent aux héros joueurs, pas aux ennemis. Cette mécanique est introduite pour simuler une résilience accrue des ennemis puissants. Le MJ peut la désactiver en laissant `wound_threshold = 999` si la mort doit être déterminée uniquement par l'endurance.
+
 **Distinction haine / détermination** : le type est uniquement un **label affiché** dans l'UI, la mécanique est identique. `haine` = serviteurs de l'Ennemi (Orcs, Nazgûl, disciples de Sauron). `détermination` = tout le reste (humains, faune, PNJ alliés ou neutres).
 
 ---

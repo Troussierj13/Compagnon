@@ -119,6 +119,8 @@ interface ChosenVirtue {
   virtue_id: string          // FK → table `virtues` (game system)
   chosen_variant: number     // Index du choix retenu (0 = variante par défaut)
   is_cultural: boolean       // true = vertu culturelle (disponible à partir de Sagesse rang 2)
+  rank_acquired: number      // Rang de Sagesse auquel cette vertu a été gagnée (1, 2, 3…)
+  // Règle : rank_acquired === 1 → is_cultural doit être false (rang 1 = vertu ordinaire obligatoire)
 }
 
 interface ChosenReward {
@@ -202,13 +204,16 @@ type RewardTarget  = 'armor' | 'helm' | 'shield' | 'weapon_0' | 'weapon_1' | 'we
 | Seuil de réussite Corps (SR) | `20 − strength` | Vertu `empowered` (−1 SR) |
 | Seuil de réussite Cœur (SR) | `20 − heart` | Vertu `empowered` (−1 SR) |
 | Seuil de réussite Esprit (SR) | `20 − mind` | Vertu `empowered` (−1 SR) |
-| Endurance max | `strength` | Vertu `resistance` (+2) |
-| Espoir max | `heart` | Vertu `assurance` (+2) |
-| Parade de base | `mind` | Vertu `liveness` (+1), récompense `reinforced` bouclier |
+| Endurance max | `strength + culture.endurance_bonus + Σ modifiers` | Vertu `resistance` (+2) |
+| Espoir max | `heart + culture.hope_bonus + Σ modifiers` | Vertu `assurance` (+2) |
+| Parade de base | `mind + culture.parade_bonus + Σ modifiers` | Vertu `liveness` (+1), récompense `reinforced` bouclier |
 | Poids total | somme des poids armes + armure + casque + bouclier | Récompense `clever` (−2 poids) |
+
+> **Bonus culture** : chaque culture définit trois bonus fixes (`endurance_bonus`, `hope_bonus`, `parade_bonus`) stockés dans la table `cultures` (voir `feature-game-system.md`). Exemples : Bardide +20/+8/+12 ; Nain +22/+8/+10 ; Hobbit +18/+10/+12. Ces bonus sont ajoutés avant tout modifier de vertu.
 
 > **Règle d'auto-épuisement** : si `current_endurance < poids_total + fatigue` → `states.exhaust = true` (recalcul automatique)
 > **Règle de mélancolie** : si `current_hope < shadows` → `states.melancholic = true` (recalcul automatique)
+> **`shadows`** : compteur cumulatif d'Ombre (pas un état toggleable). `melancholic` en est toujours dérivé — il ne se modifie jamais indépendamment de `shadows`.
 
 ---
 
@@ -350,7 +355,7 @@ valeur_finale = (valeur_base + Σ(modifiers additifs)) × Π(modifiers multiplic
 
 - Un emplacement par type : `armor`, `helm`, `shield`
 - Tirés du catalogue ou saisis manuellement
-- La parade totale = parade de base (Esprit) + bonus bouclier (+ modifier `reinforced` si applicable)
+- La parade totale = `mind + culture.parade_bonus` + bonus bouclier (+ modifier `reinforced` si applicable)
 - La protection de l'armure et du casque est exprimée en nombre de dés (ex : `2d`)
 
 ### 7.3 Poids et épuisement

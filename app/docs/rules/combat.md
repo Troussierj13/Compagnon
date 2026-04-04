@@ -78,6 +78,7 @@ Chaque 6 obtenu peut être dépensé pour une action spéciale :
 | **Percer** (Pierce) | +2 au résultat du Dé du Destin (aide à déclencher un Coup Perforant) | 1 Tengwar |
 | **Parer** (Fend Off) | −1 dé de Succès à la prochaine attaque ennemie | 1 Tengwar |
 | **Coup d'écu** (Shield Thrust) | Repousser l'ennemi, avantage tactique | 1 Tengwar + bouclier équipé |
+| **Riposte** (Parry) | Annuler une attaque ennemie qui vient d'être déclarée | 1 Tengwar |
 
 ---
 

@@ -31,12 +31,12 @@ Certains sont **automatiques** (calculés à partir des stats), d'autres sont **
 
 #### Bout de Folie (Bout of Madness)
 
-Quand un personnage **Mélancolique** obtient l'Œil de Sauron sur un jet critique, cela peut déclencher un **Bout de Folie** :
-- L'Espoir **maximum** est réduit de 1 (permanent jusqu'à guérison).
-- Le personnage gagne un **Défaut** supplémentaire lié à son chemin de l'Ombre / Vocation.
-- C'est la seule façon de réduire l'Ombre quand elle dépasse l'Espoir (le personnage "vit" sa mélancolie).
+Quand un personnage **Mélancolique** obtient l'Œil de Sauron sur un **jet de résistance à l'Ombre** (jet d'Ombre, confrontation morale, tentation), cela peut déclencher un **Bout de Folie** :
+- L'Espoir **maximum** est réduit de **1** (permanent jusqu'à guérison spéciale).
+- Le personnage gagne un **Défaut** supplémentaire lié à son chemin de l'Ombre / Vocation (ex : Cupidité, Orgueil, Désespoir…).
+- Le Bout de Folie ne se déclenche **pas** sur n'importe quel jet — uniquement lors de jets directement liés à l'Ombre ou à un choix moral difficile.
 
-> **Note app** : le Bout de Folie est une décision narrative du MJ. L'app ne le déclenche pas automatiquement — mais `hope_max` peut être modifié manuellement via les modifiers.
+> **Note app** : le Bout de Folie est une décision narrative du MJ. L'app ne le déclenche pas automatiquement — `hope_max` se modifie manuellement via les modifiers, et le nouveau Défaut se note dans les champs texte de la fiche.
 
 ---
 

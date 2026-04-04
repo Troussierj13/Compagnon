@@ -61,15 +61,25 @@ Affichage des valeurs pré-remplies depuis la culture. Le MJ peut les modifier d
 | CŒUR | issu de la culture | 1–10 |
 | ESPRIT | issu de la culture | 1–10 |
 
-Afficher en temps réel les stats dérivées calculées (Endurance max, Espoir max, Parade de base, SR).
+Afficher en temps réel les stats dérivées calculées en appliquant les bonus de la culture sélectionnée :
+- **Endurance max** = `CORPS + culture.endurance_bonus`
+- **Espoir max** = `CŒUR + culture.hope_bonus`
+- **Parade de base** = `ESPRIT + culture.parade_bonus`
+- **SR** = `20 − attribut`
 
 ### Étape 4 — Compétences initiales
 
-Pré-remplissage depuis la culture :
-- Compétences favorisées initiales cochées automatiquement
-- Compétence de combat initiale au rang 1
+Pré-remplissage depuis la culture sélectionnée :
 
-Le MJ peut ajuster les rangs initiaux (points de départ selon les règles de la culture — à définir dans la culture elle-même).
+**Compétences communes** : les 18 compétences affichées avec leurs rangs de départ issus de `culture.starting_attributes`. Les 2 compétences favorisées de la culture (`starting_favored_skills`) sont cochées automatiquement.
+
+**Compétences de combat** : chaque culture donne rang 2 à une compétence de combat au choix, et rang 1 aux autres. La config est lue depuis `culture.starting_combat_skills`.
+
+Exemple pour les Bardides (`{ "bows": 2, "axes": 1, "spears": 1, "swords": 1 }`) :
+- Afficher un sélecteur : "Compétence de combat au rang 2 : [Arcs ▼] ou [Épées ▼]"
+- Les autres compétences sont pré-remplies au rang défini dans `starting_combat_skills` (lecture seule)
+
+> Le MJ peut ajuster les rangs initiaux si les règles de la culture l'autorisent.
 
 ### Étape 5 — Équipement de départ
 
@@ -84,9 +94,21 @@ Affichage du poids total en temps réel (et indicateur d'épuisement si déjà t
 - Valeur du trésor initial (suggestion basée sur la qualité de vie)
 - Ajout optionnel d'objets d'inventaire de départ
 
-### Étape 7 — Récapitulatif & confirmation
+### Étape 7 — Vertus, Récompenses & confirmation
 
-Vue d'ensemble de tous les choix effectués. Bouton "Créer le personnage" → génère l'entrée en base avec le JSONB `TORCharacterData` correctement initialisé.
+Tous les personnages démarrent à **Sagesse rang 1** et **Vaillance rang 1**. Cette étape permet de choisir les éléments de départ obligatoires avant la création.
+
+**Vertu initiale (Sagesse rang 1)** — obligatoire, vertu ordinaire uniquement :
+- Sélecteur parmi les vertus ordinaires disponibles
+- Si la vertu choisie a plusieurs variantes, proposer le choix de variante
+- Résultat : `sagesse.rank = 1`, `sagesse.virtues = [{ virtue_id, chosen_variant, is_cultural: false, rank_acquired: 1 }]`
+
+**Récompense initiale (Vaillance rang 1)** — obligatoire :
+- Sélecteur parmi les récompenses disponibles
+- Choix de la cible (arme / armure / casque / bouclier selon `valid_targets` de la récompense)
+- Résultat : `vaillance.rank = 1`, `vaillance.rewards = [{ reward_id, apply_to }]`
+
+**Récapitulatif** : vue d'ensemble de tous les choix effectués (attributs, compétences, équipement, vertu, récompense). Bouton "Créer le personnage" → génère l'entrée en base avec le JSONB `TORCharacterData` correctement initialisé.
 
 ---
 
@@ -96,18 +118,20 @@ Vue d'ensemble de tous les choix effectués. Bouton "Créer le personnage" → g
 
 | Champ | Valeur initiale |
 |---|---|
-| `current_endurance` | = Endurance max (= CORPS avec modifiers) |
-| `current_hope` | = Espoir max (= CŒUR avec modifiers) |
+| `current_endurance` | = Endurance max (= `CORPS + culture.endurance_bonus`) |
+| `current_hope` | = Espoir max (= `CŒUR + culture.hope_bonus`) |
 | `fatigue` | 0 |
 | `shadows` | 0 |
 | `sequels` | 0 |
 | `adventure_points` | 0 |
 | `progression_points` | 0 |
 | `community_points` | 0 |
-| `sagesse.rank` | 0 |
-| `vaillance.rank` | 0 |
+| `sagesse.rank` | **1** (vertu ordinaire choisie à l'étape 7) |
+| `vaillance.rank` | **1** (récompense choisie à l'étape 7) |
 | `states` | tout à false, injury null |
 | `inventory` | `[]` |
+
+> Selon les règles TOR 2e, tout personnage commence avec Sagesse 1 + 1 Vertu ordinaire, et Vaillance 1 + 1 Récompense. `sagesse.rank = 0` et `vaillance.rank = 0` sont des états invalides.
 
 ---
 

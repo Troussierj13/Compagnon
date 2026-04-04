@@ -233,11 +233,15 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 | `feature-character-creation.md` | Wizard de création de personnage (phase future) : 7 étapes guidées depuis la culture, initialisation complète du JSONB TORCharacterData |
 | `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage (E1), fiche 7 onglets swipeable (E2), inventaire temps réel (E3), annonces MJ (E4) |
 
-### ❌ À rédiger (bloquant pour l'implémentation)
+### ⚠️ Créées — à finaliser
+
+| Fichier | Contenu | Statut |
+|---|---|---|
+| `feature-journey.md` | Mode Voyage : carte hexagonale, chemin mémorisé, événements, conséquences mécaniques (Fatigue, Ombre) | Squelette — à finaliser |
+| `feature-campaign-management.md` | Hub back-office MJ : navigation campagne, configuration, sessions, havres | Squelette — à finaliser |
+| `feature-session-history.md` | Log événements clés d'une session, compte-rendu post-session, export Markdown | Squelette — à finaliser (Phase 4) |
 
 Voir **[`SPECS-RESTANTES.md`](./SPECS-RESTANTES.md)** pour le détail complet de ce qu'il reste à spécifier.
-
-*Aucune spec bloquante restante pour la Phase 3.* Voir Phases 4+ dans `SPECS-RESTANTES.md`.
 
 ---
 

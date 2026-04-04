@@ -2,17 +2,39 @@
 
 Guide pour Claude Code sur ce repo. Lis ce fichier avant toute intervention.
 
-## ⚠️ Règle absolue — Vision avant tout
+## ⚠️ Ordre de priorité des sources de vérité
+
+Trois niveaux de documentation coexistent. En cas de contradiction, respecter cet ordre :
+
+```
+1. app/docs/rules/     ← Règles TOR (source absolue sur le système de jeu)
+2. app/docs/vision/    ← Specs produit (tranche sur les choix d'implémentation)
+3. backend/ frontend/  ← Legacy (référence uniquement, ne pas modifier)
+```
+
+### 1. `app/docs/rules/` — Règles du système de jeu (priorité maximale)
+
+> **Pour tout ce qui concerne les mécaniques de The One Ring 2e, `app/docs/rules/` est la référence absolue.**
+
+Les fichiers `rules/` décrivent les règles officielles TOR 2e (dés, attributs, combat, Peur, Corruption, Phase de Communauté…). Aucune implémentation ne doit contredire ces règles. Si une spec vision entre en conflit avec une règle documentée dans `rules/`, **`rules/` a priorité**.
+
+- `app/docs/rules/README.md` — index de toutes les règles mécaniques
+
+### 2. `app/docs/vision/` — Specs produit (priorité sur les choix d'implémentation)
 
 > **Aucune modification de code n'est autorisée tant que la documentation de vision n'est pas complète.**
 
-Le dossier `app/docs/vision/` est la **référence principale du projet**. Avant d'écrire la moindre ligne de code, de modifier un fichier existant, ou de proposer une implémentation :
+Le dossier `app/docs/vision/` définit **comment** l'app implémente les règles TOR : interfaces, surfaces, flux UX, modèles de données, comportements temps réel. Avant d'écrire la moindre ligne de code :
 
 1. **Lire `app/docs/vision/README.md`** — vue d'ensemble du projet, les 4 surfaces, le système NFC, le système de loot
 2. **Lire tous les fichiers `app/docs/vision/feature-*.md`** — specs détaillées de chaque feature
 3. **Vérifier que la feature demandée est entièrement spécifiée** — si un `feature-xxx.md` manque ou est incomplet, demander au MJ de compléter la spec avant toute implémentation
 
-En cas de contradiction entre `app/docs/vision/` et le reste de la doc (`architecture.md`, `CLAUDE.md`, etc.), **`app/docs/vision/` a priorité**.
+En cas de contradiction entre `app/docs/vision/` et `architecture.md` / `CLAUDE.md` / tout autre doc technique, **`app/docs/vision/` a priorité** (sauf si contredit par `rules/`).
+
+### 3. `backend/` / `frontend/` — Legacy (référence uniquement)
+
+Le code legacy (`backend/` Express, `frontend/` Vue 2) peut être consulté pour comprendre des comportements existants, mais **ne doit jamais être modifié**. En cas de contradiction entre le legacy et `rules/` ou `vision/`, ignorer le legacy.
 
 ### Specs restantes à rédiger
 
@@ -161,9 +183,13 @@ Voir `app/.env.example`. Les clés sensibles (`SUPABASE_SERVICE_KEY`, `SESSION_S
 
 ## Documentation
 
-### Vision (à lire en priorité absolue)
+### Règles TOR (priorité 1 — lire avant toute implémentation de mécanique)
 
-- `app/docs/vision/README.md` — vision globale du projet (**source de vérité**)
+- `app/docs/rules/README.md` — index des règles mécaniques TOR 2e (**source de vérité sur le système de jeu**)
+
+### Vision (priorité 2 — lire avant toute implémentation de feature)
+
+- `app/docs/vision/README.md` — vision globale du projet (**source de vérité sur le produit**)
 - `app/docs/vision/feature-display-tv.md` — spec complète de l'affichage TV
 
 ### Skills installés

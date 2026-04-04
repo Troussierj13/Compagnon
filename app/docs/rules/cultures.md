@@ -34,7 +34,7 @@ Chaque culture a des avantages mécaniques propres. Ils sont affichés sur la fi
 | Clé | Nom FR | Culture | Effet mécanique |
 |---|---|---|---|
 | `intrepid` | Intrépide | Bardide | Tests de Vaillance favorisés (2 Dés du Destin, garder le meilleur) |
-| `elvenPrecision` | Précision elfique | Elfe de Lindon | Tant que non Mélancolique : dépenser 1 Espoir → Réussite magique sur un jet de Compétence |
+| `elvenPrecision` | Précision elfique | Elfe de Lindon | Tant que non Mélancolique : dépenser 1 Espoir → **Réussite automatique** sur un jet de Compétence **non-combat** (une fois par session) |
 | `longDefeat` | La Longue Défaite | Elfe de Lindon | En Phase de Communauté : ne peut récupérer que **1 point d'Ombre** maximum |
 | `goodSense` | Bon sens Hobbit | Hobbit | Tests de Sagesse favorisés + 1d bonus sur les tests d'Ombre vs Cupidité |
 | `semiMan` | Semi-Hommes | Hobbit | Restrictions d'équipement (voir ci-dessous) |

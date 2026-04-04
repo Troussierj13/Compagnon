@@ -152,7 +152,7 @@ interface CulturalVirtue {
 | **Yeux perçants** | Tests de Scrutation favorisés | *(favored: true sur scan)* |
 | **Ancienne sagesse** | SR Esprit −1 | `mind_sr −1` |
 | **Lumière d'Elendë** | +2 Espoir max | `hope_max +2` |
-| **Rapidité féerique** | +1 dé de Succès en Athlétisme | *(favored: true sur athletics)* |
+| **Rapidité féerique** | Athlétisme devient **favorisée** (2 Dés du Destin, garder le meilleur) | *(favored: true sur athletics)* |
 
 ---
 
@@ -195,7 +195,7 @@ interface CulturalVirtue {
 
 ---
 
-> ⚠️ **Note** : les noms et effets exacts des vertus culturelles TOR 2e varient selon les suppléments et éditions. Les valeurs ci-dessus sont des approximations basées sur le livre de base et le legacy. Le MJ doit les ajuster dans le CRUD selon le livre de règles de référence de la campagne.
+> ⚠️ **Note** : les valeurs ci-dessus sont basées sur le **livre de base TOR 2e 2021 (Free League Publishing)**. Les vertus culturelles des suppléments peuvent différer. Le MJ peut les ajuster dans le CRUD selon le matériel de campagne utilisé.
 
 ---
 

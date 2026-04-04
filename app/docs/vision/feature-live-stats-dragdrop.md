@@ -109,6 +109,8 @@ Le popover PJ expose les valeurs qui changent fréquemment en session :
 
 Interface : un champ par stat avec `+` / `−` + saisie directe, max affiché en référence.
 
+> **Calcul des maxima en référence** : l'Endurance max (`strength + culture.endurance_bonus + Σ modifiers`) et l'Espoir max (`heart + culture.hope_bonus + Σ modifiers`) doivent inclure les bonus de la culture du personnage. Ces valeurs sont calculées à la volée depuis `characters.data` — voir `feature-characters.md` section 2.2.
+
 ---
 
 ### Feuille personnage complète (overlay TV)

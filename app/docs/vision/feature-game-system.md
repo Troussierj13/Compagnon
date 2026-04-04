@@ -29,7 +29,9 @@ Il existe deux niveaux de données :
 
 Une culture définit l'origine d'un personnage. Elle détermine :
 - Les **statistiques de départ** proposées lors de la création (voir `feature-character-creation.md`)
+- Les **bonus dérivés** fixes qui s'ajoutent aux attributs pour calculer Endurance max, Espoir max et Parade
 - Les **compétences favorisées initiales** liées à la culture
+- Les **compétences de combat de départ** avec leurs rangs respectifs
 - Les **vertus culturelles** accessibles au personnage dès le rang 2 de Sagesse
 - Un **nom et une description** narrative
 
@@ -41,9 +43,23 @@ Une culture définit l'origine d'un personnage. Elle détermine :
 | `name` | text | Nom affiché (ex : "Rôdeur du Nord", "Hobbit de la Comté") |
 | `description` | text \| null | Présentation narrative (Markdown) |
 | `starting_attributes` | jsonb | Valeurs de départ proposées : `{ strength, heart, mind }` |
-| `starting_favored_skills` | text[] | IDs des compétences favorisées à la création (ex: `["hunting", "travel"]`) |
-| `starting_combat_skill` | text | ID de la compétence de combat initiale (ex: `"swords"`) |
+| `endurance_bonus` | integer | Bonus fixe ajouté à Corps pour calculer l'Endurance max (ex: Bardide = 20, Nain = 22, Hobbit = 18) |
+| `hope_bonus` | integer | Bonus fixe ajouté à Cœur pour calculer l'Espoir max (ex: Bardide = 8, Rôdeur = 6, Hobbit = 10) |
+| `parade_bonus` | integer | Bonus fixe ajouté à Esprit pour calculer la Parade de base (ex: Bardide = 12, Nain = 10, Rôdeur = 14) |
+| `starting_favored_skills` | text[] | IDs des 2 compétences communes favorisées à la création (ex: `["hunting", "lore"]`) |
+| `starting_combat_skills` | jsonb | Rangs de départ des compétences de combat : `{ skill_id: rank }` — ex: `{ "bows": 2, "axes": 1, "spears": 1, "swords": 1 }` |
 | `created_at` | timestamptz | — |
+
+> **Valeurs de référence TOR 2e** (voir `rules/cultures.md`) :
+>
+> | Culture | endurance_bonus | hope_bonus | parade_bonus |
+> |---|---|---|---|
+> | Bardide | 20 | 8 | 12 |
+> | Nain de Durin | 22 | 8 | 10 |
+> | Elfe de Lindon | 20 | 8 | 12 |
+> | Hobbit de la Comté | 18 | 10 | 12 |
+> | Homme de Bree | 20 | 10 | 10 |
+> | Rôdeur du Nord | 20 | 6 | 14 |
 
 > **Cultures de base TOR** (6 du livre de base, extensibles) : Bardide, Hobbit, Elfe de Lindon, Humain de Bree, Nain de Durin, Rôdeur du Nord. D'autres peuvent être ajoutées pour des campagnes custom.
 
@@ -260,8 +276,11 @@ create table cultures (
   name                    text not null,
   description             text,
   starting_attributes     jsonb not null default '{}'::jsonb,
+  endurance_bonus         integer not null default 20,  -- Bonus Endurance max (Corps + bonus)
+  hope_bonus              integer not null default 8,   -- Bonus Espoir max (Cœur + bonus)
+  parade_bonus            integer not null default 12,  -- Bonus Parade (Esprit + bonus)
   starting_favored_skills text[] not null default '{}',
-  starting_combat_skill   text,
+  starting_combat_skills  jsonb not null default '{}'::jsonb,  -- { skill_id: rank } ex: {"bows":2,"axes":1,"spears":1,"swords":1}
   created_at              timestamptz not null default now()
 );
 
