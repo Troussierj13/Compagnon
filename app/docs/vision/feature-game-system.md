@@ -267,7 +267,46 @@ Tableau filtrable par type (`armor` / `helm` / `shield`). Formulaire de créatio
 
 ---
 
-## 7. Schéma Supabase
+## 7. Havres (`/gm/system/havens`)
+
+### 7.1 Rôle
+
+Les Havres sont des **lieux sanctifiés alliés** (Dale, la Comté, Fondcombe, Mines de la Moria reconquise…) où la compagnie peut passer sa Phase de Communauté. Chaque Havre offre un bonus de récupération d'Espoir au-delà du score de Cœur de base.
+
+Ces données sont **globales** (partagées entre toutes les campagnes). Le MJ peut en créer de nouveaux pour des campagnes personnalisées.
+
+Dans chaque campagne, le MJ sélectionne le havre actif dans les settings (`campaigns.current_haven` → FK vers `game_system_havens.id`).
+
+> Référence règles : [`fellowship-phase.md`](../rules/fellowship-phase.md) — sections "Havre" et "Récupération de l'Espoir".
+
+### 7.2 Données d'un Havre
+
+| Champ | Type | Description |
+|---|---|---|
+| `id` | uuid PK | Identifiant |
+| `name` | text | Nom affiché (ex : "Dale", "La Comté", "Fondcombe") |
+| `description` | text \| null | Description narrative (Markdown) |
+| `hope_bonus` | integer | Espoir supplémentaire récupérable au-delà de Cœur (ex : `2` → récupère jusqu'à `Cœur + 2`) |
+| `created_at` | timestamptz | — |
+
+> **Havres de base TOR** (à pré-remplir à l'initialisation du système de jeu) :
+>
+> | Havre | hope_bonus |
+> |---|---|
+> | La Comté | 2 |
+> | Dale | 1 |
+> | Fondcombe | 3 |
+> | Edoras | 1 |
+
+### 7.3 Page CRUD
+
+- **Liste** : tableau avec nom et `hope_bonus`
+- **Création / Édition** : formulaire simple (nom, description, bonus)
+- **Suppression** : désactivée si des campagnes référencent ce havre comme havre actif
+
+---
+
+## 8. Schéma Supabase
 
 ```sql
 -- Cultures
@@ -342,30 +381,42 @@ create table campaign_armors (
   created_at   timestamptz not null default now()
 );
 
+-- Havres (globaux)
+create table game_system_havens (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,
+  description text,
+  hope_bonus  integer not null default 0,
+  created_at  timestamptz not null default now()
+);
+
 -- Index
 create index on cultural_virtues(culture_id);
 create index on campaign_weapons(campaign_id);
 create index on campaign_armors(campaign_id);
 
 -- RLS : accès MJ uniquement (toutes ces tables sont en back-office)
-alter table cultures          enable row level security;
-alter table virtues           enable row level security;
-alter table cultural_virtues  enable row level security;
-alter table rewards           enable row level security;
-alter table campaign_weapons  enable row level security;
-alter table campaign_armors   enable row level security;
+alter table cultures             enable row level security;
+alter table virtues              enable row level security;
+alter table cultural_virtues     enable row level security;
+alter table rewards              enable row level security;
+alter table campaign_weapons     enable row level security;
+alter table campaign_armors      enable row level security;
+alter table game_system_havens   enable row level security;
 
--- Policies MJ (lecture publique pour cultures/vertus/récompenses car utiles côté joueur via endpoints)
+-- Policies MJ (lecture publique pour cultures/vertus/récompenses/havres car utiles côté joueur via endpoints)
 create policy "Lecture publique cultures"   on cultures for select using (true);
 create policy "Lecture publique vertus"     on virtues  for select using (true);
 create policy "Lecture publique récompenses" on rewards for select using (true);
 create policy "Lecture publique vertus culturelles" on cultural_virtues for select using (true);
+create policy "Lecture publique havres"     on game_system_havens for select using (true);
 
 -- Écriture MJ uniquement
 create policy "MJ écriture cultures"  on cultures  for all using (auth.role() = 'authenticated');
 create policy "MJ écriture vertus"    on virtues   for all using (auth.role() = 'authenticated');
 create policy "MJ écriture récompenses" on rewards for all using (auth.role() = 'authenticated');
 create policy "MJ écriture vertus culturelles" on cultural_virtues for all using (auth.role() = 'authenticated');
+create policy "MJ écriture havres"    on game_system_havens for all using (auth.role() = 'authenticated');
 
 -- Armes et armures : accès via campagne
 create policy "MJ accès armes campagne" on campaign_weapons
@@ -388,7 +439,8 @@ create policy "MJ accès armures campagne" on campaign_armors
 │   └── /[id]
 │       └── /cultural-virtues         ← Vertus culturelles de cette culture
 ├── /virtues                          ← Liste + CRUD des vertus ordinaires
-└── /rewards                          ← Liste + CRUD des récompenses
+├── /rewards                          ← Liste + CRUD des récompenses
+└── /havens                           ← Liste + CRUD des Havres
 
 /gm/campaigns/[id]
 ├── /armory

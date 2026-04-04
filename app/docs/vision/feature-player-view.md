@@ -123,19 +123,20 @@ Un bouton dans la barre de status ouvre la fiche en **plein écran** (`USlideove
 
 ### 4.1 Structure
 
-La fiche est organisée en **7 onglets** navigables par swipe (ou via une barre de navigation fixe en bas de la fiche). Chaque onglet est un affichage vertical scrollable.
+La fiche est organisée en **7 onglets fixes + 1 onglet contextuel** navigables par swipe (ou via une barre de navigation fixe en bas de la fiche). Chaque onglet est un affichage vertical scrollable.
 
-| # | Onglet | Icône | Contenu |
-|---|---|---|---|
-| 1 | **Identité** | `i-heroicons-user` | Vocation, niveau de vie, garant, particularités, défauts |
-| 2 | **Vitalité** | `i-heroicons-heart` | Endurance max/courante, charge totale, fatigue, espoir max/courant, ombres, séquelles |
-| 3 | **Compétences** | `i-heroicons-academic-cap` | 18 compétences communes (Corps / Cœur / Esprit), rang + favorisé |
-| 4 | **Sagesse & Vaillance** | `i-heroicons-star` | Vertus choisies, récompenses choisies, rangs Sagesse/Vaillance, points (aventure / progression / communauté) |
-| 5 | **Attirail de guerre** | `i-heroicons-shield-check` | 4 emplacements armes, compétences de combat (rang) |
-| 6 | **Défense** | `i-heroicons-shield-exclamation` | Armure, casque, bouclier, parade totale, valeur de protection |
-| 7 | **Inventaire** | `i-heroicons-archive-box` | Attirail de voyage, objets lootés, trésor |
+| # | Onglet | Icône | Contenu | Visibilité |
+|---|---|---|---|---|
+| 1 | **Identité** | `i-heroicons-user` | Vocation, niveau de vie, garant, particularités, défauts | Toujours |
+| 2 | **Vitalité** | `i-heroicons-heart` | Endurance max/courante, charge totale, fatigue, espoir max/courant, ombres, séquelles | Toujours |
+| 3 | **Compétences** | `i-heroicons-academic-cap` | 18 compétences communes (Corps / Cœur / Esprit), rang + favorisé | Toujours |
+| 4 | **Sagesse & Vaillance** | `i-heroicons-star` | Vertus choisies, récompenses choisies, rangs Sagesse/Vaillance, points (aventure / progression / communauté) | Toujours |
+| 5 | **Attirail de guerre** | `i-heroicons-shield-check` | 4 emplacements armes, compétences de combat (rang) | Toujours |
+| 6 | **Défense** | `i-heroicons-shield-exclamation` | Armure, casque, bouclier, parade totale, valeur de protection | Toujours |
+| 7 | **Inventaire** | `i-heroicons-archive-box` | Attirail de voyage, objets lootés, trésor | Toujours |
+| 8 | **Voyage** | `i-heroicons-map` | Rôle, compétence associée, fatigue du voyage, événements résolus | Seulement si `activeScene.type === 'journey'` |
 
-> L'ordre des onglets est fixe. Sur téléphone, la navigation par swipe gauche/droite est la principale.
+> L'ordre des onglets est fixe. L'onglet Voyage apparaît dynamiquement en fin de liste quand un voyage est en cours. Sur téléphone, la navigation par swipe gauche/droite est la principale.
 
 ### 4.2 Onglet 1 — Identité
 
@@ -242,6 +243,24 @@ Lecture seule pour le joueur.
 - **Modifiable par le joueur** : ajout de notes sur un item, suppression (consommation)
 - **Trésor** : champ numérique éditable
 
+### 4.10 Onglet 8 — Voyage (contextuel)
+
+Visible uniquement quand `activeScene.type === 'journey'`. Si aucun voyage n'est en cours : message **"Aucun voyage en cours"** (onglet masqué ou grisé).
+
+> Spec complète : voir [`feature-journey.md`](./feature-journey.md) — section "Téléphone joueur — Onglet Voyage".
+
+**Contenu :**
+- Rôle assigné au personnage (Guide / Éclaireur / Gardien / Pourvoyeur), ou "Aucun rôle"
+- Compétence à utiliser pour ce rôle (ex: "Voyage" pour Guide)
+- Fatigue accumulée lors de ce voyage (somme des événements `fatigue` appliqués)
+- Date courante dans l'univers (`campaigns.current_date`)
+- Liste des événements résolus (ordre chronologique) :
+  - Type d'événement (Maladie, Mauvais Temps, Perdus…)
+  - Personnage déclenché / touché
+  - Conséquence appliquée (ex: "+2 Fatigue")
+
+---
+
 ### 4.9 Overlay endurance/espoir (persistant)
 
 Un bandeau fixe affiché **en bas de la fiche, sur tous les onglets** (position sticky bottom) :
@@ -261,7 +280,10 @@ Un bandeau fixe affiché **en bas de la fiche, sur tous les onglets** (position 
 
 Quand `activeScene.type === 'community'`, la fiche passe automatiquement en **mode level-up** :
 
-- Un bandeau "Scène de communauté — Mode progression" s'affiche en haut de la fiche
+- Un bandeau "Scène de communauté — Mode progression" s'affiche en haut de la fiche, avec :
+  - Le **nom du havre actuel** (`campaigns.current_haven` → `game_system_havens.name`)
+  - Le **bonus de récupération** du havre (ex: "+2 Espoir au-delà de Cœur")
+  - Icône sanctuary
 - Les onglets Compétences, Attirail de guerre et Sagesse & Vaillance activent leurs contrôles d'édition
 - Les points disponibles sont affichés en permanence dans l'overlay bas (à côté des états)
 - Le mode se désactive automatiquement quand le MJ change de scène (événement Realtime)

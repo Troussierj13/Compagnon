@@ -231,14 +231,14 @@ Toute modification de l'état de la session (scène active, entités, inventaire
 | `feature-characters.md` | Fiche personnage joueur TOR : attributs, compétences, Sagesse/Vertus (ordinaires + culturelles), Vaillance/Récompenses, équipement, inventaire, états, mode level-up (scène de communauté), 4 surfaces, export NFC |
 | `feature-game-system.md` | CRUD système de jeu : cultures (stats de départ, vertus culturelles), vertus ordinaires, récompenses, armurerie par campagne (armes + armures/casques/boucliers) |
 | `feature-character-creation.md` | Wizard de création de personnage (phase future) : 7 étapes guidées depuis la culture, initialisation complète du JSONB TORCharacterData |
-| `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage (E1), fiche 7 onglets swipeable (E2), inventaire temps réel (E3), annonces MJ (E4) |
+| `feature-player-view.md` | Vue joueur téléphone enrichie : sélection personnage (E1), fiche 8 onglets swipeable dont onglet Voyage contextuel (E2), inventaire temps réel (E3), annonces MJ (E4) |
+| `feature-journey.md` | Mode Voyage : grille hexagonale, pathfinding, rôles, étapes, événements de voyage, conséquences mécaniques (Fatigue, Ombre), calendrier in-game |
+| `feature-campaign-management.md` | Hub back-office MJ : dashboard cards, sous-pages, date in-game, carte cumulative TV, configuration campagne, havres |
 
 ### ⚠️ Créées — à finaliser
 
 | Fichier | Contenu | Statut |
 |---|---|---|
-| `feature-journey.md` | Mode Voyage : carte hexagonale, chemin mémorisé, événements, conséquences mécaniques (Fatigue, Ombre) | Squelette — à finaliser |
-| `feature-campaign-management.md` | Hub back-office MJ : navigation campagne, configuration, sessions, havres | Squelette — à finaliser |
 | `feature-session-history.md` | Log événements clés d'une session, compte-rendu post-session, export Markdown | Squelette — à finaliser (Phase 4) |
 
 Voir **[`SPECS-RESTANTES.md`](./SPECS-RESTANTES.md)** pour le détail complet de ce qu'il reste à spécifier.

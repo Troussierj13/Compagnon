@@ -25,7 +25,8 @@ Le mode actif est stocké dans `sessions.display_mode` — toute modification es
 
 Affiché quand aucune scène n'est active, ou quand le MJ veut cacher ce qui se prépare.
 
-- Affiche un **fond d'écran** en plein écran (voir cascade de résolution plus bas)
+- **Si la campagne a au moins un voyage terminé** : affiche la carte hexagonale cumulative (trails de tous les voyages passés + position courante de la compagnie). La date in-game est affichée en overlay haut centre (voir section "Date in-game — Overlay global" ci-dessous).
+- **Sinon** : affiche un fond d'écran en plein écran (voir cascade de résolution plus bas)
 - Optionnel : nom de la campagne en surimpression (paramétrable)
 - C'est le mode par défaut au lancement de la session
 
@@ -79,28 +80,50 @@ Le MJ désactive le fil depuis son panneau — le bandeau disparaît de la TV.
 
 ### 3. Voyage
 
-Mode dédié aux phases de déplacement entre les lieux.
+Mode dédié aux phases de déplacement. Activé automatiquement quand une scène de type `journey` est active.
 
-#### Carte interactive
-- Carte du monde ou de région — image choisie depuis la bibliothèque de la campagne (catégorie `map`)
-- **Marqueur de groupe** : position actuelle du groupe, déplaçable par le MJ depuis son panneau
-- Le groupe se déplace toujours ensemble (un seul marqueur)
+> **Spec complète** : voir [`feature-journey.md`](./feature-journey.md) — section "TV — Mode Voyage".
 
-#### Annotations sur la carte
-Le MJ peut enrichir la carte avec des marqueurs informatifs :
-- **Lieux visités** : marqueurs posés après passage du groupe (nom + notes)
-- **Lieux d'intérêt** : marqueurs posés librement par le MJ (ville, donjon, point de repère)
-- Chaque marqueur a : nom, icône (type de lieu), notes optionnelles
-- Les marqueurs sont persistés sur la campagne (ils survivent entre les sessions)
-- Le MJ choisit quels marqueurs sont visibles sur la TV (visible / notes privées)
+#### Résumé
+
+- **Grille hexagonale plein écran** avec rendu par terrain (couleur selon type : route, plaine, forêt…)
+- **Marqueur de groupe animé** sur la position courante (transition smooth lors d'un déplacement)
+- **Trail du chemin parcouru** (ligne colorée) + chemin planifié (ligne pointillée)
+- **Points d'intérêt** : hexes labellisés (`hex_tiles.label`) et icônes de POI révélés par le MJ
+- **Titre de scène en overlay haut** : `"3e Âge, 2946 — 14 octobre → Arrivée estimée : 31 octobre"` (voir section Date in-game ci-dessous)
+- **Bandeau bas** : dernier événement résolu (fade in/out)
+- Si événement "Perdus" : la date d'arrivée se met à jour avec animation
+
+#### Données
+La carte provient de `journey_maps` + `hex_tiles`. Le chemin et les positions viennent de la table `journeys` (scène active). Les POIs révélés sont filtrés sur `hex_tiles.poi_hidden = false`.
+
+> `map_markers` (ancienne table) est supprimée — remplacée par les POIs intégrés dans `hex_tiles`.
 
 #### Panneau latéral
-- Règles de voyage du système de jeu (texte Markdown, configuré dans la campagne)
-- Infos configurables librement : météo actuelle, jours de route restants, événements en cours, etc.
+- Règles de voyage (texte Markdown, configuré dans `campaigns.travel_rules`)
+- Infos libres : météo actuelle, jours de route restants, événements en cours
 
 ---
 
-### 4. Modes futurs (extensibilité)
+### 4. Scène de communauté (Phase de Communauté)
+
+Quand la scène active est de type `community`, la TV reste en mode `battlemap` (ou `waiting` si aucune battlemap n'est définie) avec un **overlay informatif** affiché en surimpression.
+
+#### Overlay Phase de Communauté
+
+Positionné en haut à gauche (ou coin configurable), non bloquant :
+
+- **Nom du havre actuel** (ex : "Dale")
+- **Bonus du havre** : `+X Espoir` récupérable au-delà de Cœur
+- Icône sanctuary (type `i-heroicons-home`)
+
+Cet overlay est visible tant que la scène de type `community` est active. Il disparaît quand le MJ change de scène.
+
+> Le havre et ses bonus sont configurés dans le système de jeu global (`/gm/system/havens`) et le havre actif est sélectionné dans les settings de la campagne.
+
+---
+
+### 5. Modes futurs (extensibilité)
 
 L'architecture doit permettre d'ajouter facilement d'autres modes. Exemples envisagés :
 - Mode **Repos** (ambiance, récapitulatif de session)
@@ -190,6 +213,29 @@ Lors de l'ajout manuel d'une entité depuis le panneau session, le MJ choisit :
 
 ---
 
+## Date in-game — Overlay global
+
+La date in-game de la campagne est **toujours visible sur la TV**, dans tous les modes (waiting, battlemap, voyage, communauté).
+
+**Position** : haut centre de l'écran, sous le titre de la scène active.
+
+**Format affiché** : `3e Âge, 2946 — 14 octobre` (en italique, taille secondaire, opacité légèrement réduite pour ne pas gêner le fond)
+
+```
+         [ Titre de la scène ]
+    [ 3e Âge, 2946 — 14 octobre ]     ← italique, toujours affiché
+```
+
+En mode Voyage, la ligne est enrichie avec la date d'arrivée estimée :
+
+```
+[ 3e Âge, 2946 — 14 octobre → Arrivée estimée : 31 octobre ]
+```
+
+La date est lue depuis `campaigns.current_date` via la session active. Mise à jour en temps réel via Realtime sur tout changement de `campaigns.current_date`.
+
+---
+
 ## Fond d'écran — Cascade de résolution
 
 Applicable au Waiting Screen et en fond des modes Voyage / Battlemap si aucune carte/battlemap n'est définie.
@@ -218,8 +264,7 @@ Définie dans `feature-player-view.md` — E4. La TV souscrit à cette table via
 
 | Table | Champ | Type | Usage |
 |---|---|---|---|
-| `campaigns` | `wallpaper_url` | text | Fond d'écran fallback campagne |
-| `campaigns` | `world_map_url` | text | Carte de base du mode Voyage |
+| `campaigns` | `wallpaper_url` | text | Fond d'écran fallback campagne (si aucun voyage terminé) |
 | `campaigns` | `travel_rules` | text (markdown) | Règles de voyage affichées en mode Voyage |
 | `sessions` | `wallpaper_url` | text | Fond d'écran fallback session |
 | `sessions` | `display_mode` | enum | Mode TV actif : `waiting` / `battlemap` / `travel` |
@@ -230,22 +275,6 @@ Définie dans `feature-player-view.md` — E4. La TV souscrit à cette table via
 | `characters` | `portrait_url` | text | Image du token battlemap + overlay |
 | `combatants` | `artwork_url` | text | Image du token battlemap + overlay (ennemis et PNJ) |
 | `combatants` | `rarity` | enum | `common` / `uncommon` / `rare` / `legendary` |
-
-### Nouvelle table : `map_markers`
-
-Marqueurs posés par le MJ sur la carte du monde (mode Voyage).
-
-| Champ | Type | Description |
-|---|---|---|
-| `id` | uuid | Identifiant |
-| `campaign_id` | uuid FK | Campagne concernée |
-| `name` | text | Nom du lieu |
-| `position_x` | float | Position X sur la carte (%) |
-| `position_y` | float | Position Y sur la carte (%) |
-| `icon` | text | Type de lieu (`city`, `dungeon`, `landmark`, `point_of_interest`, …) |
-| `notes` | text\|null | Notes privées MJ |
-| `visited` | boolean | Lieu déjà visité par le groupe |
-| `visible_on_display` | boolean | Affiché sur la TV ou privé |
 
 ### Nouvelle table : `overlays`
 

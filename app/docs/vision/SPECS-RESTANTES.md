@@ -14,8 +14,6 @@ Ces fichiers existent mais sont marqués incomplets. Ils doivent être finalisé
 
 | Fichier | Priorité | Ce qu'il manque |
 |---|---|---|
-| `feature-journey.md` | Haute | Modèle de données, layout panneau session voyage, interface hex back-office, vue joueur téléphone |
-| `feature-campaign-management.md` | Haute | Layout hub, gestion joueurs/personnages, havres, chronologie campagne |
 | `feature-session-history.md` | Basse (Phase 4) | Modèle de données, interface affichage, format export |
 
 ---
@@ -83,3 +81,5 @@ Peuvent être spécifiées à la demande, pas de fichier dédié pour l'instant.
 | `feature-game-system.md` | 2026-04-03 |
 | `feature-character-creation.md` | 2026-04-03 (phase future) |
 | `feature-player-view.md` | 2026-04-03 |
+| `feature-campaign-management.md` | 2026-04-04 |
+| `feature-journey.md` | 2026-04-04 |
