@@ -12,7 +12,21 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(yarn --prefix app dev)",
       "Bash(yarn --prefix app run dev)",
-      "Bash(grep -E \"\\\\.\\(ts|js\\)$\")"
+      "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
+      "WebSearch",
+      "WebFetch(domain:startplaying.games)",
+      "WebFetch(domain:notes.nicolevanderhoeven.com)",
+      "WebFetch(domain:wiki.roll20.net)",
+      "WebFetch(domain:mephitjamesblog.wordpress.com)",
+      "WebFetch(domain:rpgbot.net)",
+      "WebFetch(domain:diceadventurer.wordpress.com)",
+      "WebFetch(domain:www.partybusinesspodcast.com)",
+      "WebFetch(domain:scrollforinitiative.com)",
+      "WebFetch(domain:spqvi.com)",
+      "WebFetch(domain:anyflip.com)",
+      "WebFetch(domain:forum.frialigan.se)",
+      "Bash(ls \"C:\\\\Users\\\\Julien\\\\Desktop\\\\Dev\\\\Compagnon\\\\app\\\\docs\\\\rules\"\" 2>/dev/null || echo \"DOSSIER INEXISTANT \")",
+      "WebFetch(domain:freeleaguepublishing.com)"
     ]
   },
   "enabledPlugins": {
