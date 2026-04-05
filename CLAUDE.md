@@ -210,7 +210,15 @@ Tous les skills sont dans `.claude/skills/`.
 
 ### Documentation technique
 
-- `app/docs/architecture.md` — architecture détaillée et décisions de design
+> **`app/docs/technical/`** — Docs techniques dérivées des specs vision. À lire avant d'implémenter.
+
+| Fichier | Contenu |
+|---|---|
+| `app/docs/technical/schema.md` | **Schéma DB complet** — toutes les tables, colonnes, RLS, indexes, migrations SQL |
+| `app/docs/technical/api-contracts.md` | **Contrats d'API** — tous les server endpoints, request/response, auth, erreurs |
+| `app/docs/technical/types.md` | **Types TypeScript** — toutes les interfaces, enums, types utilitaires |
+| `app/docs/technical/routes.md` | **Routes & composants** — toutes les pages, layouts, middlewares, composables |
+
+- `app/docs/architecture.md` — décisions de design générales
 - `app/docs/security.md` — modèle de sécurité RLS et patterns d'accès
-- `app/docs/adr/001-player-access-pattern.md` — ADR sur l'accès joueur via server endpoints
 - `app/docs/todo.md` — bugs connus et améliorations à faire (à lire en début de session)
