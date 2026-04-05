@@ -36,6 +36,18 @@ En cas de contradiction entre `app/docs/vision/` et `architecture.md` / `CLAUDE.
 
 Le code legacy (`backend/` Express, `frontend/` Vue 2) peut être consulté pour comprendre des comportements existants, mais **ne doit jamais être modifié**. En cas de contradiction entre le legacy et `rules/` ou `vision/`, ignorer le legacy.
 
+### 4. `app/` — Code applicatif existant (considérer comme obsolète)
+
+> **Le code existant dans `app/` (composants, composables, types, pages) a été écrit AVANT la documentation technique. Il est potentiellement incompatible avec les specs actuelles.**
+
+**Règle** : en cas de contradiction entre un fichier de code dans `app/` et un fichier de documentation (`rules/`, `vision/`, `technical/`), **la documentation a toujours priorité**. Le code existant doit être réécrit pour correspondre aux specs — pas l'inverse.
+
+Cas connus :
+- `app/types/rpg.ts` — noms de champs incompatibles avec `app/docs/technical/types.md` → **réécrire intégralement** depuis `types.md`
+- Tout composant ou composable qui importe `rpg.ts` devra être mis à jour après la migration des types
+
+Ne pas s'appuyer sur le code existant de `app/` pour inférer des comportements ou des structures de données. Utiliser uniquement les docs `technical/` + `vision/` + `rules/`.
+
 ### Specs restantes à rédiger
 
 > **`app/docs/vision/SPECS-RESTANTES.md`** — liste à jour des features sans spec. Consulter ce fichier en début de session pour savoir ce qu'il reste à définir avant d'implémenter.
@@ -45,6 +57,7 @@ Le code legacy (`backend/` Express, `frontend/` Vue 2) peut être consulté pour
 | Fichier | Contenu |
 |---|---|
 | `app/docs/vision/README.md` | Vision globale : acteurs, 4 surfaces, NFC, loot, temps réel |
+| `app/docs/vision/feature-session-panel.md` | Panneau session live MJ : layout 3 colonnes, scènes, entités, chat annonces, fin de session |
 | `app/docs/vision/feature-display-tv.md` | Affichage spectateur TV : modes, overlays, animations NFC, fil d'initiative |
 | `app/docs/vision/feature-nfc.md` | Puces NFC : système de types, encodage, pages back-office, endpoint trigger |
 | `app/docs/vision/feature-nfc-encoding.md` | Algorithme d'encodage/décodage NFC (CBOR, versioning, transport, gestion d'erreurs) — ✅ complet |

@@ -58,8 +58,10 @@ CREATE TABLE cultures (
   id                      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name                    TEXT NOT NULL,
   description             TEXT,
-  -- Valeurs proposées à la création (Corps/Cœur/Esprit), ajustables par le MJ
-  starting_attributes     JSONB NOT NULL DEFAULT '{"strength": 4, "heart": 4, "mind": 4}'::jsonb,
+  -- Tableau des 6 combinaisons d'attributs proposées à la création (joueur en choisit une)
+  -- Ex: [{"strength": 2, "heart": 7, "mind": 5}, {"strength": 3, "heart": 6, "mind": 5}, ...]
+  -- Règle TOR: somme toujours = 14, valeurs individuelles entre 2 et 7
+  starting_attributes     JSONB NOT NULL DEFAULT '[]'::jsonb,
   -- Bonus fixes ajoutés aux attributs pour les stats dérivées
   endurance_bonus         INTEGER NOT NULL DEFAULT 20, -- Endurance max = Corps + endurance_bonus
   hope_bonus              INTEGER NOT NULL DEFAULT 8,  -- Espoir max = Cœur + hope_bonus
@@ -152,6 +154,10 @@ CREATE POLICY "cultural_virtues_gm_all"  ON cultural_virtues   FOR ALL USING (au
 CREATE POLICY "rewards_gm_write"         ON rewards            FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "rewards_gm_update"        ON rewards            FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "rewards_gm_delete"        ON rewards            FOR DELETE USING (auth.role() = 'authenticated');
+
+-- NOTE: auth.role() = 'authenticated' autorise tout MJ authentifié à éditer le système de jeu global.
+-- C'est intentionnel : les tables game_system_havens, virtues, rewards sont partagées entre tous les MJ.
+-- Si ownership par MJ requis : ajouter created_by UUID et filtrer par auth.uid().
 ```
 
 ---
@@ -160,7 +166,7 @@ CREATE POLICY "rewards_gm_delete"        ON rewards            FOR DELETE USING 
 
 ```sql
 -- ─── Colonnes à ajouter sur campaigns ────────────────────────────────────────
--- Référence: feature-campaign-management.md § Modèle de données
+-- Référence: feature-player-view.md, feature-display-tv.md (feature-campaign-management.md non existant — see SPECS-RESTANTES.md)
 
 ALTER TABLE campaigns
   ADD COLUMN start_date         JSONB,          -- { year: int, month: 1-12, day: 1-30 }
@@ -193,7 +199,11 @@ ALTER TABLE sessions
   ADD COLUMN name          TEXT NOT NULL DEFAULT 'Session',
   ADD COLUMN wallpaper_url TEXT,
   ADD COLUMN display_mode  TEXT NOT NULL DEFAULT 'waiting'
-    CHECK (display_mode IN ('waiting', 'battlemap', 'travel')),
+    CHECK (display_mode IN ('waiting', 'battlemap', 'travel', 'end_screen')),
+    -- 'waiting'    → Pas de scène active (wallpaper ou carte cumulative)
+    -- 'battlemap'  → Scène combat ou exploration (tokens sur carte)
+    -- 'travel'     → Scène journey (grille hexagonale)
+    -- 'end_screen' → Session terminée (overlay fin de session)
   ADD COLUMN combat_active BOOLEAN NOT NULL DEFAULT FALSE,
   ADD COLUMN combat_round  INTEGER NOT NULL DEFAULT 0;
 
@@ -201,8 +211,13 @@ ALTER TABLE sessions
 -- Référence: feature-display-tv.md, feature-journey.md, feature-characters.md
 
 ALTER TABLE scenes
-  ADD COLUMN scene_type    TEXT NOT NULL DEFAULT 'normal'
-    CHECK (scene_type IN ('normal', 'community', 'journey')),
+  ADD COLUMN scene_type    TEXT NOT NULL DEFAULT 'combat'
+    CHECK (scene_type IN ('combat', 'exploration', 'journey', 'community')),
+    -- 'combat'      → Battlemap + tokens + initiative possible (display_mode → 'battlemap')
+    -- 'exploration' → Battlemap + tokens, pas de combat (display_mode → 'battlemap')
+    -- 'journey'     → Panel voyage hex (display_mode → 'travel')
+    -- 'community'   → Phase de communauté (display_mode → 'battlemap')
+    -- Note: 'normal' était l'ancienne valeur — remplacé par 'combat' | 'exploration'
   ADD COLUMN wallpaper_url TEXT,
   ADD COLUMN sort_order    INTEGER NOT NULL DEFAULT 0;
 
@@ -318,6 +333,11 @@ CREATE TABLE nfc_image_mappings (
   media_id    UUID NOT NULL REFERENCES campaign_media(id) ON DELETE CASCADE,
   UNIQUE (campaign_id, family, rarity)  -- Évite les doublons de mapping
 );
+-- ⚠️ UNIQUE avec colonnes NULLables: en PostgreSQL, NULL ≠ NULL pour les index UNIQUE.
+-- Deux lignes avec family=NULL, rarity=NULL pour la même campagne seront considérées comme distinctes.
+-- Solution PostgreSQL 15+: UNIQUE NULLS NOT DISTINCT (campaign_id, family, rarity)
+-- Solution compatible: index conditionnel ou validation côté serveur.
+-- Si la version PG de Supabase < 15, valider l'unicité dans l'endpoint POST /nfc/trigger.
 
 -- ─── Indexes ─────────────────────────────────────────────────────────────────
 CREATE INDEX ON campaign_media(campaign_id);
@@ -378,8 +398,8 @@ CREATE TABLE combatants (
 -- Trigger updated_at pour combatants
 CREATE TRIGGER set_updated_at_combatants
   BEFORE UPDATE ON combatants
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
--- NOTE: update_updated_at_column() est définie dans 001_initial_schema.sql
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+-- NOTE: update_updated_at() est définie dans 001_initial_schema.sql
 
 -- ─── Compétences de combat ────────────────────────────────────────────────────
 CREATE TABLE combatant_combat_skills (
@@ -491,6 +511,23 @@ CREATE TABLE nfc_entity_types (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- ─── Configuration de la connexion Pico ──────────────────────────────────────
+-- Stocke l'URL du Raspberry Pi Pico utilisé pour écrire sur les puces NFC
+-- Une seule ligne par installation (upsert sur id = 'singleton')
+-- Référence: feature-nfc.md § /gm/nfc/pico
+CREATE TABLE nfc_pico_config (
+  id            TEXT PRIMARY KEY DEFAULT 'singleton',  -- Une seule entrée (singleton pattern)
+  endpoint_url  TEXT,           -- URL du Pico (ex: "http://192.168.1.42/write")
+  last_tested_at TIMESTAMPTZ,   -- Dernière vérification de connexion réussie
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE nfc_pico_config ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "pico_config_gm_all" ON nfc_pico_config
+  FOR ALL USING (auth.role() = 'authenticated');
+-- Note: NFC_SECRET est une variable d'environnement serveur (jamais stockée en BDD)
+
 ALTER TABLE nfc_entity_types ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "nfc_types_public_read" ON nfc_entity_types FOR SELECT USING (true);
 CREATE POLICY "nfc_types_gm_write" ON nfc_entity_types
@@ -559,6 +596,9 @@ CREATE TABLE overlays (
   -- ID de l'entité référencée selon le type:
   -- character → characters.id, combatant → combatants.id, item → campaign_items.id
   reference_id UUID,
+  -- reference_id est un UUID générique sans FK déclarée (pas de table de dispatch possible).
+  -- L'intégrité référentielle est validée côté serveur dans POST /api/session/[id]/overlays :
+  -- type='character' → vérifier characters.id, type='combatant' → combatants.id, type='item' → campaign_items.id
   -- Contenu libre (texte ou URL image) pour types 'text' et 'image'
   content      JSONB,  -- Ex: { "text": "...", "url": "..." }
   is_featured  BOOLEAN NOT NULL DEFAULT FALSE,  -- Au premier plan (mis en évidence)
@@ -566,14 +606,20 @@ CREATE TABLE overlays (
   created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- ─── Annonces MJ ─────────────────────────────────────────────────────────────
--- Référence: feature-player-view.md § 7, feature-display-tv.md § Annonces
+-- ─── Annonces & Messages session ─────────────────────────────────────────────
+-- Référence: feature-player-view.md § 7, feature-display-tv.md § Annonces,
+--            feature-session-panel.md § Chat & Annonces
 CREATE TABLE session_announcements (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   session_id UUID NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+  -- 'gm_message' = saisie manuelle MJ (visible joueurs/TV selon target)
+  -- 'app_event'  = généré automatiquement par le serveur (combat démarré, loot, etc.)
+  type       TEXT NOT NULL DEFAULT 'gm_message'
+    CHECK (type IN ('gm_message', 'app_event')),
   message    TEXT NOT NULL,
-  target     TEXT NOT NULL
+  target     TEXT NOT NULL DEFAULT 'all'
     CHECK (target IN ('players', 'tv', 'all')),
+    -- Pour app_event : toujours 'all' (diffusion globale)
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -686,7 +732,7 @@ CREATE TABLE journeys (
 
 CREATE TRIGGER set_updated_at_journeys
   BEFORE UPDATE ON journeys
-  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ─── Étapes de voyage (1 étape = 7 jours de voyage) ──────────────────────────
 CREATE TABLE journey_stages (
@@ -757,6 +803,11 @@ CREATE POLICY "journey_maps_gm_update" ON journey_maps
 
 CREATE POLICY "hex_tiles_public_read" ON hex_tiles FOR SELECT USING (true);
 CREATE POLICY "hex_tiles_gm_all" ON hex_tiles FOR ALL USING (auth.role() = 'authenticated');
+
+-- NOTE SÉCURITÉ: journey_maps est une table globale — tout MJ authentifié peut modifier
+-- les tiles de n'importe quelle carte, y compris celles créées par d'autres MJ.
+-- Acceptable en contexte mono-usage (chaque installation = un seul MJ ou groupe).
+-- Si multi-tenant strict requis : ajouter created_by UUID REFERENCES auth.users(id).
 
 -- Voyages: liés à une session/campagne du MJ
 CREATE POLICY "journeys_gm_all" ON journeys FOR ALL
@@ -868,25 +919,29 @@ En Supabase Realtime v2, le RLS s'applique aux événements Realtime. Les polici
 sont requises pour que les clients anon reçoivent les mises à jour en temps réel :
 
 ```sql
--- ⚠️ À ajouter dans une migration séparée (ou dans 001 si schéma recréé)
+-- ⚠️ À ajouter dans une migration dédiée (011_realtime_policies.sql)
 
--- scene_entities: les joueurs voient seulement les entités visibles
--- (la policy du schéma initial doit inclure cette condition)
+-- sessions: lecture publique requise pour Realtime joueur + TV
+-- (à vérifier : si 001_initial_schema.sql ne la crée pas déjà)
+CREATE POLICY "sessions_public_read" ON sessions FOR SELECT USING (true);
+
+-- scene_entities: les joueurs et la TV voient seulement les entités visibles
 CREATE POLICY "scene_entities_player_read" ON scene_entities
   FOR SELECT USING (visible_to_players = true);
 
--- session_announcements: les joueurs peuvent lire les annonces de leur session
--- (pas de filtrage par participant — les annonces sont semi-publiques)
-CREATE POLICY "announcements_player_read" ON session_announcements
-  FOR SELECT USING (true);  -- accès par session_id dans le filtre Realtime
+-- session_announcements: lecture publique (filtrée par session_id dans le canal Realtime)
+CREATE POLICY "announcements_public_read" ON session_announcements
+  FOR SELECT USING (true);
 
--- sessions: lecture publique nécessaire pour le Realtime joueur
--- (la policy sessions_public_read doit déjà exister dans 001_initial_schema.sql)
--- Vérifier que la policy couvre bien le SELECT anon.
+-- journeys + journey_stages: lecture publique pour la TV en mode voyage
+CREATE POLICY "journeys_public_read" ON journeys FOR SELECT USING (true);
+CREATE POLICY "journey_stages_public_read" ON journey_stages FOR SELECT USING (true);
 
--- characters: NE PAS créer de policy public SELECT (données sensibles).
--- Les joueurs reçoivent un event Realtime "character updated" et appellent
--- ensuite GET /api/characters/[id] (server endpoint avec validation).
+-- characters: NE PAS créer de policy public SELECT (données sensibles : data JSONB complet).
+-- Le joueur souscrit à Realtime pour recevoir l'event "character updated",
+-- puis appelle GET /api/characters/[id] (server endpoint avec validateParticipant).
+-- La souscription Realtime sur characters ne recevra pas de données sans policy —
+-- c'est intentionnel : l'event sert de trigger, pas de payload.
 ```
 
 ### Mises à jour JSONB ciblées
@@ -915,7 +970,7 @@ WHERE id = $1;
 |---|---|---|
 | `id` | uuid PK | — |
 | `scene_id` | uuid FK → scenes | — |
-| `type` | text | `enemy`/`npc`/`combatant`/`character`/`item`/`zone` |
+| `type` | text | `enemy`/`npc` (legacy) / `combatant`/`character`/`item`/`zone` |
 | `name` | text | Nom affiché |
 | `data` | jsonb | Données génériques (héritage) |
 | `position` | jsonb | `{x: 0-100, y: 0-100}` en % de la battlemap |

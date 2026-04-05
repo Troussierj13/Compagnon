@@ -8,6 +8,16 @@
 
 ---
 
+## 🔴 Features créées — spec à rédiger (bloquant)
+
+Ces fichiers existent mais sont des **starters vides**. Ils doivent être complétés avant toute implémentation.
+
+| Fichier | Priorité | Statut |
+|---|---|---|
+| ~~`feature-session-panel.md`~~ | ~~Haute~~ | ✅ Finalisé le 2026-04-05 — voir section specs complètes |
+
+---
+
 ## 🟠 Features créées — à finaliser
 
 Ces fichiers existent mais sont marqués incomplets. Ils doivent être finalisés avant implémentation.
@@ -15,6 +25,7 @@ Ces fichiers existent mais sont marqués incomplets. Ils doivent être finalisé
 | Fichier | Priorité | Ce qu'il manque |
 |---|---|---|
 | `feature-session-history.md` | Basse (Phase 4) | Modèle de données, interface affichage, format export |
+| `feature-shortcuts.md` | Basse (Phase 4) | Raccourcis clavier (Tour suivant, etc.) |
 
 ---
 
@@ -56,6 +67,7 @@ Peuvent être spécifiées à la demande, pas de fichier dédié pour l'instant.
 
 | Fichier | Complété le |
 |---|---|
+| `feature-session-panel.md` | 2026-04-05 |
 | `feature-nfc-encoding.md` | 2026-04-03 |
 | `feature-display-tv.md` | 2026-04-03 |
 | `feature-nfc.md` | 2026-04-03 |

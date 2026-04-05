@@ -35,8 +35,8 @@ Le join se déroule en deux étapes successives sur `/player/join`.
 
 **Étape 2 — Sélection du personnage** *(nouvelle)*
 - Après un join réussi, affiche la liste des personnages disponibles dans la campagne
-- Un personnage est **disponible** si aucun enregistrement `participants` de cette session n'a ce `character_id` avec le statut actif. Un participant est considéré actif dès l'instant où il a rejoint la session (entrée dans `participants`) et jusqu'à la fin de la session.
-- Un participant = une entrée dans la table `participants` avec un `character_id` non nul
+- Un personnage est **disponible** si aucun enregistrement `session_participants` de cette session n'a ce `character_id` avec le statut actif. Un participant est considéré actif dès l'instant où il a rejoint la session (entrée dans `session_participants`) et jusqu'à la fin de la session.
+- Un participant = une entrée dans la table `session_participants` avec un `character_id` non nul
 - Le joueur clique sur un personnage → `PATCH /api/session/[id]/participants/[pid]/character` → sauvegarde `character_id` en localStorage
 - Le joueur peut aussi **passer sans personnage** ("Continuer sans personnage") → mode spectateur uniquement
 - Après sélection (ou skip) → redirection vers `/player/scene`
@@ -55,17 +55,17 @@ Le `character_id` persisté dans le localStorage est définitif pour la session.
 
 ### 1.4 Réassignation par le MJ
 
-Le MJ peut réassigner un personnage (ou un PNJ) à n'importe quel participant depuis le panneau session — par exemple si un personnage meurt et que le joueur doit jouer un PNJ. Cela met à jour `participants.character_id` en base, ce qui déclenche un événement Realtime. Le client joueur écoute ce changement et met à jour son `character_id` local + recharge les données du personnage.
+Le MJ peut réassigner un personnage (ou un PNJ) à n'importe quel participant depuis le panneau session — par exemple si un personnage meurt et que le joueur doit jouer un PNJ. Cela met à jour `session_participants.character_id` en base, ce qui déclenche un événement Realtime. Le client joueur écoute ce changement et met à jour son `character_id` local + recharge les données du personnage.
 
-### 1.5 Modèle de données — table `participants`
+### 1.5 Modèle de données — table `session_participants`
 
 Ajout de la colonne `character_id` :
 
 ```sql
-alter table participants
+alter table session_participants
   add column character_id uuid references characters(id) on delete set null;
 
-create index on participants(character_id);
+create index on session_participants(character_id);
 ```
 
 ### 1.6 Endpoints
@@ -407,7 +407,7 @@ Sur un INSERT avec `target IN ('tv', 'all')` :
 
 | Table | Modification |
 |---|---|
-| `participants` | Nouvelle colonne `character_id uuid references characters(id)` |
+| `session_participants` | Nouvelle colonne `character_id uuid references characters(id)` |
 | `session_announcements` | Nouvelle table (voir section 7.1) |
 
 ---

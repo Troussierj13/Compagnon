@@ -30,10 +30,21 @@ type TerrainType =
 type DangerLevel = 'standard' | 'risky' | 'dire'
 
 // ── Type de scène ─────────────────────────────────────────────────────────────
-type SceneType = 'normal' | 'community' | 'journey'
+// 'combat'      → Battlemap + tokens + fil d'initiative (combat actif possible)
+// 'exploration' → Battlemap + tokens (pas de combat, déplacement libre)
+// 'journey'     → Panel voyage hexagonal (feature-journey.md)
+// 'community'   → Phase de communauté (level-up, repos, havre)
+// Note: 'normal' était l'ancienne valeur — remplacé par 'combat' | 'exploration'
+type SceneType = 'combat' | 'exploration' | 'journey' | 'community'
 
 // ── Mode affichage TV ─────────────────────────────────────────────────────────
-type DisplayMode = 'waiting' | 'battlemap' | 'travel'
+// Contrôle ce que voit l'écran spectateur. Mis à jour automatiquement par les
+// actions serveur (changement de scène active, démarrage voyage, fin session).
+// 'waiting'    → Wallpaper ou carte cumulative (aucune scène active)
+// 'battlemap'  → Carte + tokens (scènes combat + exploration)
+// 'travel'     → Grille hexagonale (scène journey)
+// 'end_screen' → Écran de fin affiché après POST /api/session/[id]/end
+type DisplayMode = 'waiting' | 'battlemap' | 'travel' | 'end_screen'
 
 // ── Type d'entité de scène ────────────────────────────────────────────────────
 // 'enemy' | 'npc' maintenus pour compatibilité avec données legacy
@@ -81,6 +92,9 @@ type JourneyEventType =
 type ConsequenceType = 'fatigue' | 'shadow' | 'endurance' | 'days_added' | 'rp_only'
 
 // ── Statut session ────────────────────────────────────────────────────────────
+// 'waiting' → Créée, pas encore lancée (joueurs peuvent rejoindre)
+// 'active'  → En cours (MJ dans le panneau session)
+// 'ended'   → Terminée via POST /api/session/[id]/end (archivée, plus modifiable)
 type SessionStatus = 'waiting' | 'active' | 'ended'
 
 // ── Statut voyage ─────────────────────────────────────────────────────────────
@@ -138,7 +152,9 @@ interface Culture {
   id: string
   name: string
   description: string | null
-  starting_attributes: { strength: number, heart: number, mind: number }
+  // 6 combinaisons proposées à la création (joueur en choisit une)
+  // Règle TOR: somme = 14, valeurs individuelles 2–7
+  starting_attributes: Array<{ strength: number, heart: number, mind: number }>
   endurance_bonus: number
   hope_bonus: number
   parade_bonus: number
@@ -177,6 +193,9 @@ interface Reward {
   identifier: string     // Ex: "devastating_reward"
   name: string
   description: string
+  // 'weapon' = applicable à n'importe quel slot arme (weapon_0 à weapon_3)
+  // L'UI génère les options à partir des armes réellement équipées par le personnage
+  // ChosenReward.apply_to utilise 'weapon_0'...'weapon_3' (slot spécifique choisi)
   valid_targets: Array<'armor' | 'helm' | 'shield' | 'weapon'>
   modifiers: ModifierParam[]
 }
@@ -329,10 +348,13 @@ interface Overlay {
 interface SessionAnnouncement {
   id: string
   session_id: string
+  type: 'gm_message' | 'app_event'  // gm_message = saisie MJ, app_event = généré par serveur
   message: string
-  target: AnnouncementTarget
+  target: AnnouncementTarget         // Ignoré pour les app_event (diffusion globale)
   created_at: string
 }
+// Note: 'app_event' est généré automatiquement par le serveur lors d'actions clés :
+// combat démarré, loot distribué, personnage rejoint, session terminée, etc.
 ```
 
 ---
@@ -424,9 +446,9 @@ interface TORCharacterData {
 
   // ── Attributs primaires ────────────────────────────────────────────────────
   attributes: {
-    strength: number   // CORPS (1–10)
-    heart: number      // CŒUR (1–10)
-    mind: number       // ESPRIT (1–10)
+    strength: number   // CORPS (2–7 à la création, max théorique 9) — somme des 3 ≤ 14 à la création
+    heart: number      // CŒUR (2–7 à la création)
+    mind: number       // ESPRIT (2–7 à la création)
   }
 
   // ── Compétences communes (18) ──────────────────────────────────────────────
@@ -743,7 +765,7 @@ interface GMSessionState {
 // usePlayerSession — état session joueur
 interface PlayerSessionState {
   session: Ref<GameSession | null>
-  campaign: Ref<Pick<Campaign, 'id' | 'name' | 'current_date' | 'current_haven_id'> | null>
+  campaign: Ref<{ id: string, name: string, current_date: InGameDate | null, current_haven: { name: string, hope_bonus: number } | null } | null>
   activeScene: Ref<Pick<Scene, 'id' | 'name' | 'scene_type' | 'battlemap_url' | 'wallpaper_url'> | null>
   entities: Ref<SceneEntity[]>   // uniquement visible_to_players = true
   participant: Ref<SessionParticipant | null>

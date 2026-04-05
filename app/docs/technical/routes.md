@@ -97,6 +97,8 @@
 - **Filtres UI** : kind (enemy/npc), rareté, recherche texte
 - **Actions** : "Nouvel ennemi", "Nouveau PNJ"
 
+> **Note** : Les opérations CRUD sur `combatants` et ses sous-tables (`combatant_combat_skills`, `combatant_fearsome_abilities`, `enemy_loot_table`, `npc_inventory`) se font via **queries directes Supabase** depuis les composables MJ authentifiés. Pas de server endpoint Nitro nécessaire — le RLS filtre par `campaign_id IN (SELECT id FROM campaigns WHERE gm_user_id = auth.uid())`.
+
 ---
 
 ### `/gm/campaigns/[id]/combatants/[combatantId]`
@@ -112,6 +114,8 @@
   - `CombatantLootTable` (enemies uniquement — picker items + probabilité + quantité)
   - `NpcInventoryEditor` (PNJ uniquement)
   - `NfcExportSection` (enemies uniquement)
+
+> **Note** : Les opérations CRUD sur `combatants` et ses sous-tables (`combatant_combat_skills`, `combatant_fearsome_abilities`, `enemy_loot_table`, `npc_inventory`) se font via **queries directes Supabase** depuis les composables MJ authentifiés. Pas de server endpoint Nitro nécessaire — le RLS filtre par `campaign_id IN (SELECT id FROM campaigns WHERE gm_user_id = auth.uid())`.
 
 ---
 
@@ -163,6 +167,8 @@
 - **Composants** : `WeaponTable` (nom, dmg, injury 1/2 main, poids, notes)
 - **Actions** : Créer, éditer, supprimer (bloqué si arme équipée)
 
+> **Note** : Les opérations CRUD sur `campaign_weapons` et `campaign_armors` se font via **queries directes Supabase** depuis les composables MJ. Pas de server endpoint nécessaire.
+
 ---
 
 ### `/gm/campaigns/[id]/armory/armors`
@@ -172,6 +178,8 @@
 - **Composables** : query `campaign_armors` WHERE `campaign_id = id`
 - **Filtres** : type (armor/helm/shield)
 - **Actions** : Pré-remplir avec données TOR de base, créer, éditer, supprimer
+
+> **Note** : Les opérations CRUD sur `campaign_weapons` et `campaign_armors` se font via **queries directes Supabase** depuis les composables MJ. Pas de server endpoint nécessaire.
 
 ---
 
@@ -279,6 +287,13 @@
 ### `/gm/nfc/pico`
 **Page** : Configuration de la connexion au Raspberry Pi Pico
 
+- **Middleware** : `gm`
+- **Composables** : `$fetch('/api/nfc/pico-config')` (GET) + `$fetch('/api/nfc/pico-config', { method: 'PUT' })` (save)
+- **Composants** :
+  - `PicoUrlInput` — champ URL + bouton "Tester la connexion"
+  - `PicoConnectionStatus` — indicateur vert/rouge + latence + dernière date de test
+- **Note** : `NFC_SECRET` est configuré uniquement via variable d'environnement serveur (`app/.env`) — jamais via cette page UI
+
 ---
 
 ## Affichage TV (`/display/**`)
@@ -337,11 +352,11 @@
 - **Composables** :
   - `usePlayerSession()` — charge l'état via server endpoints + Realtime anon
   - `useCharacterSheet(character_id)` — fiche du personnage (pour le slideover)
-  - Souscriptions Realtime :
-    - `sessions` filtre `id = session_id` (exception documentée — client anon)
-    - `scene_entities` filtre `scene_id = active_scene_id`
-    - `characters` filtre `id = character_id`
+  - Souscriptions Realtime (client anon — policies publiques requises dans schema.md migration 011) :
+    - `sessions` filtre `id = session_id`
+    - `scene_entities` filtre `scene_id = active_scene_id` (uniquement `visible_to_players = true` via RLS)
     - `session_announcements` filtre `session_id = session_id`
+    - `characters` : **NE PAS souscrire directement** — après un event Realtime sur `session_participants`, fetch `GET /api/characters/[id]` via server endpoint
 - **Structure** :
   - Barre de status fixe (top) : nom joueur/perso, badge session, bouton "Feuille de perso", bouton "Quitter"
   - Zone haute : battlemap en lecture seule (mode spectateur)
@@ -393,6 +408,34 @@ export default defineNuxtRouteMiddleware(() => {
   if (!sessionId || !participantId) return navigateTo('/player/join')
 })
 ```
+
+### `usePlayerStorage` (composable recommandé)
+Centralise l'accès aux clés localStorage du joueur. À créer dans `app/composables/usePlayerStorage.ts`.
+
+```typescript
+// app/composables/usePlayerStorage.ts
+export function usePlayerStorage() {
+  // Côté client uniquement — toujours vérifier import.meta.client avant d'appeler
+  const get = () => ({
+    sessionId: localStorage.getItem('session_id'),
+    participantId: localStorage.getItem('participant_id'),
+    characterId: localStorage.getItem('character_id'),
+  })
+  const set = (data: { sessionId: string, participantId: string, characterId?: string }) => {
+    localStorage.setItem('session_id', data.sessionId)
+    localStorage.setItem('participant_id', data.participantId)
+    if (data.characterId) localStorage.setItem('character_id', data.characterId)
+  }
+  const clear = () => {
+    localStorage.removeItem('session_id')
+    localStorage.removeItem('participant_id')
+    localStorage.removeItem('character_id')
+  }
+  return { get, set, clear }
+}
+```
+
+Le middleware `player-session.ts` et `usePlayerSession` doivent consommer ce composable.
 
 ---
 
@@ -455,6 +498,7 @@ app/server/api/
 │       │   └── [overlayId]/
 │       │       ├── index.patch.ts       ← PATCH /api/session/[id]/overlays/[overlayId]
 │       │       └── index.delete.ts      ← DELETE /api/session/[id]/overlays/[overlayId]
+│       ├── end.post.ts                  ← POST /api/session/[id]/end
 │       ├── announcements.post.ts
 │       ├── loot/
 │       │   ├── resolve.post.ts
@@ -468,6 +512,9 @@ app/server/api/
 ├── display/
 │   └── [sessionId]/
 │       └── state.get.ts                 ← GET /api/display/[sessionId]/state
+├── campaigns/
+│   └── [id]/
+│       └── characters.post.ts          ← POST /api/campaigns/[id]/characters
 ├── characters/
 │   └── [id]/
 │       ├── index.get.ts                 ← GET /api/characters/[id]
@@ -475,15 +522,29 @@ app/server/api/
 │       ├── level-up.post.ts
 │       └── distribute-points.post.ts
 ├── nfc/
-│   └── trigger.post.ts                 ← POST /api/nfc/trigger
+│   ├── trigger.post.ts                 ← POST /api/nfc/trigger
+│   ├── types/
+│   │   ├── index.get.ts                ← GET /api/nfc/types
+│   │   ├── index.post.ts               ← POST /api/nfc/types
+│   │   └── [typeId]/
+│   │       ├── index.patch.ts          ← PATCH /api/nfc/types/[typeId]
+│   │       └── index.delete.ts         ← DELETE /api/nfc/types/[typeId]
+│   └── pico-config/
+│       ├── index.get.ts                ← GET /api/nfc/pico-config
+│       ├── index.put.ts                ← PUT /api/nfc/pico-config
+│       └── test.post.ts                ← POST /api/nfc/pico-config/test
 ├── game-system/
 │   ├── cultures.get.ts
 │   ├── virtues.get.ts
 │   └── rewards.get.ts
 └── journey-maps/
     ├── index.get.ts
+    ├── index.post.ts                    ← POST /api/journey-maps
     └── [id]/
-        └── tiles.get.ts
+        ├── tiles.get.ts
+        └── tiles/
+            ├── bulk.post.ts             ← POST /api/journey-maps/[id]/tiles/bulk
+            └── [tileId].patch.ts        ← PATCH /api/journey-maps/[id]/tiles/[tileId]
 ```
 
 ---
@@ -492,7 +553,9 @@ app/server/api/
 
 ```
 app/composables/
-├── useGMSession.ts          ← État session MJ + participants + realtime
+├── useGMSession.ts          ← État session MJ (session + campaign + activeScene + realtime)
+├── useParticipants.ts       ← Liste des participants connectés + realtime (MJ)
+│                               Expose: participants[], assign(pid, charId), Realtime session_participants
 ├── useScene.ts              ← CRUD scènes + entités MJ (lecture directe Supabase)
 ├── useCharacter.ts          ← Fiche personnage MJ (lecture directe Supabase)
 ├── usePlayerSession.ts      ← État session joueur (via server endpoints + realtime anon)
@@ -501,7 +564,8 @@ app/composables/
 ├── useInitiative.ts         ← Fil d'initiative (partagé MJ + TV)
 ├── useJourney.ts            ← Voyage en cours (MJ)
 ├── useLoot.ts               ← Résolution + distribution du loot (MJ)
-└── useAnnouncements.ts      ← Annonces MJ (souscription realtime partagée)
+├── useAnnouncements.ts      ← Annonces MJ (souscription realtime partagée)
+└── usePlayerStorage.ts      ← Accès centralisé aux clés localStorage joueur
 ```
 
 ### Convention de partage d'état
@@ -530,7 +594,7 @@ export function useGMSession() {
 |---|---|---|---|
 | **MJ** | `session_participants`, `scene_entities`, `sessions` | Supabase Auth client | — |
 | **TV** | `sessions`, `scene_entities`, `overlays`, `session_announcements`, `journeys`, `journey_stages` | Supabase anon | Lecture seule |
-| **Joueur** | `sessions`, `scene_entities`, `characters`, `session_announcements` | Supabase anon | Voir note ci-dessous |
+| **Joueur** | `sessions`, `scene_entities`, `session_announcements` | Supabase anon | Voir note ci-dessous |
 
 > **Realtime joueur — Supabase v2** : Dans Supabase Realtime v2, le RLS s'applique aussi aux
 > souscriptions Realtime (contrairement à v1). Le client anon ne reçoit des événements que si
@@ -539,6 +603,7 @@ export function useGMSession() {
 > - `sessions` : policy public SELECT nécessaire sur la ligne de la session (par `join_code` ou `id`) — déjà couverte par la policy `sessions_public_read` du schéma initial
 > - `scene_entities` : les joueurs reçoivent uniquement les entités `visible_to_players = true`. Une policy `scene_entities_player_read` avec `USING (visible_to_players = true)` est requise
 > - `characters` : policy public SELECT bloquerait les données sensibles — **ne pas utiliser directement**. Le composable `usePlayerSession` doit appeler `GET /api/characters/[id]` (server endpoint) après avoir reçu un event Realtime
-> - `session_announcements` : une policy public SELECT sur `session_announcements` filtrée par session_id est nécessaire
+> - `session_announcements` : une policy `announcements_public_read` est requise (voir `schema.md` migration 011)
+> - `characters` : **ne pas souscrire directement** — données sensibles, pas de column-level RLS possible. Le composable `usePlayerSession` doit fetch `GET /api/characters/[id]` après avoir reçu un event Realtime sur `session_participants` (quand `character_id` change)
 >
-> Voir `architecture.md` et `security.md` pour les policies complètes.
+> Voir `schema.md` section "Policies RLS requises pour Realtime v2" et `architecture.md`.
