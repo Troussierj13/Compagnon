@@ -9,7 +9,7 @@
 
 Les puces NFC sont des supports physiques autonomes attachés aux figurines (ou autres objets de jeu). Quand une figurine est posée sur le lecteur NFC, l'app déclenche automatiquement une action sur la scène courante.
 
-**La puce est auto-suffisante** : toutes les données nécessaires sont encodées dessus. Aucun lookup BDD n'est requis pour interpréter le contenu d'une puce — sauf pour retrouver le schéma de décodage (voir ci-dessous).
+La puce contient tous les champs de données nécessaires. Un lookup BDD est requis **uniquement** pour valider le type encodé (`nfc_entity_types`) et récupérer l'action associée — aucun lookup par ID d'entité n'est nécessaire.
 
 ---
 
@@ -25,7 +25,7 @@ Chaque puce encode un payload binaire compressé, converti en base64 pour le tra
 - **Type ID** : référence vers un `nfc_entity_type` en BDD — définit quels champs suivent et dans quel ordre.
 - **Valeurs** : sérialisées et compressées selon l'algorithme défini dans `feature-nfc-encoding.md`.
 
-Les images ne sont **pas** stockées sur la puce. Elles sont résolues côté app via des champs comme `race`, `rareté`, `sexe` → image prédéfinie.
+Les images ne sont **pas** stockées sur la puce. Elles sont résolues côté app via la cascade famille + rareté → image prédéfinie (voir `feature-media-library.md`).
 
 ---
 
@@ -176,18 +176,16 @@ Deux options disponibles :
 Les images ne sont pas sur la puce. L'app les résout via une cascade de fallback définie dans [`feature-media-library.md`](./feature-media-library.md) :
 
 ```
-1. Artwork défini directement sur la fiche de l'entité (ex: enemies.artwork_url)
+1. Artwork explicitement défini sur le combatant (combatants.artwork_url)
         ↓ (si absent)
-2. Mapping race + rareté + sexe → bibliothèque campagne
+2. Mapping famille + rareté → nfc_image_mappings (family, rarity)
         ↓ (si absent)
-3. Mapping race + rareté (sexe ignoré) → bibliothèque campagne
+3. Mapping rareté seule → nfc_image_mappings (family = null, rarity)
         ↓ (si absent)
-4. Mapping rareté seule → bibliothèque campagne
-        ↓ (si absent)
-5. Icône colorée par type (comportement par défaut)
+4. Icône colorée par type (fallback par défaut)
 ```
 
-Le MJ configure les mappings race/rareté/sexe → image depuis la section *Images NFC* de la bibliothèque de sa campagne (`/gm/campaigns/[id]/media`).
+Le MJ configure les mappings famille/rareté → image depuis la section *Images NFC* de la bibliothèque de sa campagne (`/gm/campaigns/[id]/media`).
 
 ---
 

@@ -153,7 +153,7 @@ Format : **"3e Âge, an 2946, 14 octobre"** — calendrier humain standard (mois
 | `hex_size` | int | Taille d'un hex en pixels (pour calibrage) |
 | `grid_offset_x` | float | Décalage horizontal de la grille sur l'image (px) |
 | `grid_offset_y` | float | Décalage vertical de la grille sur l'image (px) |
-| `default_start_hex` | jsonb | `{q, r}` — position de départ par défaut pour une nouvelle campagne |
+| `default_start_hex` | jsonb | `{ q: integer, r: integer }` — position de départ par défaut pour une nouvelle campagne |
 | `created_at` | timestamptz | — |
 
 ### `hex_tiles` — cases de la grille
@@ -206,7 +206,7 @@ Format : **"3e Âge, an 2946, 14 octobre"** — calendrier humain standard (mois
 | `hex_at_stage` | jsonb | `{q, r}` position à la fin de cette étape |
 | `in_universe_date` | jsonb | Date dans l'univers à cette étape |
 | `danger_level` | text | Niveau de risque dominant de cette étape |
-| `rolls` | jsonb | `[{character_id, role, skill_key, total, feat_die, eye_of_sauron: bool}]` |
+| `rolls` | jsonb | `[{ character_id: uuid, role: 'guide'|'scout'|'lookout'|'hunter', skill_key: string, total: number, feat_die: number (1–12), eye_of_sauron: boolean }]` |
 | `status` | text | Enum : pending / resolved |
 
 ### `journey_events` — événements déclenchés dans une étape
@@ -294,7 +294,7 @@ Layout en deux colonnes :
 - Pour chaque personnage avec un rôle : champ total + résultat dé-destin (Œil / Gandalf / valeur)
 - Si Œil de Sauron : bouton "Déclencher un événement" → ouvre la table d'événements
 - Sélection de l'événement → champs conséquence (type, valeur, personnage(s) affecté(s))
-- Bouton "Appliquer" → met à jour la fiche du personnage + marque l'événement comme applied
+- Bouton "Appliquer" → met à jour les stats du personnage affecté (`TORCharacterData`) + crée un enregistrement dans `journey_events` avec `applied = true`
 
 *Section Journal*
 - Liste des événements résolus depuis le début du voyage (du plus récent au plus ancien)
@@ -317,7 +317,7 @@ Quand aucun voyage n'est en cours : message **"Aucun voyage en cours"**.
 Contenu :
 - Rôle assigné au personnage (ou "Aucun rôle" si non assigné)
 - Compétence à utiliser pour ce rôle
-- Fatigue accumulée lors de ce voyage (somme des events appliqués)
+- Fatigue accumulée lors de ce voyage : `SUM(journey_events.consequence_value WHERE consequence_type = 'fatigue' AND applied = true AND journey_id = current_journey_id)`
 - Date courante dans l'univers
 - Liste des événements résolus (ordre chronologique) :
   - Type d'événement

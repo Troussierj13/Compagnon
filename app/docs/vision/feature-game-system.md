@@ -69,6 +69,8 @@ Une culture définit l'origine d'un personnage. Elle détermine :
 - **Création / Édition** : formulaire avec tous les champs, section dédiée pour gérer les vertus culturelles liées
 - **Suppression** : désactivée si des personnages utilisent cette culture
 
+> **NOTE** : Pour les vertus culturelles des 6 cultures TOR 2e de base, se référer à `app/docs/rules/cultures.md`. Ces vertus sont à pré-remplir dans la base de données à l'initialisation du système de jeu.
+
 ---
 
 ## 2. Vertus ordinaires (`/gm/system/virtues`)
@@ -264,6 +266,8 @@ Catalogue des pièces de protection de la campagne : armures, casques, boucliers
 ### 6.3 Page CRUD
 
 Tableau filtrable par type (`armor` / `helm` / `shield`). Formulaire de création/édition. Option "Pré-remplir avec les données TOR de base" à la création d'une nouvelle campagne.
+
+> **NOTE** : Les armes et armures (`campaign_weapons`, `campaign_armors`) constituent l'**armurerie**. Les objets génériques (attirail de voyage, consommables, objets de loot, composants) constituent le **catalogue d'objets** dans `campaign_items` — voir `feature-loot.md`. Ces deux catalogues sont distincts et complémentaires.
 
 ---
 

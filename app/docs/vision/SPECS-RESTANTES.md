@@ -4,7 +4,7 @@
 > Aucune implémentation ne peut démarrer sans que la spec correspondante soit complète.
 > Mettre à jour ce fichier au fur et à mesure que les specs sont rédigées.
 
-**Dernière mise à jour** : 2026-04-04
+**Dernière mise à jour** : 2026-04-05
 
 ---
 
@@ -18,23 +18,10 @@ Ces fichiers existent mais sont marqués incomplets. Ils doivent être finalisé
 
 ---
 
-## 🔴 Phase 2 — Bloquant
-
-> ✅ `feature-characters.md` complétée le 2026-04-03
-> ✅ `feature-game-system.md` complétée le 2026-04-03
-
----
-
-## 🟠 Phase 3 — Non bloquant pour Phase 2
-
-> ✅ `feature-player-view.md` complétée le 2026-04-03
-
----
-
 ## ⚪ Phase 4 — Basse priorité (pas urgent)
 
 ### `feature-session-panel.md` — Layout panneau MJ en combat
-**Réf. roadmap** : —
+**Réf. roadmap** : G5
 **Mentionné dans** : `feature-initiative.md`
 
 À spécifier :
@@ -44,7 +31,7 @@ Ces fichiers existent mais sont marqués incomplets. Ils doivent être finalisé
 ---
 
 ### `feature-shortcuts.md` — Raccourcis clavier
-**Réf. roadmap** : —
+**Réf. roadmap** : G6
 **Mentionné dans** : `feature-initiative.md`
 
 À spécifier :

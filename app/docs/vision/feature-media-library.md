@@ -53,7 +53,7 @@ Partout où une image est à définir dans l'app, un composant **Image Picker** 
 | Fond d'écran d'une session | `sessions.wallpaper_url` |
 | Fond d'écran d'une scène | `scenes.wallpaper_url` |
 | Battlemap d'une scène | `scenes.battlemap_url` |
-| Carte du monde (mode Voyage) | `campaigns.world_map_url` |
+| Carte hexagonale (mode Voyage) | générée depuis `journey_maps` + `journeys` — pas de champ URL sur `campaigns` |
 | Portrait d'un personnage joueur | `characters.portrait_url` |
 | Artwork d'un ennemi ou PNJ | `combatants.artwork_url` |
 | Image libre dans un overlay TV | `overlays.content.url` |

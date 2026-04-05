@@ -182,7 +182,7 @@ Authentifié MJ. Passe au tour suivant.
 
 **Actions :**
 1. Trouve l'entité `is_current_turn = true`
-2. Cherche la prochaine entité `in_combat = true` dont l'endurance n'est pas à 0, dans l'ordre `initiative_order`
+2. Cherche la prochaine entité `in_combat = true` dont `endurance_current > 0`, dans l'ordre `initiative_order`. Pour les ennemis, une entité est aussi considérée hors-combat si `is_defeated = true`.
 3. Si entité courante était la dernière → `combat_round += 1`, on repart du début
 4. Met à jour `is_current_turn` (false sur l'ancienne, true sur la nouvelle)
 5. Les entités à 0 endurance sont **sautées automatiquement** (pas de `is_current_turn`)

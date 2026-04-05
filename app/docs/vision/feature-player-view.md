@@ -35,7 +35,7 @@ Le join se déroule en deux étapes successives sur `/player/join`.
 
 **Étape 2 — Sélection du personnage** *(nouvelle)*
 - Après un join réussi, affiche la liste des personnages disponibles dans la campagne
-- Un personnage est **disponible** s'il n'est pas encore assigné à un autre participant actif de la session
+- Un personnage est **disponible** si aucun enregistrement `participants` de cette session n'a ce `character_id` avec le statut actif. Un participant est considéré actif dès l'instant où il a rejoint la session (entrée dans `participants`) et jusqu'à la fin de la session.
 - Un participant = une entrée dans la table `participants` avec un `character_id` non nul
 - Le joueur clique sur un personnage → `PATCH /api/session/[id]/participants/[pid]/character` → sauvegarde `character_id` en localStorage
 - Le joueur peut aussi **passer sans personnage** ("Continuer sans personnage") → mode spectateur uniquement

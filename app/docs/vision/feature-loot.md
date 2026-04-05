@@ -227,6 +227,8 @@ Les `craft_tags` permettent au système de craft (feature à détailler séparé
 
 > **Note** : Le système de craft (recettes, interface avec un PNJ artisan, résultat) est une feature à part entière à spécifier dans `feature-craft.md`. Ce document pose uniquement les bases des composants en tant qu'objets droppables.
 
+> **NOTE** : Le système de craft complet (tables de recettes, interface artisan, résultats de fabrication) est hors scope de cette spec. Si ce système est implémenté dans le futur, il devra faire l'objet d'un fichier `feature-craft.md` dédié.
+
 ---
 
 ## 8. Données — Base de données (récapitulatif)

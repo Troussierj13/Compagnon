@@ -93,6 +93,8 @@ Affiche la carte hexagonale de la campagne avec, en overlay :
 
 Pas d'interaction ni de détail des événements — c'est une vue de synthèse "où est allée la compagnie depuis le début".
 
+La carte est générée dynamiquement en superposant les trails (`actual_path`) de tous les `journeys` dont `status = 'completed'` et `campaign_id = current_campaign` sur l'image de fond de la `journey_maps` associée. Ce n'est pas une image statique stockée — c'est une vue synthétique calculée.
+
 ### `/gm/campaigns/[id]/settings`
 
 **Configuration générale de la campagne.** Tous les paramètres éditables :

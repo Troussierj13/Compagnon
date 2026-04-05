@@ -204,8 +204,8 @@ type RewardTarget  = 'armor' | 'helm' | 'shield' | 'weapon_0' | 'weapon_1' | 'we
 | Seuil de réussite Corps (SR) | `20 − strength` | Vertu `empowered` (−1 SR) |
 | Seuil de réussite Cœur (SR) | `20 − heart` | Vertu `empowered` (−1 SR) |
 | Seuil de réussite Esprit (SR) | `20 − mind` | Vertu `empowered` (−1 SR) |
-| Endurance max | `strength + culture.endurance_bonus + Σ modifiers` | Vertu `resistance` (+2) |
-| Espoir max | `heart + culture.hope_bonus + Σ modifiers` | Vertu `assurance` (+2) |
+| Endurance max | `strength + culture.endurance_bonus + Σ(modifiers des vertus avec target='endurance_max')` | Vertu `resistance` (+2) |
+| Espoir max | `heart + culture.hope_bonus + Σ(modifiers des vertus avec target='hope_max')` | Vertu `assurance` (+2) |
 | Parade de base | `mind + culture.parade_bonus + Σ modifiers` | Vertu `liveness` (+1), récompense `reinforced` bouclier |
 | Poids total | somme des poids armes + armure + casque + bouclier | Récompense `clever` (−2 poids) |
 

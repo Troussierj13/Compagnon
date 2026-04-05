@@ -55,7 +55,7 @@ Mode principal pour les scènes de combat, d'exploration ou de partage de loot.
 | Ennemi | ✅ | ❌ — maintenir le mystère |
 | PNJ | ✅ | ❌ par défaut (paramétrable par PNJ) |
 
-> **Calcul de l'Endurance max affichée** : la valeur max est `strength + culture.endurance_bonus + Σ modifiers`. Elle est calculée depuis `characters.data` — jamais stockée en colonne propre. Voir `feature-characters.md` section 2.2 pour les formules complètes (Endurance, Espoir, Parade).
+> **Calcul de l'Endurance max affichée** : la valeur max est `strength + culture.endurance_bonus + Σ(modifiers des vertus avec target='endurance_max')`. Elle est calculée depuis `characters.data` — jamais stockée en colonne propre. Voir `feature-characters.md` section 2.2 pour les formules complètes (Endurance, Espoir, Parade).
 
 #### Fil d'initiative
 
@@ -121,6 +121,12 @@ Cet overlay est visible tant que la scène de type `community` est active. Il di
 
 > Le havre et ses bonus sont configurés dans le système de jeu global (`/gm/system/havens`) et le havre actif est sélectionné dans les settings de la campagne.
 
+**Flux de données :**
+1. MJ sélectionne `campaigns.current_haven_id` dans `/gm/campaigns/[id]/settings`
+2. La TV récupère le havre via le server endpoint session state
+3. `game_system_havens[current_haven_id]` → `name` + `hope_bonus`
+4. TV affiche : "Dale — +1 Espoir" (ou autre havre configuré)
+
 ---
 
 ### 5. Modes futurs (extensibilité)
@@ -152,7 +158,7 @@ Les overlays sont empilés visuellement (légèrement décalés) pour indiquer q
 ```
 
 ### Contenu possible d'un overlay
-- **Fiche personnage** (joueur ou PNJ) — portrait + stats clés
+- **Fiche personnage compacte** : portrait, nom, vocation, attributs (Corps/Cœur/Esprit), Endurance/Espoir/Parade, équipement principal. Voir `feature-characters.md` pour le layout complet.
 - **Fiche ennemi** — artwork + stats (ce que le MJ décide de révéler)
 - **Artwork objet** — illustration d'un objet trouvé ou donné
 - **Texte libre** — description d'ambiance, résultat d'un jet, annonce narrative
@@ -190,6 +196,8 @@ Quand un ennemi apparaît via une puce NFC (figurine posée sur la table), la TV
 
 ### Ce que contient la puce
 La puce NFC contient les données de l'ennemi encodées en base64 (voir `feature-nfc.md`). Parmi ces données se trouve la **rareté** de l'ennemi. C'est la rareté qui détermine l'animation et le son joués sur la TV.
+
+> **Note** : Les animations de spawn NFC s'appliquent aux ennemis spawned via le Pico uniquement. Les PJ et PNJ ajoutés manuellement par le MJ utilisent les options "Discret" ou "Dramatique" (voir section Spawn manuel).
 
 ### Paramétrage par rareté
 

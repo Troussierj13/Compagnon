@@ -115,6 +115,8 @@ Quand une entité est marquée "vaincue", le MJ peut déclencher la résolution 
 
 Les PNJ ont un inventaire gérable depuis le panneau session. Structure dans [`feature-loot.md`](./feature-loot.md) — table `npc_inventory`.
 
+> **NOTE** : Les armes et armures sont dans `campaign_weapons` / `campaign_armors` (voir `feature-game-system.md`). Les objets génériques (attirail, loot, composants) sont dans `campaign_items` (voir `feature-loot.md`).
+
 Le MJ peut donner ou prendre des objets à un PNJ directement en session, sans quitter la vue de la scène.
 
 ### 2.3 Export NFC (ennemis uniquement)
@@ -303,9 +305,16 @@ Compétences et capacités redoutables sont en **lecture seule** dans le popover
 | `scene_entities` | `wounds_received` | integer \| null | Blessures reçues |
 | `scene_entities` | `hatred_current` | integer \| null | Points haine/détermination restants |
 | `scene_entities` | `is_defeated` | boolean | DEFAULT false |
-| `enemy_loot_table` | `combatant_id` | uuid FK | Remplace `enemy_id` — référence vers `combatants` |
+| `enemy_loot_table` | `combatant_id` | uuid FK | Référence vers `combatants` |
 
-> **Note** : `feature-loot.md` référence encore `enemy_id` sur la table `enemy_loot_table`. Ce champ est renommé `combatant_id` pour cohérence avec la table unifiée. La logique reste identique.
+### Champs NULL selon le type d'entité
+
+| Type | `combatant_id` | `endurance_current` | `wounds_received` | `hatred_current` | `is_defeated` |
+|---|---|---|---|---|---|
+| `enemy` | FK ennemi | Valeur | Valeur | Valeur | false / true |
+| `npc` | FK PNJ | Valeur | Valeur | Valeur | false |
+| `item` | null | null | null | null | false |
+| `zone` | null | null | null | null | false |
 
 ---
 
