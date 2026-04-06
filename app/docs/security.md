@@ -59,8 +59,8 @@
 - `map_markers_gm_all` : MJ CRUD complet
 - Pas de policy SELECT anon — la TV lit via server endpoint
 
-### `enemies`, `npcs`
-- `enemies_gm_all` / `npcs_gm_all` : MJ CRUD complet
+### `combatants`
+- `combatants_gm_all` : MJ CRUD complet (ennemis + PNJ unifiés)
 - Pas de policy SELECT anon — exposés uniquement via server endpoints avec filtrage des champs
 
 ---

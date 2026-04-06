@@ -27,7 +27,8 @@
       "WebFetch(domain:forum.frialigan.se)",
       "Bash(ls \"C:\\\\Users\\\\Julien\\\\Desktop\\\\Dev\\\\Compagnon\\\\app\\\\docs\\\\rules\"\" 2>/dev/null || echo \"DOSSIER INEXISTANT \")",
       "WebFetch(domain:freeleaguepublishing.com)",
-      "Bash(wc -l /Users/julientroussier/Desktop/Compagnon/app/pages/gm/campaigns/[id]/index.vue /Users/julientroussier/Desktop/Compagnon/app/pages/gm/campaigns/[id]/session/[sessionId].vue /Users/julientroussier/Desktop/Compagnon/app/pages/player/scene.vue)"
+      "Bash(wc -l /Users/julientroussier/Desktop/Compagnon/app/pages/gm/campaigns/[id]/index.vue /Users/julientroussier/Desktop/Compagnon/app/pages/gm/campaigns/[id]/session/[sessionId].vue /Users/julientroussier/Desktop/Compagnon/app/pages/player/scene.vue)",
+      "Bash(grep -E \"\\\\.\\(vue|ts|json\\)$\")"
     ]
   },
   "enabledPlugins": {

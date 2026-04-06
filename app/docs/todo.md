@@ -1,64 +1,18 @@
-# TODO — Bugs connus et améliorations à faire
+# TODO — Notes techniques et points d'attention
 
-> Référence principale : [`vision/README.md`](./vision/README.md)
-> Pour les fonctionnalités à implémenter, voir [`roadmap.md`](./roadmap.md).
+> Pour le plan d'implémentation et le suivi de progression, voir `app/docs/technical/build-order.md`.
 
-**Dernière mise à jour** : 2026-04-03
+**Dernière mise à jour** : 2026-04-06
 
 ---
 
 ## 🔴 Bugs bloquants
 
-*Aucun bug bloquant connu à ce jour.*
+*Aucun — le code a été réécrit from scratch.*
 
 ---
 
-## 🟠 Bugs non-bloquants / Comportements incorrects
-
-### Pages GM non auditées
-Les pages suivantes ont été modifiées mais pas encore relues ni testées en profondeur :
-- `pages/gm/campaigns/[id]/index.vue` — détail campagne + gestion personnages
-- `pages/gm/campaigns/[id]/session/[sessionId].vue` — session live MJ
-- `pages/gm/campaigns/[id]/characters/[charId].vue` — feuille de perso MJ
-
-**Risques potentiels** :
-- Jointures Supabase ambiguës — vérifier tous les `.select()` avec des relations jointes (cf. `architecture.md`)
-- Gestion d'erreur absente sur certaines opérations (create/update/delete)
-
-### Partage d'état entre player/scene.vue et player/sheet.vue
-`player/scene.vue` et `player/sheet.vue` appellent chacun `usePlayerSession()` indépendamment → deux instances d'état séparées → `restore()` appelé deux fois.
-
-**Impact** : double appel réseau, état non synchronisé.
-**Solution** : singleton (refs au niveau module) ou `provide/inject` depuis un layout partagé.
-
-### Pas de gestion d'erreur visible dans gm/index.vue
-`createCampaign()` fait un `console.error` en cas d'échec mais n'affiche rien à l'utilisateur.
-**Fix** : ajouter un `ref<string | null>('error')` et afficher un `UAlert`.
-
----
-
-## 🟡 Améliorations UX / DX
-
-### Validation longueur join_code sur le bouton submit
-Le bouton "Rejoindre" est activé dès que `joinCode` est non vide, même si < 6 caractères.
-**Fix** : `:disabled="!joinCode.trim() || !playerName.trim() || joinCode.length < 6"`
-
-### STORAGE_KEY dupliqué
-La constante `'compagnon_player_session'` est définie à deux endroits :
-- `composables/usePlayerSession.ts`
-- `middleware/player-session.ts`
-
-**Fix** : extraire dans `utils/storage.ts` → auto-importé.
-
-### Nommage incohérent entre composables
-- `useGMSession` expose `subscribeToSession(sessionId)`
-- `usePlayerSession` expose `subscribeToSessionUpdates()`
-
-Même concept, noms différents. À uniformiser.
-
----
-
-## 🔵 Sécurité — Points d'attention
+## 🔵 Sécurité — À implémenter avant mise en production
 
 ### Rate-limiting sur `/api/session/join`
 Sans rate-limiting, un brute-force distribué sur les `join_code` reste possible.
@@ -76,51 +30,54 @@ Pas de procédure de rotation définie. À prévoir avant la mise en production.
 
 ---
 
-## 🟣 Améliorations TypeScript
+## 🟣 Points TypeScript à valider à l'implémentation
 
-### Type discriminant pour EntityData
-`EntityData = EnemyData | ItemData | ZoneData | Record<string, unknown>` — le fallback `Record<string, unknown>` affaiblit la sûreté de type.
-
-Suite à la fusion enemy/npc en table `combatants`, la solution cible est :
+### Type discriminant pour EntityPayload
+Lors de l'implémentation de `feature-enemies.md`, utiliser un type discriminant :
 ```typescript
 type EntityPayload =
-  | { type: 'combatant'; data: CombatantData }  // enemy + npc unifiés
+  | { type: 'combatant'; data: CombatantData }
   | { type: 'item';      data: ItemData      }
   | { type: 'zone';      data: ZoneData      }
 ```
-`CombatantData` expose les colonnes trackées en session : `endurance_current`, `wounds_received`, `hatred_current`, `is_defeated` (colonnes dédiées sur `scene_entities`, pas dans le JSONB `data`).
-**À revoir** lors de l'implémentation de `feature-enemies.md`.
+Éviter le fallback `Record<string, unknown>` qui affaiblit la sûreté de type.
 
-### Champ `wounds` absent de `TORCharacterData`
-Le popover PJ (feature `feature-live-stats-dragdrop.md`) expose un champ "Blessures" qui n'est pas encore défini dans `TORCharacterData`.
-**À définir** dans `feature-characters.md` (fiche personnage complète — spec non encore rédigée) avant d'implémenter le popover PJ.
-
----
-
-## ✅ Validé en tests réels (2026-03-30)
-
-| Endpoint | Scénario couvert | Résultat |
-|---|---|---|
-| `GET /api/session/[code]` | Code valide, code inconnu, session ended | ✅ |
-| `POST /api/session/join` | Body vide (400), code valide + nom | ✅ |
-| `GET /api/session/[id]/state` | Sans participant_id (400), UUID inconnu (403), participant valide (200), cross-session (403) | ✅ |
-| `GET /api/session/[id]/characters` | Participant valide — retourne id/name/player_name uniquement | ✅ |
-| `POST /api/session/create` | Sans cookie (401), cookie expiré (401) | ✅ |
-
-> `POST /api/session/create` n'a pas été testé avec un cookie valide (JWT expiré à 17:06 UTC). Le comportement 401 sur token expiré est correct.
+### Champ `wounds` dans `TORCharacterData`
+Le popover PJ (`feature-live-stats-dragdrop.md`) expose un champ "Blessures".
+Vérifier que `wounds` est bien défini dans `types.md` → `TORCharacterData` avant d'implémenter le popover.
 
 ---
 
-## ✅ Corrigé (2026-03-30)
+## 🟡 Pièges d'implémentation connus
 
-| Problème | Fichier(s) |
+> Ces points ont causé des bugs dans le code legacy. À ne pas reproduire.
+
+### Jointures Supabase ambiguës (PostgREST)
+Quand deux FK existent entre deux tables, spécifier la FK explicitement :
+```typescript
+.select('*, active_scene:scenes!active_scene_id(*)')  // ✅
+.select('*, active_scene:scenes(*)')                   // ❌ PostgREST error
+```
+
+### Realtime — payload INSERT sans relations jointes
+Sur `postgres_changes` INSERT, `payload.new` ne contient que les colonnes directes.
+Faire un fetch ciblé après l'event pour récupérer les relations.
+
+### Partage d'état entre composables
+`usePlayerSession()` appelé dans deux composants → deux instances séparées → double fetch.
+**Pattern correct** : `provide/inject` depuis le layout parent, ou composable appelé une seule fois dans la page racine.
+
+### Clés localStorage — utiliser une constante partagée
+Ne pas dupliquer `'compagnon:session_id'` etc. Centraliser dans `utils/storage.ts` (auto-importé).
+
+---
+
+## ✅ Endpoints validés en tests (legacy — à re-valider après réécriture)
+
+| Endpoint | Scénarios testés |
 |---|---|
-| `gm_user_id` exposé via `campaign:campaigns(*)` dans endpoint joueur | `state.get.ts` |
-| `select('*')` dans endpoints joueur | `state.get.ts` |
-| Double appel réseau dans `restore()` | `usePlayerSession.ts` |
-| `catch {}` silencieux dans `restore()` | `usePlayerSession.ts` |
-| Validation `participant_id` dupliquée | `validateParticipant.ts` |
-| `useSupabaseAdmin` non-singleton | `supabaseAdmin.ts` |
-| `colorMap`/`iconMap` dupliqués | `entityDisplay.ts` |
-| Assertion `as Record<string, unknown>` dans EntityCard | `EntityCard.vue` |
-| Jointure ambiguë PostgREST `scenes(*)` → `scenes!active_scene_id(*)` | `useGMSession.ts` |
+| `GET /api/session/[code]` | Code valide, code inconnu, session ended |
+| `POST /api/session/join` | Body vide (400), code valide + nom |
+| `GET /api/session/[id]/state` | Sans participant_id (400), UUID inconnu (403), valide (200), cross-session (403) |
+| `GET /api/session/[id]/characters` | Retourne id/name/player_name uniquement |
+| `POST /api/session/create` | Sans cookie (401), cookie expiré (401) |

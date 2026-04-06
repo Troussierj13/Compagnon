@@ -104,7 +104,7 @@ Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlay
 ### TV (`useDisplaySession`)
 - Écoute `sessions` (changement de `display_mode`, `active_scene_id`, `combat_active`, `combat_round`)
 - Écoute `scene_entities` de la scène active (spawn, déplacement, visibilité, `initiative_order`, `is_current_turn`)
-- Écoute `overlays` de la session (ajout, mise en évidence, suppression)
+- Écoute `nfc_events` de la session (animation overlay de spawn)
 
 ### MJ (`useGMSession`, `useScene`)
 - Souscription directe via client Supabase Auth
@@ -118,51 +118,9 @@ Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlay
 
 ## Schéma de base de données
 
-### Tables existantes
-
-| Table | Description | RLS |
-|---|---|---|
-| `campaigns` | Campagnes du MJ | MJ owner uniquement |
-| `characters` | Personnages joueurs (feuille JSONB) | MJ CRUD, lecture joueur via server endpoint |
-| `sessions` | Sessions de jeu | MJ CRUD, lecture TV/joueur via server endpoints |
-| `session_participants` | Joueurs d'une session | Géré côté serveur |
-| `scenes` | Scènes d'une session | MJ CRUD, lecture TV/joueur via server endpoints |
-| `scene_entities` | Entités d'une scène | MJ CRUD, lecture filtrée `visible_to_players` |
-
-### Tables à créer
-
-| Table | Description |
-|---|---|
-| `combatants` | Fiches ennemis & PNJ unifiées (stats TOR, rareté, artwork, capacités, loot) — `feature-enemies.md` |
-| `map_markers` | Marqueurs sur la carte monde (mode Voyage) |
-| `overlays` | Overlays actifs sur la TV pour une session |
-| `cultures` | Cultures joueurs (stats de départ, compétences initiales) — `feature-game-system.md` |
-| `virtues` | Vertus ordinaires (Sagesse) avec variantes et modifiers — `feature-game-system.md` |
-| `cultural_virtues` | Vertus culturelles liées à une culture (disponibles à partir de Sagesse rang 2) — `feature-game-system.md` |
-| `rewards` | Récompenses (Vaillance) avec cibles et modifiers — `feature-game-system.md` |
-| `campaign_weapons` | Catalogue d'armes par campagne — `feature-game-system.md` |
-| `campaign_armors` | Catalogue armures/casques/boucliers par campagne — `feature-game-system.md` |
-
-### Champs à ajouter sur les tables existantes
-
-| Table | Champ | Type | Usage |
-|---|---|---|---|
-| `campaigns` | `wallpaper_url` | text | Fond d'écran fallback |
-| `campaigns` | `world_map_url` | text | Carte du mode Voyage |
-| `campaigns` | `travel_rules` | text (markdown) | Règles de voyage |
-| `sessions` | `wallpaper_url` | text | Fond d'écran fallback session |
-| `sessions` | `display_mode` | enum | Mode TV actif : `waiting` / `battlemap` / `travel` |
-| `sessions` | `combat_active` | boolean | Un combat est en cours |
-| `sessions` | `combat_round` | integer | Numéro du round en cours (0 = hors combat) |
-| `scenes` | `wallpaper_url` | text | Fond d'écran spécifique à la scène |
-| `scenes` | `scene_type` | enum | `normal` / `community` — type `community` active le mode level-up pour les joueurs |
-| `scene_entities` | `in_combat` | boolean | Participe au fil d'initiative |
-| `scene_entities` | `initiative_order` | integer\|null | Position dans le fil (1 = premier, null = hors combat) |
-| `scene_entities` | `is_current_turn` | boolean | C'est son tour (un seul `true` par scène à la fois) |
-| `characters` | `portrait_url` | text | Image token battlemap |
-| `enemies` | `artwork_url` | text | Image du token battlemap + overlay TV |
-| `enemies` | `rarity` | enum | `common` / `uncommon` / `rare` / `legendary` |
-| `npcs` | `portrait_url` | text | Image du token battlemap + overlay TV |
+> **Source de vérité : `app/docs/technical/schema.md`**
+> Ce fichier contient le schéma complet (toutes les tables, colonnes, RLS, indexes, migrations SQL).
+> Ne pas dupliquer le schéma ici — consulter `schema.md` directement.
 
 ---
 
@@ -196,8 +154,8 @@ Génère un code 6 chars avec `crypto.randomInt`. Alphabet sans ambiguïté (`0/
 
 ## Utilitaires client
 
-### `utils/entityDisplay.ts`
-Constantes `ENTITY_TOKEN_COLOR` et `ENTITY_TOKEN_ICON` typées par `EntityType`. Auto-importées. À utiliser dans tous les composants affichant un token.
+### `utils/entityDisplay.ts` *(à créer — Phase 0.6)*
+Constantes `ENTITY_TOKEN_COLOR` et `ENTITY_TOKEN_ICON` typées par `EntityType`. Auto-importées via Nuxt. À utiliser dans tous les composants affichant un token.
 
 ---
 

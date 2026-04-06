@@ -2,6 +2,38 @@
 
 Guide pour Claude Code sur ce repo. Lis ce fichier avant toute intervention.
 
+## 🤖 Instructions pour les agents d'implémentation
+
+> Ces règles s'appliquent à tout agent qui écrit du code dans ce repo.
+
+### Avant de commencer
+1. Lire `app/docs/technical/build-order.md` — repérer le bloc **RÉSUMÉ DE SESSION COURANTE**
+2. Identifier la prochaine tâche non cochée (`[ ]`) dans la phase en cours
+3. Charger **uniquement** les fichiers de référence listés pour cette tâche — ne pas charger le projet entier
+
+### Pendant l'implémentation
+- Implémenter **un item à la fois** dans l'ordre du plan
+- Après chaque fichier créé ou modifié : **cocher l'item** correspondant dans `build-order.md` (`[ ]` → `[x]`)
+- Ne pas passer à l'item suivant sans avoir coché le précédent
+- Si un blocage est rencontré (spec ambiguë, dépendance manquante) : noter dans `⚠️ Décisions prises / blocages` et s'arrêter proprement
+
+### En fin de session (ou si interruption)
+Mettre à jour le bloc **RÉSUMÉ DE SESSION COURANTE** de `build-order.md` :
+```
+Dernière session : <date>
+✅ Terminé cette session : <liste des items cochés>
+📂 Fichiers créés / modifiés : <liste exacte des chemins>
+🎯 Prochaine étape exacte : <item suivant + fichiers à charger>
+⚠️  Décisions prises / blocages : <notes>
+```
+
+### Règle anti-dérive
+- Ne jamais implémenter une feature non listée dans `build-order.md`
+- Ne jamais modifier un fichier de docs sauf `build-order.md` (checkboxes + RÉSUMÉ uniquement)
+- En cas de doute sur un comportement : lire la spec, ne pas inférer depuis le code existant
+
+---
+
 ## ⚠️ Ordre de priorité des sources de vérité
 
 Trois niveaux de documentation coexistent. En cas de contradiction, respecter cet ordre :
@@ -36,17 +68,12 @@ En cas de contradiction entre `app/docs/vision/` et `architecture.md` / `CLAUDE.
 
 Le code legacy (`backend/` Express, `frontend/` Vue 2) peut être consulté pour comprendre des comportements existants, mais **ne doit jamais être modifié**. En cas de contradiction entre le legacy et `rules/` ou `vision/`, ignorer le legacy.
 
-### 4. `app/` — Code applicatif existant (considérer comme obsolète)
+### 4. `app/` — Code applicatif
 
-> **Le code existant dans `app/` (composants, composables, types, pages) a été écrit AVANT la documentation technique. Il est potentiellement incompatible avec les specs actuelles.**
+> **Le code legacy a été supprimé le 2026-04-06.** `app/` ne contient plus que la documentation (`docs/`), le schéma DB (`supabase/`), et les fichiers de config (`nuxt.config.ts`, `package.json`, `tsconfig.json`).
 
-**Règle** : en cas de contradiction entre un fichier de code dans `app/` et un fichier de documentation (`rules/`, `vision/`, `technical/`), **la documentation a toujours priorité**. Le code existant doit être réécrit pour correspondre aux specs — pas l'inverse.
-
-Cas connus :
-- `app/types/rpg.ts` — noms de champs incompatibles avec `app/docs/technical/types.md` → **réécrire intégralement** depuis `types.md`
-- Tout composant ou composable qui importe `rpg.ts` devra être mis à jour après la migration des types
-
-Ne pas s'appuyer sur le code existant de `app/` pour inférer des comportements ou des structures de données. Utiliser uniquement les docs `technical/` + `vision/` + `rules/`.
+**Tout le code applicatif est à écrire from scratch** depuis les docs `technical/` + `vision/` + `rules/`.
+Ne jamais inférer de comportements depuis un fichier de code — utiliser uniquement la documentation.
 
 ### Specs restantes à rédiger
 
@@ -231,6 +258,8 @@ Tous les skills sont dans `.claude/skills/`.
 | `app/docs/technical/api-contracts.md` | **Contrats d'API** — tous les server endpoints, request/response, auth, erreurs |
 | `app/docs/technical/types.md` | **Types TypeScript** — toutes les interfaces, enums, types utilitaires |
 | `app/docs/technical/routes.md` | **Routes & composants** — toutes les pages, layouts, middlewares, composables |
+| `app/docs/technical/build-order.md` | **Plan d'implémentation** — ordre de build par phases, dépendances, tracker de progression (à lire en début de session) |
+| `app/docs/technical/state-map.md` | **Carte de l'état** — quel état vit où : composables, localStorage, Realtime, flux par surface |
 
 - `app/docs/architecture.md` — décisions de design générales
 - `app/docs/security.md` — modèle de sécurité RLS et patterns d'accès
