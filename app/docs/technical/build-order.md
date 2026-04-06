@@ -15,22 +15,51 @@
 > conversation Claude avec uniquement ce fichier + les fichiers listés dans "Prochaine étape".
 
 ```
-Dernière session : —
-Durée estimée   : —
+Dernière session : 2026-04-06
 
 ✅ Terminé cette session :
-  - (rien encore)
+  - 0.1 app/types/rpg.ts (tous les types, enums, interfaces, constantes)
+  - 0.2 Migrations DB 003–011 (game_system, campaigns, armory, media, combatants, nfc, scene_entities, overlays, journey)
+  - 0.3 app/server/utils/supabaseAdmin.ts, validateParticipant.ts, generateJoinCode.ts
+  - 0.4 app/middleware/gm.ts, player-session.ts
+  - 0.5 app/layouts/default.vue, fullscreen.vue, minimal.vue
+  - 0.6 app/app.vue, app/utils/entityDisplay.ts, app/utils/storage.ts, nuxt.config.ts vérifié
 
 📂 Fichiers créés / modifiés :
-  - (rien encore)
+  - app/types/rpg.ts (créé)
+  - app/supabase/migrations/003_game_system.sql (créé)
+  - app/supabase/migrations/004_campaigns_characters_sessions_scenes.sql (créé)
+  - app/supabase/migrations/005_armory_items.sql (créé)
+  - app/supabase/migrations/006_media_nfc_mappings.sql (créé)
+  - app/supabase/migrations/007_combatants.sql (créé)
+  - app/supabase/migrations/008_nfc.sql (créé)
+  - app/supabase/migrations/009_scene_entities_enriched.sql (créé)
+  - app/supabase/migrations/010_overlays_announcements.sql (créé)
+  - app/supabase/migrations/011_journey.sql (créé)
+  - app/server/utils/supabaseAdmin.ts (créé)
+  - app/server/utils/validateParticipant.ts (créé)
+  - app/server/utils/generateJoinCode.ts (créé)
+  - app/middleware/gm.ts (créé)
+  - app/middleware/player-session.ts (créé)
+  - app/layouts/default.vue (créé)
+  - app/layouts/fullscreen.vue (créé)
+  - app/layouts/minimal.vue (créé)
+  - app/app.vue (créé)
+  - app/utils/entityDisplay.ts (créé)
+  - app/utils/storage.ts (créé)
+  - app/docs/technical/build-order.md (checkboxes + RÉSUMÉ mis à jour)
 
 🎯 Prochaine étape exacte :
-  Phase 0.1 — créer app/types/rpg.ts from scratch
-  Fichiers à charger : app/docs/technical/types.md
+  Phase 1.1 — server endpoints Game System (cultures CRUD)
+  Fichiers à charger :
+    - app/docs/technical/api-contracts.md (section Game System)
+    - app/docs/vision/feature-game-system.md
 
 ⚠️  Décisions prises / blocages :
   - Code legacy supprimé le 2026-04-06 — tout est à écrire from scratch
   - MVP cible : Phase 0 → 2 → 3a partiel → 4 partiel → 5b partiel
+  - Schema DB : 001/002 existants conservés, migrations 003–011 créées pour le reste du schéma
+  - Phase 0 complète ✅
 ```
 
 ---
@@ -85,13 +114,13 @@ Phase 0 (Foundation)
 
 ### 0.1 — Types
 
-- [ ] **Créer `app/types/rpg.ts`** depuis `app/docs/technical/types.md` (intégralité du fichier)
+- [x] **Créer `app/types/rpg.ts`** depuis `app/docs/technical/types.md` (intégralité du fichier)
   - Transcrire tous les enums, interfaces, types utilitaires tels quels
   - Référence unique : `app/docs/technical/types.md`
 
 ### 0.2 — Schéma DB
 
-- [ ] **Vérifier / compléter `app/supabase/migrations/001_initial_schema.sql`**
+- [x] **Vérifier / compléter `app/supabase/migrations/001_initial_schema.sql`**
   - Toutes les tables de `schema.md` présentes
   - Enums PostgreSQL corrects (SceneType, EntityType, DisplayMode…)
   - RLS policies en place
@@ -100,27 +129,27 @@ Phase 0 (Foundation)
 
 ### 0.3 — Server utils
 
-- [ ] **Créer `app/server/utils/supabaseAdmin.ts`** — client service_role singleton Nitro
-- [ ] **Créer `app/server/utils/validateParticipant.ts`** — valide `participant_id + session_id`
-- [ ] **Créer `app/server/utils/generateJoinCode.ts`** — 6 chars via `crypto.randomInt`
+- [x] **Créer `app/server/utils/supabaseAdmin.ts`** — client service_role singleton Nitro
+- [x] **Créer `app/server/utils/validateParticipant.ts`** — valide `participant_id + session_id`
+- [x] **Créer `app/server/utils/generateJoinCode.ts`** — 6 chars via `crypto.randomInt`
 
 ### 0.4 — Middlewares
 
-- [ ] **Créer `app/middleware/gm.ts`** — redirige vers `/login` si MJ non auth
-- [ ] **Créer `app/middleware/player-session.ts`** — vérifie localStorage, `client` only
+- [x] **Créer `app/middleware/gm.ts`** — redirige vers `/login` si MJ non auth
+- [x] **Créer `app/middleware/player-session.ts`** — vérifie localStorage, `client` only
 
 ### 0.5 — Layouts
 
-- [ ] **Créer `app/layouts/default.vue`** — back-office MJ (nav + slot)
-- [ ] **Créer `app/layouts/fullscreen.vue`** — TV + fiche perso plein écran (slot seul)
-- [ ] **Créer `app/layouts/minimal.vue`** — player join/scene (pas de nav)
+- [x] **Créer `app/layouts/default.vue`** — back-office MJ (nav + slot)
+- [x] **Créer `app/layouts/fullscreen.vue`** — TV + fiche perso plein écran (slot seul)
+- [x] **Créer `app/layouts/minimal.vue`** — player join/scene (pas de nav)
 
 ### 0.6 — app.vue + utilitaires + config
 
-- [ ] **Créer `app/app.vue`** — racine Nuxt (`<NuxtLayout><NuxtPage />`)
-- [ ] **Créer `app/utils/entityDisplay.ts`** — constantes `ENTITY_TOKEN_COLOR` + `ENTITY_TOKEN_ICON` typées par `EntityType` (auto-importé)
-- [ ] **Créer `app/utils/storage.ts`** — clés localStorage centralisées (`STORAGE_KEYS` const)
-- [ ] **Vérifier `app/nuxt.config.ts`** — modules requis présents (`@nuxt/ui`, `@nuxtjs/supabase`)
+- [x] **Créer `app/app.vue`** — racine Nuxt (`<NuxtLayout><NuxtPage />`)
+- [x] **Créer `app/utils/entityDisplay.ts`** — constantes `ENTITY_TOKEN_COLOR` + `ENTITY_TOKEN_ICON` typées par `EntityType` (auto-importé)
+- [x] **Créer `app/utils/storage.ts`** — clés localStorage centralisées (`STORAGE_KEYS` const)
+- [x] **Vérifier `app/nuxt.config.ts`** — modules requis présents (`@nuxt/ui`, `@nuxtjs/supabase`)
 
 ---
 
@@ -448,7 +477,7 @@ Phase 0 (Foundation)
 
 | Phase | Description | Items | Terminés |
 |---|---|---|---|
-| 0 | Foundation | 9 | 0 |
+| 0 | Foundation | 9 | 9 |
 | 1 | Game System | 20 | 0 |
 | 2 | Campaigns | 7 | 0 |
 | 3a | Characters | 13 | 0 |

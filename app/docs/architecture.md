@@ -114,6 +114,14 @@ Supabase Realtime activé sur : `sessions`, `scenes`, `scene_entities`, `overlay
 - Exception documentée : souscription directe via client anon pour `sessions` et `scene_entities`
 - Sur changement `active_scene_id` : nettoyage de l'ancienne subscription avant création de la nouvelle
 
+> ⚠️ LIMITE DE SÉCURITÉ CONNUE (documentée, non corrigée)
+> Le payload Realtime de scene_entities contient TOUTES les colonnes pour TOUTES les entités
+> de la scène, y compris celles avec visible_to_players = false. Le filtrage est appliqué
+> côté client dans usePlayerSession (filtre sur visible_to_players = true avant exposition).
+> Un client malicieux modifié peut recevoir et lire les entités cachées.
+> Décision : acceptable pour une installation mono-MJ/groupe de confiance.
+> Si déploiement public : remplacer l'exception Realtime anon par un polling du server endpoint.
+
 ---
 
 ## Schéma de base de données

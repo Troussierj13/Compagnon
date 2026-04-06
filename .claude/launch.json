@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "Nuxt App (active)",
-      "runtimeExecutable": "yarn",
-      "runtimeArgs": ["--cwd", "app", "dev"],
+      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeArgs": ["/usr/local/bin/yarn", "--cwd", "app", "dev"],
       "port": 3001
     },
     {

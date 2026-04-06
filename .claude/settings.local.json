@@ -28,7 +28,21 @@
       "Bash(ls \"C:\\\\Users\\\\Julien\\\\Desktop\\\\Dev\\\\Compagnon\\\\app\\\\docs\\\\rules\"\" 2>/dev/null || echo \"DOSSIER INEXISTANT \")",
       "WebFetch(domain:freeleaguepublishing.com)",
       "Bash(wc -l /Users/julientroussier/Desktop/Compagnon/app/pages/gm/campaigns/[id]/index.vue /Users/julientroussier/Desktop/Compagnon/app/pages/gm/campaigns/[id]/session/[sessionId].vue /Users/julientroussier/Desktop/Compagnon/app/pages/player/scene.vue)",
-      "Bash(grep -E \"\\\\.\\(vue|ts|json\\)$\")"
+      "Bash(grep -E \"\\\\.\\(vue|ts|json\\)$\")",
+      "Read(//usr/local/bin/**)",
+      "Bash(echo \"PATH=$PATH\")",
+      "Read(//usr/local/Cellar/**)",
+      "Read(//usr/local/opt/**)",
+      "Read(//usr/bin/**)",
+      "Bash(find / -name node -type f -maxdepth 8)",
+      "Read(//Users/julientroussier/.volta/**)",
+      "Read(//Users/julientroussier/.config/**)",
+      "Bash(chmod +x /Users/julientroussier/Desktop/Compagnon/start-dev.sh)",
+      "Bash(/usr/local/bin/node /usr/local/bin/yarn install)",
+      "Bash(yarn typecheck:*)",
+      "Bash(npx nuxi:*)",
+      "Bash(/usr/local/bin/node --version)",
+      "Bash(/usr/local/bin/npm --version)"
     ]
   },
   "enabledPlugins": {
