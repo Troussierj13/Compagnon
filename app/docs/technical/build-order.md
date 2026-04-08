@@ -15,51 +15,52 @@
 > conversation Claude avec uniquement ce fichier + les fichiers listés dans "Prochaine étape".
 
 ```
-Dernière session : 2026-04-06
+Dernière session : 2026-04-07
 
 ✅ Terminé cette session :
-  - 0.1 app/types/rpg.ts (tous les types, enums, interfaces, constantes)
-  - 0.2 Migrations DB 003–011 (game_system, campaigns, armory, media, combatants, nfc, scene_entities, overlays, journey)
-  - 0.3 app/server/utils/supabaseAdmin.ts, validateParticipant.ts, generateJoinCode.ts
-  - 0.4 app/middleware/gm.ts, player-session.ts
-  - 0.5 app/layouts/default.vue, fullscreen.vue, minimal.vue
-  - 0.6 app/app.vue, app/utils/entityDisplay.ts, app/utils/storage.ts, nuxt.config.ts vérifié
+  - Phase 1 complète ✅ (voir session précédente)
+  - Corrections post-review Phase 1 :
+    - Fix B1 : virtues/index.get.ts + rewards/index.get.ts → accès public (useSupabaseAdmin)
+    - Fix B2 : app/pages/gm/index.vue créé (dashboard MJ)
+    - Fix B3 : app/pages/index.vue créé (redirect racine)
+    - Fix B4 : cultures/[id].vue refactoré → mutations via useGameSystem + inject(GameSystemKey)
+    - Fix I3 : virtues/[id].patch.ts → culture_id inclus dans select cultural
+    - Fix I1 : virtues/index.vue + rewards/index.vue → useGameSystem (plus de state local, inject)
+    - Fix I2 : default.vue → provide(GameSystemKey, gs) + InjectionKey exporté
+    - Fix M3 : confirm() remplacé par UModal dans les 4 pages
+    - Fix M7 : console.error ajouté dans tous les catch
+    - Fix template : .value supprimé dans les templates (gs.loading, gs.error, gs.cultures, gs.virtues, gs.rewards)
 
 📂 Fichiers créés / modifiés :
-  - app/types/rpg.ts (créé)
-  - app/supabase/migrations/003_game_system.sql (créé)
-  - app/supabase/migrations/004_campaigns_characters_sessions_scenes.sql (créé)
-  - app/supabase/migrations/005_armory_items.sql (créé)
-  - app/supabase/migrations/006_media_nfc_mappings.sql (créé)
-  - app/supabase/migrations/007_combatants.sql (créé)
-  - app/supabase/migrations/008_nfc.sql (créé)
-  - app/supabase/migrations/009_scene_entities_enriched.sql (créé)
-  - app/supabase/migrations/010_overlays_announcements.sql (créé)
-  - app/supabase/migrations/011_journey.sql (créé)
-  - app/server/utils/supabaseAdmin.ts (créé)
-  - app/server/utils/validateParticipant.ts (créé)
-  - app/server/utils/generateJoinCode.ts (créé)
-  - app/middleware/gm.ts (créé)
-  - app/middleware/player-session.ts (créé)
-  - app/layouts/default.vue (créé)
-  - app/layouts/fullscreen.vue (créé)
-  - app/layouts/minimal.vue (créé)
-  - app/app.vue (créé)
-  - app/utils/entityDisplay.ts (créé)
-  - app/utils/storage.ts (créé)
-  - app/docs/technical/build-order.md (checkboxes + RÉSUMÉ mis à jour)
+  - app/server/api/game-system/virtues/index.get.ts (modifié)
+  - app/server/api/game-system/rewards/index.get.ts (modifié)
+  - app/server/api/game-system/virtues/[id].patch.ts (modifié)
+  - app/pages/gm/index.vue (créé)
+  - app/pages/index.vue (créé)
+  - app/pages/gm/system/index.vue (modifié)
+  - app/pages/gm/system/cultures/[id].vue (modifié)
+  - app/pages/gm/system/virtues/index.vue (modifié)
+  - app/pages/gm/system/rewards/index.vue (modifié)
+  - app/composables/useGameSystem.ts (modifié — GameSystemKey exporté)
+  - app/layouts/default.vue (modifié — provide GameSystem)
+  - app/docs/technical/build-order.md (RÉSUMÉ mis à jour)
 
 🎯 Prochaine étape exacte :
-  Phase 1.1 — server endpoints Game System (cultures CRUD)
+  Phase 2.1 — server endpoints Campaigns
   Fichiers à charger :
-    - app/docs/technical/api-contracts.md (section Game System)
-    - app/docs/vision/feature-game-system.md
+    - app/docs/technical/api-contracts.md (section Campaigns)
+    - app/docs/vision/feature-campaign-management.md
 
 ⚠️  Décisions prises / blocages :
-  - Code legacy supprimé le 2026-04-06 — tout est à écrire from scratch
-  - MVP cible : Phase 0 → 2 → 3a partiel → 4 partiel → 5b partiel
-  - Schema DB : 001/002 existants conservés, migrations 003–011 créées pour le reste du schéma
-  - Phase 0 complète ✅
+  - virtues/rewards GET : utilise useSupabaseAdmin() car les endpoints sont publics (pas d'auth user)
+  - GameSystemKey (InjectionKey) exporté depuis useGameSystem.ts pour typage strict du provide/inject
+  - default.vue ne charge fetchAll() que si route commence par /gm/system (évite charge inutile sur autres pages MJ)
+  - confirm() → UModal : chaque page gère son propre état de confirmation (pas de composant partagé — à factoriser en Phase 4+)
+  - system/index.vue : migrate vers inject(GameSystemKey) pour partager l'instance du layout
+  - virtues/[id].patch.ts et [id].delete.ts utilisent un flag is_cultural (body pour PATCH, query param pour DELETE) pour cibler cultural_virtues vs virtues
+  - virtues/index.post.ts : si culture_id fourni dans le body → insère dans cultural_virtues, sinon dans virtues
+  - useGameSystem : expose readonly() sur toutes les refs (immutabilité depuis l'extérieur)
+  - Phase 0 complète ✅ — Phase 1 complète ✅
 ```
 
 ---
@@ -160,23 +161,23 @@ Phase 0 (Foundation)
 
 ### 1.1 — Server endpoints Game System
 
-- [ ] `app/server/api/game-system/cultures/index.get.ts` — liste toutes les cultures
-- [ ] `app/server/api/game-system/cultures/index.post.ts` — créer une culture (MJ)
-- [ ] `app/server/api/game-system/cultures/[id].get.ts` — détail culture
-- [ ] `app/server/api/game-system/cultures/[id].patch.ts` — modifier culture
-- [ ] `app/server/api/game-system/cultures/[id].delete.ts` — supprimer culture
-- [ ] `app/server/api/game-system/virtues/index.get.ts` — liste vertus (filtre par culture possible)
-- [ ] `app/server/api/game-system/virtues/index.post.ts`
-- [ ] `app/server/api/game-system/virtues/[id].patch.ts`
-- [ ] `app/server/api/game-system/virtues/[id].delete.ts`
-- [ ] `app/server/api/game-system/rewards/index.get.ts`
-- [ ] `app/server/api/game-system/rewards/index.post.ts`
-- [ ] `app/server/api/game-system/rewards/[id].patch.ts`
-- [ ] `app/server/api/game-system/rewards/[id].delete.ts`
+- [x] `app/server/api/game-system/cultures/index.get.ts` — liste toutes les cultures
+- [x] `app/server/api/game-system/cultures/index.post.ts` — créer une culture (MJ)
+- [x] `app/server/api/game-system/cultures/[id].get.ts` — détail culture
+- [x] `app/server/api/game-system/cultures/[id].patch.ts` — modifier culture
+- [x] `app/server/api/game-system/cultures/[id].delete.ts` — supprimer culture
+- [x] `app/server/api/game-system/virtues/index.get.ts` — liste vertus (filtre par culture possible)
+- [x] `app/server/api/game-system/virtues/index.post.ts`
+- [x] `app/server/api/game-system/virtues/[id].patch.ts`
+- [x] `app/server/api/game-system/virtues/[id].delete.ts`
+- [x] `app/server/api/game-system/rewards/index.get.ts`
+- [x] `app/server/api/game-system/rewards/index.post.ts`
+- [x] `app/server/api/game-system/rewards/[id].patch.ts`
+- [x] `app/server/api/game-system/rewards/[id].delete.ts`
 
 ### 1.2 — Composable Game System
 
-- [ ] Créer `app/composables/useGameSystem.ts`
+- [x] Créer `app/composables/useGameSystem.ts`
   - `cultures`, `virtues`, `rewards` — listes en mémoire
   - Fetch une seule fois (pas de realtime — données quasi-statiques)
   - Exposer `getCultureById(id)`, `getVirtuesByCulture(cultureId)`
@@ -184,10 +185,10 @@ Phase 0 (Foundation)
 
 ### 1.3 — Pages Game System
 
-- [ ] Créer `app/pages/gm/system/index.vue` — hub game system (liste cultures)
-- [ ] Créer `app/pages/gm/system/cultures/[id].vue` — édition culture + vertus culturelles
-- [ ] Créer `app/pages/gm/system/virtues/index.vue` — vertus ordinaires (liste globale)
-- [ ] Créer `app/pages/gm/system/rewards/index.vue` — récompenses (liste globale)
+- [x] Créer `app/pages/gm/system/index.vue` — hub game system (liste cultures)
+- [x] Créer `app/pages/gm/system/cultures/[id].vue` — édition culture + vertus culturelles
+- [x] Créer `app/pages/gm/system/virtues/index.vue` — vertus ordinaires (liste globale)
+- [x] Créer `app/pages/gm/system/rewards/index.vue` — récompenses (liste globale)
 
 ---
 
@@ -478,7 +479,7 @@ Phase 0 (Foundation)
 | Phase | Description | Items | Terminés |
 |---|---|---|---|
 | 0 | Foundation | 9 | 9 |
-| 1 | Game System | 20 | 0 |
+| 1 | Game System | 20 | 20 |
 | 2 | Campaigns | 7 | 0 |
 | 3a | Characters | 13 | 0 |
 | 3b | Combatants | 11 | 0 |
@@ -490,4 +491,4 @@ Phase 0 (Foundation)
 | 6b | Loot | 8 | 0 |
 | 6c | Journey | 7 | 0 |
 | 7 | Phase 4 features | 6 | 0 |
-| **Total** | | **139** | **0** |
+| **Total** | | **139** | **20** |

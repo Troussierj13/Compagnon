@@ -42,7 +42,8 @@
       "Bash(yarn typecheck:*)",
       "Bash(npx nuxi:*)",
       "Bash(/usr/local/bin/node --version)",
-      "Bash(/usr/local/bin/npm --version)"
+      "Bash(/usr/local/bin/npm --version)",
+      "Bash(yarn nuxi:*)"
     ]
   },
   "enabledPlugins": {

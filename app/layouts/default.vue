@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { useGameSystem, GameSystemKey } from '~/composables/useGameSystem'
+
+const gs = useGameSystem()
+provide(GameSystemKey, gs)
+
+// Charger les données si on est sur une page /gm/system
+const route = useRoute()
+if (import.meta.client && route.path.startsWith('/gm/system')) {
+  gs.fetchAll()
+}
+</script>
+
 <template>
   <div class="min-h-screen bg-gray-950 text-gray-100">
     <!-- Navigation back-office MJ -->
@@ -14,9 +27,7 @@
           <NuxtLink to="/gm/system" class="text-sm text-gray-400 hover:text-white transition-colors">
             Système
           </NuxtLink>
-          <NuxtLink to="/gm/nfc" class="text-sm text-gray-400 hover:text-white transition-colors">
-            NFC
-          </NuxtLink>
+          <span class="text-sm text-gray-600 cursor-not-allowed" title="À venir — Phase 6">NFC</span>
         </div>
       </div>
     </nav>
